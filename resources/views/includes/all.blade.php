@@ -1,0 +1,5 @@
+@include('includes.error')
+@include('includes.notice')
+@include('includes.success')
+@include('includes.info')
+@include('includes.errors')

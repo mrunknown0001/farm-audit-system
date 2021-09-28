@@ -1,0 +1,42 @@
+@media print {
+  body * {
+    visibility: hidden;
+    width: 100%;
+  }
+  table{
+    width: 100%;
+  }
+  #printArea, #printArea * {
+    visibility: visible !important;
+  }
+  #printArea {
+    position: fixed;
+    display: block;
+    left: 0;
+    top: 0;
+    margin: 0;
+    width: 100%;
+    /*min-height: 1000px;*/
+    height: 100% !important;
+    bottom: 0;
+    float: none;
+  }
+
+  #student {
+    visibility: visible !important;
+  }
+
+  #particulars {
+    visibility: visible !important;
+  }
+
+  .studentPayment {
+    margin-top: 0px;
+  }
+
+  .cor {
+    margin-top: 0px !important;
+    /*height: 900px !important;*/
+  }
+
+}
