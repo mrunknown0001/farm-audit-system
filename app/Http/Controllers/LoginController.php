@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use Auth;
 
-// use App\Http\Controllers\LogController;
+use App\Configuration;
 
 class LoginController extends Controller
 {
@@ -15,7 +15,8 @@ class LoginController extends Controller
 	 */
     public function login()
     {
-    	return view('login');
+        return $system_conf = Configuration::find(1);
+    	return view('login', ['system_conf' => $system_conf]);
     }
 
 

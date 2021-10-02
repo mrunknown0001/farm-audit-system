@@ -13,9 +13,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
 
-        DB::table('schedules')->insert([
-        	'timein' => '7:00 AM',
-        	'timeout' => '6:00 PM'
+
+        DB::table('configurations')->insert([
+        	'system_name' => 'Farm Audit System',
+        	'system_description' => 'Farm Audit System on Brookside Group of Companies',
+        	'system_title_prefix' => ' - Farm Audit System'
         ]);
     }
 }

@@ -8,11 +8,10 @@ Route::get('/test', 'TestController@test');
 Route::get('/qr', 'GeneralController@qr');
 
 Route::get('/', function () {
-    return view('login');
+    return redirect()->route('login');
 });
 
 
-Route::get('/email', 'MailController@sendMail');
 
 # Login for User
 Route::get('/login', 'LoginController@login')->name('login');
