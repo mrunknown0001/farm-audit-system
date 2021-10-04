@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function profile()
     {
-        return view('user.profile');
+        return view('includes.common.profile', ['system' => $this->system()]);
     }
 
     /**
@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function changePassword()
     {
-        return view('user.change-password');
+        return view('includes.common.change-password', ['system' => $this->system()]);
     }
 
 
@@ -59,10 +59,15 @@ class UserController extends Controller
      */
     public function dashboard()
     {
-    	return view('user.dashboard');
+    	return view('user.dashboard', ['system' => $this->system()]);
     }
 
 
+
+
+
+
+## Start of old codes
 
     public function employees (Request $request)
     {
@@ -164,4 +169,6 @@ class UserController extends Controller
         return view('user.location', ['lat' => $lat, 'lon' => $lon, 'log' => $log]);
     }
 
+
+    ## End Codes
 }

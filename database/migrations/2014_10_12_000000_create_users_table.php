@@ -30,8 +30,16 @@ class CreateUsersTable extends Migration
             # 4 - divhead
             # 5 - manager
             # 6 - supervisor
-            # 7 - caretaker/first line employee
+            # 7 - officers
+            # 8 - caretaker/first line employee/user
             $table->bigInteger('farm_id')->nullable();
+            $table->string('audit_role')->nullable(); # Specific Role for Farm Audit System
+            # 1 - Reviewer
+            # 2 - Audit Marshal
+            # 3 - Division Head
+            # 4 - Manager
+            # 5 - Supervisor
+            # 6 - Caretaker
             $table->boolean('active')->default(1);
             $table->boolean('is_deleted')->default(0);
             $table->string('password');

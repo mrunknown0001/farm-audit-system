@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login</title>
+    <title>Login {{ $system->system_title_suffix }}</title>
     <link rel="icon" href="{{ asset('favicon.png') }}">
     <link rel="stylesheet"  href="{{ asset('adminlte/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
@@ -27,11 +27,10 @@
       <div class="login-box">
         <div class="login-logo">
           <img  class="img" height="60px" src="{{ asset('img/bgc_logo.png') }}" alt="BGC">
-          <p>Farm Audit System</p>
+          <p>{{ $system->system_name }}</p>
         </div>
         <div class="login-box-body">
-          @include('includes.success')
-          @include('includes.error')
+          @include('includes.all')
           <p class="login-box-msg">Sign in to start your session</p>
           <form action="{{ route('post.login') }}" method="POST" autocomplete="off">
             @csrf

@@ -8,12 +8,22 @@
 
 @endsection
 
-@section('header')
-	@include('user.includes.header')
-@endsection
-
 @section('sidebar')
-	@include('user.includes.sidebar')
+	@if(Auth::User()->role_id == 2 || Auth::User()->role_id == 1)
+		@include('admin.includes.sidebar')
+	@elseif(Auth::User()->role_id == 3)
+		@include('vp.includes.sidebar')
+	@elseif(Auth::User()->role_id == 4)
+		@include('divhead.includes.sidebar')
+	@elseif(Auth::User()->role_id == 5)
+		@include('manager.includes.sidebar')
+	@elseif(Auth::User()->role_id == 6)
+		@include('supervisor.includes.sidebar')
+	@elseif(Auth::User()->role_id == 7)
+		@include('officer.includes.sidebar')
+	@elseif(Auth::User()->role_id == 8)
+		@include('user.includes.sidebar')
+	@endif
 @endsection
 
 @section('content')
@@ -33,7 +43,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-				<form action="{{ route('user.post.change.password') }}" method="POST">
+				<form action="" method="POST">
 					@csrf
 					<div class="form-group">
 						<label for="current_password">Current Password</label>

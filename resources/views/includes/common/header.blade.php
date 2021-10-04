@@ -1,7 +1,7 @@
   <header class="main-header">
     <a href="javascript:void(0)" class="logo">
-      <span class="logo-mini"><b>Geo</b></span>
-      <span class="logo-lg"><b>GeoLocator</b></span>
+      <span class="logo-mini"><b>{{ $system->system_short_name }}</b></span>
+      <span class="logo-lg"><b>{{ $system->system_name }}</b></span>
     </a>
     <nav class="navbar navbar-static-top">
       <a href="javascript:void(0)" class="header-menu-custom" data-toggle="push-menu" role="button">
@@ -20,17 +20,17 @@
                 <img src="{{ asset('img/avatar.jpg') }}" class="img-circle" alt="User Image">
                 <p>
                   {{ Auth::user()->first_name }}
-                  <small>Manager</small>
+                  <small></small>
                 </p>
               </li>
               <li class="user-body">
                 <div class="row">
                   <div class="col-md-12">
-                    <a href="{{ route('user.profile') }}" class="btn btn-default btn-sm btn-block"><i class="fa fa-user"></i> Profile</a>
+                    <a href="{{ route('profile') }}" class="btn btn-default btn-sm btn-block"><i class="fa fa-user"></i> Profile</a>
                   </div>
                   <div class="col-md-12"></div>
                   <div class="col-md-12">
-                    <a href="{{ route('user.change.password') }}" class="btn btn-default btn-sm btn-block"><i class="fa fa-key"></i> Change Password</a>
+                    <a href="{{ route('change.password') }}" class="btn btn-default btn-sm btn-block"><i class="fa fa-key"></i> Change Password</a>
                   </div>
                 </div>
               </li>

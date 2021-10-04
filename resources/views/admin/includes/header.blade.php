@@ -1,6 +1,6 @@
   <header class="main-header">
     <a href="javascript:void(0)" class="logo">
-      <span class="logo-mini"><b>SDM</b></span>
+      <span class="logo-mini"><b>{{ $system->system_short_name }}</b></span>
       <span class="logo-lg"><b>Admin</b></span>
     </a>
     <nav class="navbar navbar-static-top">

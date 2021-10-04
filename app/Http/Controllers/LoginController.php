@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 
 use Auth;
 
-use App\Configuration;
-
 class LoginController extends Controller
 {
 	/**
@@ -15,8 +13,7 @@ class LoginController extends Controller
 	 */
     public function login()
     {
-        return $system_conf = Configuration::find(1);
-    	return view('login', ['system_conf' => $system_conf]);
+    	return view('login', ['system' => $this->system()]);
     }
 
 
@@ -26,22 +23,39 @@ class LoginController extends Controller
     public function postLogin(Request $request)
     {
     	$request->validate([
-    		'email' => 'required',
+    		'email' => 'required|email',
     		'password' => 'required'
     	]);
 
-    	if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => 1, 'role_id' => 3])) {
-    		// return redirect()->route('user.dashboard')->with('success', 'Welcome to Sales and Marketing Dashboard!');
-    		// $ip = LogController::getIPAddress2();
-            // LogController::log(Auth::user()->id, 'Login');
-    		return redirect()->route('user.dashboard')->with('success', 'Good Day!');
+    	if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => 1])) {
+            switch (Auth::user()->role_id) {
+                case 1;
+                return redirect()->route('admin.dashboard')->with('success', 'Welcome Back!');
+                break;
+                case 2;
+                return redirect()->route('admin.dashboard')->with('success', 'Welcome Back!');
+                break;
+                case 3;
+                return redirect()->route('vp.dashboard')->with('success', 'Good Day!');
+                break;
+                case 4;
+                return redirect()->route('divhead.dashboard')->with('success', 'Good Day!');
+                break;
+                case 5;
+                return redirect()->route('manager.dashboard')->with('success', 'Good Day!');
+                break;
+                case 6;
+                return redirect()->route('supervisor.dashboard')->with('success', 'Good Day!');
+                break;
+                case 7;
+                return redirect()->route('officer.dashboard')->with('success', 'Good Day!');
+                break;
+                case 8;
+                return redirect()->route('user.dashboard')->with('success', 'Good Day!');
+                break;
+            }
+    		
     	}
-        elseif(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => 1, 'role_id' => 4])) {
-            // return redirect()->route('user.dashboard')->with('success', 'Welcome to Sales and Marketing Dashboard!');
-            // $ip = LogController::getIPAddress2();
-            // LogController::log(Auth::user()->id, 'Login');
-            return redirect()->route('emp.dashboard')->with('success', 'Good Day!');
-        }
 
     	return redirect()->route('login')->with('error', 'Invalid Credentials!');
     }
@@ -52,7 +66,7 @@ class LoginController extends Controller
      */
     public function adminLogin()
     {
-    	return view('admin_login');
+    	return view('admin_login', ['system' => $this->system()]);
     }
 
 
@@ -62,7 +76,7 @@ class LoginController extends Controller
     public function postAdminLogin(Request $request)
     {
     	$request->validate([
-    		'email' => 'required',
+    		'email' => 'required|email',
     		'password' => 'required'
     	]);
 
@@ -82,7 +96,6 @@ class LoginController extends Controller
     public function logout()
     {
         if(Auth::user()) {
-            // LogController::log(Auth::user()->id, 'Logout');
             Auth::logout();
             return redirect()->route('login')->with('success', 'Logout Success!');
         }

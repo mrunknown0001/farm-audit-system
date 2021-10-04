@@ -18,18 +18,11 @@
         </a>
         <ul class="treeview-menu {{ route('admin.users') == url()->current() ? 'active' : '' }}">
           <li><a href="{{ route('admin.users') }}"><i class="fa fa-arrow-circle-right"></i> All</a></li>
-          {{-- <li><a href=""><i class="fa fa-arrow-circle-right"></i> Others</a></li> --}}
         </ul>
       </li>
-
-      <li class="{{ route('schedule') == url()->current() ? 'active' : ''}}">
-        <a href="{{ route('schedule') }}">
-          <i class="fa fa-calendar"></i> <span>Schedule</span>
-        </a>
-      </li>
-      <li class="{{ route('admin.punches') == url()->current() ? 'active' : ''}}">
-        <a href="{{ route('admin.punches') }}">
-          <i class="fa fa-map-marker"></i> <span>Punches</span>
+      <li class="{{ route('system.config') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('system.config') }}">
+          <i class="fa fa-cog"></i> <span>System Config</span>
         </a>
       </li>
     </ul>

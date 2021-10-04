@@ -19,32 +19,53 @@ class UsersTableSeeder extends Seeder
         		'role_id' => 2, // Administrator
         		'password' => bcrypt('password')
         	],
-        	[
+            [
+                'first_name' => 'Tetta',
+                'last_name' => 'Dizon',
+                'email' => 'tettadizon@bfcgroup.org',
+                'role_id' => 3, // VP
+                'password' => bcrypt('password')
+            ],
+            [
+                'first_name' => 'Div',
+                'last_name' => 'Head',
+                'email' => 'divhead@bfcgroup.org',
+                'role_id' => 4, // VP
+                'password' => bcrypt('password')
+            ],
+            [
                 'first_name' => 'Jeff',
                 'last_name' => 'Montiano',
                 'email' => 'jmontiano@bfcgroup.org',
-        		'role_id' => 3, 
-        		'password' => bcrypt('password')
-        	],
+                'role_id' => 5, // Manager
+                'password' => bcrypt('password')
+            ],
+            [
+                'first_name' => 'Adam',
+                'last_name' => 'Trinidad',
+                'email' => 'adam@adam.com',
+                'role_id' => 6,
+                'password' => bcrypt('password')
+            ],
             [
                 'first_name' => 'Kim',
                 'last_name' => 'Bacani',
                 'email' => 'k.bacani@bfcgroup.org',
-                'role_id' => 4,
+                'role_id' => 7,
                 'password' => bcrypt('password')
             ],
             [
                 'first_name' => 'Dave',
                 'last_name' => 'Toribio',
                 'email' => 'd.toribio@bfcgroup.org',
-                'role_id' => 4, 
+                'role_id' => 7, 
                 'password' => bcrypt('password')
             ],
             [
                 'first_name' => 'John',
                 'last_name' => 'Doe',
                 'email' => 'j.doe@bfcgroup.org',
-                'role_id' => 4, 
+                'role_id' => 8, 
                 'password' => bcrypt('password')
             ]
         ]);

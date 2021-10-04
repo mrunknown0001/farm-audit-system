@@ -65,5 +65,11 @@ class Kernel extends HttpKernel
 
         'superuser' => \App\Http\Middleware\SuperUser::class,
         'admin' => \App\Http\Middleware\CheckAdmin::class,
+        'vp' => \App\Http\Middleware\CheckVp::class,
+        'divhead' => \App\Http\Middleware\CheckDivHead::class,
+        'manager' => \App\Http\Middleware\CheckManager::class,
+        'supervisor' => \App\Http\Middleware\CheckSupervisor::class,
+        'officer' => \App\Http\Middleware\CheckOfficer::class,
+        'u' => \App\Http\Middleware\CheckOFirstLineEmp::class,
     ];
 }

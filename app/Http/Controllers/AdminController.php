@@ -14,49 +14,13 @@ use App\Http\Controllers\GeneralController as GC;
 
 class AdminController extends Controller
 {
-    /**
-     * Change Password
-     */
-    public function changePassword()
-    {
-        return view('admin.change-password');
-    }
-
-
-    public function postChangePassword(Request $request)
-    {
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|confirmed',
-        ]);
-
-        $user = Auth::user();
-        if(Hash::check($request->current_password, $user->password)) {
-            $user->password = bcrypt($request->new_password);
-            $user->save();
-            return redirect()->back()->with('success', 'Password Changed!');
-
-        }
-        else {
-            return redirect()->back()->with('error', 'Current Password Invalid!');
-        }
-    }
 
     /**
      * Admin Dashboard
      */
     public function dashboard()
     {
-    	return view('admin.dashboard');
-    }
-
-
-    /**
-     * Admin Proile
-     */
-    public function profile()
-    {
-    	return view('admin.profile');
+    	return view('admin.dashboard', ['system' => $this->system()]);
     }
 
 
@@ -84,7 +48,7 @@ class AdminController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('admin.users');
+        return view('admin.users', ['system' => $this->system()]);
     }
 
 
@@ -95,7 +59,7 @@ class AdminController extends Controller
     public function addUser()
     {
         $managers = User::where('role_id', 3)->get();
-        return view('admin.user-add', compact('managers'));
+        return view('admin.user-add', ['managers' => $managers, 'system' => $this->system()]);
     }
 
 

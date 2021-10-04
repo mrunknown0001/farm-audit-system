@@ -81,8 +81,6 @@
 
 @section('script')
 	<script src="{{ asset('js/jquery.js') }}"></script>
-	<script src="{{ asset('js/sweetalert.js') }}"></script>
-	<script src="{{ asset('js/device-uuid.min.js') }}"></script>
 	<script>
 		var options = {
 		  enableHighAccuracy: true,

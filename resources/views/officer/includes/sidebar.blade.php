@@ -4,8 +4,8 @@
       <li class="header text-center">
         Menu
       </li>
-      <li class="{{ route('user.dashboard') == url()->current() ? 'active' : ''}}">
-        <a href="{{ route('user.dashboard') }}">
+      <li class="{{ route('officer.dashboard') == url()->current() ? 'active' : ''}}">
+        <a href="{{ route('officer.dashboard') }}">
           <i class="fa fa-chart-line"></i> <span>Dashboard</span>
         </a>
       </li>

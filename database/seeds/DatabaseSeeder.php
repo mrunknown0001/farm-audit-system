@@ -11,13 +11,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(RolesTableSeeder::class);
+        $this->call(FarmsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
-
 
         DB::table('configurations')->insert([
         	'system_name' => 'Farm Audit System',
+            'system_short_name' => 'FAS',
         	'system_description' => 'Farm Audit System on Brookside Group of Companies',
-        	'system_title_prefix' => ' - Farm Audit System'
+        	'system_title_suffix' => ' - Farm Audit System'
         ]);
     }
 }
