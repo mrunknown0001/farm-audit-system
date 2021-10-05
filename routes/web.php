@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('/ts', 'TestController@timestamp');
+Route::get('/qr1', 'TestController@qr1');
 
 Route::get('/', function () {
     return redirect()->route('login');
