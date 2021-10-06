@@ -33,6 +33,7 @@
 				<video id="video" width="100%" height="auto" autoplay></video>
 				<button id="click-photo">Click Photo</button>
 				<canvas class="img img-responsive" id="canvas"></canvas>
+				<input type="file" accept="image/*;capture=camera">
 			</div>		
 		</div>
 	</section>
@@ -71,7 +72,7 @@
 		click_button.addEventListener('click', function() {
 	   	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 	   	let image_data_url = canvas.toDataURL('image/jpeg');
-	   	
+
 	   	// data url of the image
 	   	console.log(image_data_url);
 		});
