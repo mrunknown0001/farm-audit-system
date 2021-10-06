@@ -77,7 +77,7 @@ $(document).ready(function (e) {
   $('#imageUploadForm').on('submit',(function(e) {
     e.preventDefault();
     var formData = new FormData(this);
-
+    // Add Loading Animation here
     $.ajax({
       type:'POST',
       url: $(this).attr('action'),
