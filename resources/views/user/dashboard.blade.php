@@ -29,9 +29,20 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<input type="file" accept="image/*;capture=camera">
-				<input type="file" accept="image/*" capture>
+				<form action="{{ route('upload') }}" method="POST" enctype="multipart/form-data">
+					@csrf
+					<input type="file" id="upload" name="upload" accept="image/*" capture>
+					<br>
+					<button type="submit">Up</button>
+				</form>
 			</div>		
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				@foreach($uploads as $key => $u)
+					<p><a href="/uploads/test/{{ $u->filename }}">{{ $u->filename }}</a></p>
+				@endforeach
+			</div>
 		</div>
 	</section>
 </div>
