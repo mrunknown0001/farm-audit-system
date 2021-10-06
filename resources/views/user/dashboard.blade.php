@@ -15,6 +15,23 @@
 	{
 	  cursor: pointer;
 	}
+
+  .overlay{
+      display: none;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.8) url("/gif/chicken.gif") center no-repeat;
+  }
+  body.loading{
+      overflow: hidden;   
+  }
+  body.loading .overlay{
+      display: block;
+  }
 </style>
 @endsection
 
@@ -46,9 +63,7 @@
 						<label for="upload">
 							<span id="camera"><i class="fa fa-camera fa-3x"></i></span>
 						</label>
-						{{-- <button type="submit" disabled="" id="submit"><i class="fa fa-upload fa-3x"></i></button> --}}
 					</div>
-					
 				</form>
 			</div>		
 		</div>
@@ -59,61 +74,56 @@
 				@endforeach
 			</div>
 		</div>
+		<div class="overlay"></div>
 	</section>
 </div>
 @endsection
 
 @section('script')
 <script type="text/javascript">
-  $(function() {
-     $("#upload").change(function (){
-       $("#submit").attr('disabled', false);
-       $("#camera").addClass('btn btn-success');
-       $("#submit").addClass('btn btn-success');
-     });
-  });
 
-$(document).ready(function (e) {
-  $('#imageUploadForm').on('submit',(function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    // Add Loading Animation here
-    $.ajax({
-      type:'POST',
-      url: $(this).attr('action'),
-      data:formData,
-      cache:false,
-      contentType: false,
-      processData: false,
-      success:function(data){
-        console.log("success");
-        // console.log(data);
-        Swal.fire({
-          title: 'Image Uploaded!',
-          text: "",
-          type: 'success',
-          showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Close'
-        });
-      },
-      error: function(data){
-        console.log("error");
-        // console.log(data);
-	      Swal.fire({
-				  type: 'error',
-				  title: 'Error Occured',
-				  text: 'Please Try Again.',
-				  // footer: '<a href="">Why do I have this issue?</a>'
-				});
-      }
-    });
-  }));
+	$(document).ready(function (e) {
+	  $('#imageUploadForm').on('submit',(function(e) {
+	    e.preventDefault();
+			// Add Loading Animation here
+	  	$("body").addClass("loading"); 
+	    var formData = new FormData(this);
+	    $.ajax({
+	      type:'POST',
+	      url: $(this).attr('action'),
+	      data:formData,
+	      cache:false,
+	      contentType: false,
+	      processData: false,
+	      success:function(data){
+	        console.log("success");
+	        // Close Upload Animation here
+	        $("body").removeClass("loading");
+	        Swal.fire({
+	          title: 'Image Uploaded!',
+	          text: "",
+	          type: 'success',
+	          showCancelButton: false,
+	          confirmButtonColor: '#3085d6',
+	          cancelButtonColor: '#d33',
+	          confirmButtonText: 'Close'
+	        });
+	      },
+	      error: function(data){
+	        console.log("error");
+	        $("body").removeClass("loading");
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Error Occured',
+					  text: 'Please Try Again.',
+					});
+	      }
+	    });
+	  }));
 
-  $("#upload").on("change", function() {
-    $("#imageUploadForm").submit();
-  });
-});
+	  $("#upload").on("change", function() {
+	    $("#imageUploadForm").submit();
+	  });
+	});
 </script>
 @endsection
