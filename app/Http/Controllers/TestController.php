@@ -49,31 +49,19 @@ class TestController extends Controller
         $request->validate([
             'upload' => 'required|image'
         ]);
-
         $upload = $request->file('upload');
         $ts = date('m-j-Y H-i-s', strtotime(now()));
         $filename =  $ts . '.jpg';
         $upload->move(public_path('/uploads/test/'), $filename);
 
-       $img = Image::make(public_path('uploads/test/'. $filename));  
-       $timestamp = date('F j, Y H:i:s', strtotime(now()));
-       $img->text($timestamp, 30, 30, function($font) {  
-
-          $font->file(public_path('fonts/RobotoMonoBold.ttf'));  
-
-          $font->size(15);  
-
-          $font->color('#000000');  
-
-          $font->align('left');  
-
-          // $font->valign('bottom');  
-
-          // $font->angle(90);  
-
-      });  
-
-       $filename2 = 'U-' . $filename;
+        $img = Image::make(public_path('uploads/test/'. $filename));  
+        $timestamp = date('F j, Y H:i:s', strtotime(now()));
+        $img->text($timestamp, 50, 120, function($font) {  
+            $font->file(public_path('fonts/RobotoMonoBold.ttf'));  
+            $font->size(80);
+            $font->color('#ffa500');
+            $font->align('left');
+        });  
 
        $img->save(public_path('uploads/test/' . $filename));  
 
