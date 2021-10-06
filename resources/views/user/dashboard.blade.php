@@ -30,9 +30,9 @@
 		<div class="row">
 			<div class="col-md-6">
 				<button id="start-camera">Start Camera</button>
-				<video id="video" width="320" height="240" autoplay></video>
+				<video id="video" width="100%" height="auto" autoplay></video>
 				<button id="click-photo">Click Photo</button>
-				<canvas id="canvas" width="640" height="480"></canvas>
+				<canvas class="img img-responsive" id="canvas"></canvas>
 			</div>		
 		</div>
 	</section>
@@ -64,12 +64,14 @@
 	    console.log('Height: ' + stream_height + 'px');
 
 	    // set height and width of image
+	    $("#canvas").height(stream_height + 'px');
+	    $("#canvas").width(stream_width + 'px');
 		});
 
 		click_button.addEventListener('click', function() {
 	   	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 	   	let image_data_url = canvas.toDataURL('image/jpeg');
-
+	   	
 	   	// data url of the image
 	   	console.log(image_data_url);
 		});
