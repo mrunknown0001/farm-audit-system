@@ -28,6 +28,7 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
+				<p><a href="{{ route('admin.users') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Users List</a></p>
 				@include('includes.all')
 			</div>
 		</div>
@@ -52,17 +53,8 @@
 						<label for="role">Role</label>
 						<select class="form-control" id="role" name="role" required>
 							<option value="">Select Role</option>
-							<option value="2" {{ $user->role_id == 2 ? 'selected' : '' }}>Administrator</option>
-							<option value="3" {{ $user->role_id == 3 ? 'selected' : '' }}>Manager</option>
-							<option value="4" {{ $user->role_id == 4 ? 'selected' : '' }}>Employee</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="manager">Manager</label>
-						<select class="form-control" id="manager" name="manager" disabled="true" required="false">
-							<option value="" selected>Select Manager</option>
-							@foreach($managers as $key => $m)
-							<option value="{{ $m->id }}"  {{ $user->manager_id == $m->id ? 'selected' : '' }}>{{ $m->first_name . ' ' . $m->last_name }}</option>
+							@foreach($roles as $key => $r)
+								<option value="{{ $r->id }}" {{ $user->role_id == $r->id ? 'selected' : '' }}>{{ $r->name }}</option>
 							@endforeach
 						</select>
 					</div>
@@ -87,20 +79,5 @@
 @endsection
 
 @section('script')
-
-	<script>
-		$('#role').change(function () {
-			if($('#role').val() == 4) {
-				$("#manager").attr("disabled", false);
-				$("#manager").attr("required", true);
-			}
-			else {
-				$("#manager").attr("disabled", true);
-				$("#manager").attr("required", false);
-				$('#manager').val('')
-			}
-		});
-
-	</script>
 
 @endsection

@@ -34,6 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
 	# Change Password
 	Route::get('/change-password', 'UserController@changePassword')->name('change.password');
 	Route::post('/change-password', 'UserController@postChangePassword')->name('post.change.password');
+
+	# Access Driven
+	
 });
 
 # Admin Route Group

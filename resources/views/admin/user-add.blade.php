@@ -53,17 +53,8 @@
 						<label for="role">Role</label>
 						<select class="form-control" id="role" name="role" required>
 							<option value="">Select Role</option>
-							<option value="2">Administrator</option>
-							<option value="3">Manager</option>
-							<option value="4">Employee</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="manager">Manager</label>
-						<select class="form-control" id="manager" name="manager" disabled="true" required="false">
-							<option value="" selected>Select Manager</option>
-							@foreach($managers as $key => $m)
-							<option value="{{ $m->id }}">{{ $m->first_name . ' ' . $m->last_name }}</option>
+							@foreach($roles as $key => $r)
+								<option value="{{ $r->id }}">{{ $r->name }}</option>
 							@endforeach
 						</select>
 					</div>

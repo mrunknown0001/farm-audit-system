@@ -34,7 +34,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-		      <table id="users" class="table cell-border compact stripe hover" width="99%">
+		      <table id="users" class="table cell-border compact stripe hover display nowrap" width="99%">
 			      <thead>
 		          <tr>
 		            <th scope="col">First Name</th>
@@ -61,7 +61,7 @@
 			let jotable = $('#users').DataTable({
 		        processing: true,
 		        serverSide: true,
-		         scrollX: true,
+		        scrollX: true,
 		        columnDefs: [
 		          { className: "dt-center", targets: [ 0, 1, 2, 3, 4 ] }
 		        ],

@@ -11,6 +11,7 @@ use Hash;
 use DataTables;
 use App\EmployeeLog;
 use App\Http\Controllers\GeneralController as GC;
+use App\Role;
 
 class AdminController extends Controller
 {
@@ -30,7 +31,7 @@ class AdminController extends Controller
     public function users(Request $request)
     {
         if($request->ajax()) {
-            $users = User::where('active', 1)->get();
+            $users = User::all();
  
             $data = collect();
             if(count($users) > 0) {
@@ -40,7 +41,7 @@ class AdminController extends Controller
                         'last_name' => $j->last_name,
                         'type' => GC::getUserType($j->role_id),
                         'active' => $j->active == 1 ? 'Active' : 'Inactive',
-                        'action' => GC::adminUserAction($j->id, $j->first_name . ' ' . $j->last_name)
+                        'action' => '<a href="' . route('admin.update.user', $j->id) . '" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</a>'
                     ]);
                 }
             }
@@ -58,8 +59,8 @@ class AdminController extends Controller
      */
     public function addUser()
     {
-        $managers = User::where('role_id', 3)->get();
-        return view('admin.user-add', ['managers' => $managers, 'system' => $this->system()]);
+        $roles = Role::all();
+        return view('admin.user-add', ['roles' => $roles, 'system' => $this->system()]);
     }
 
 
@@ -78,7 +79,6 @@ class AdminController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->role_id = $request->role;
-        $user->manager_id = $request->manager;
         $user->password = bcrypt($request->password);
         $user->save();
 
@@ -90,8 +90,9 @@ class AdminController extends Controller
     public function updateUser($id)
     {
         $user = User::findorfail($id);
-        $managers = User::where('role_id', 3)->get();
-        return view('admin.user-update', compact('managers', 'user'));
+        $roles = Role::all();
+        $system = $this->system();
+        return view('admin.user-update', compact('roles', 'user', 'system'));
     }
 
 
@@ -109,7 +110,6 @@ class AdminController extends Controller
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->role_id = $request->role;
-        $user->manager_id = $request->manager;
         if($request->password != null || $request->password != '') {
             $user->password = bcrypt($request->password);
         }
