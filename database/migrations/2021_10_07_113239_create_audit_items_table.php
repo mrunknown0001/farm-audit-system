@@ -15,6 +15,10 @@ class CreateAuditItemsTable extends Migration
     {
         Schema::create('audit_items', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('audit_item_category_id')->unsigned();
+            $table->text('item_name')->nullable();
+            $table->text('description')->nullable();
+            $table->string('time_range')->nullable();
             $table->timestamps();
         });
     }

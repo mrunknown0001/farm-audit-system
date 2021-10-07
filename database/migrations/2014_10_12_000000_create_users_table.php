@@ -36,10 +36,10 @@ class CreateUsersTable extends Migration
             $table->string('audit_role')->nullable(); # Specific Role for Farm Audit System
             # 1 - Reviewer
             # 2 - Audit Marshal
-            # 3 - Division Head
-            # 4 - Manager
-            # 5 - Supervisor
-            # 6 - Caretaker
+            # 3 - Farm/Dept Division Head
+            # 4 - Farm/Dept Manager
+            # 5 - Farm/Dept Supervisor
+            # 6 - Farm Caretaker/Dept Employee
             $table->boolean('active')->default(1);
             $table->boolean('is_deleted')->default(0);
             $table->string('password');
