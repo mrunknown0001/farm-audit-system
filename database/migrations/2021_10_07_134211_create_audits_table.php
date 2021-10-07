@@ -21,7 +21,10 @@ class CreateAuditsTable extends Migration
             $table->bigInteger('sub_location_id')->nullable();
             $table->string('compliance')->nullable(); // Compliant or Non-Compliant
             $table->text('non_compliance_remarks')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->boolean('reviewed')->default(0);
+            $table->timestamp('date_reviewed')->nullable();
             $table->boolean('verified')->default(0); // Reviewed and Validated Non-Compliance
             $table->text('field1')->nullable();
             $table->text('field2')->nullable();

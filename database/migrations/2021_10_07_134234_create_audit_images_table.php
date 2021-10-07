@@ -17,6 +17,8 @@ class CreateAuditImagesTable extends Migration
             $table->id();
             $table->bigInteger('audit_id')->unsigned();
             $table->string('filename', 100)->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->timestamps();
         });
     }

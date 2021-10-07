@@ -18,7 +18,8 @@ class CreateAuditItemsTable extends Migration
             $table->bigInteger('audit_item_category_id')->unsigned();
             $table->text('item_name')->nullable();
             $table->text('description')->nullable();
-            $table->string('time_range')->nullable();
+            $table->string('time_range')->nullable(); // To be Display
+            $table->string('display_time_range')->nullable(); // Array of Time Range When to display
             $table->timestamps();
         });
     }
