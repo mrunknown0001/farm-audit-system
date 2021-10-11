@@ -24,8 +24,7 @@ class LocationUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'location_name' => 'required|unique:locations',
-            'location_code' => 'required|unique:locations'
+
         ];
     }
 
@@ -33,10 +32,7 @@ class LocationUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'location_name.required' => 'Location Name is Required!',
-            'location_code.required' => 'Location Code is Required!',
-            'location_name.unique' => 'Location Name must be unique! Duplicate Location Found!',
-            'location_code.unique' => 'Location Code must be unique! Duplicate Location Found!'
+
         ];
     }
 }
