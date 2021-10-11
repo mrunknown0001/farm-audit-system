@@ -79,5 +79,94 @@
 		        ]
 	      });
 		});
+
+    $(document).on('click', '#edit', function (e) {
+        e.preventDefault();
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Edit Location?',
+          text: text,
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Edit',
+        }).then((result) => {
+          if (result.value) {
+          	window.location.href = "/location/edit/" + id;
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
+
+    $(document).on('click', '#remove', function (e) {
+        e.preventDefault();
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Remove Location?',
+          text: text,
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Remove',
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+              url: "/location/remove/" + id,
+              type: "GET",
+              success: function() {
+                Swal.fire({
+                  title: 'Location Removed!',
+                  text: "",
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Close'
+                });
+
+                var table = $('#locations').DataTable();
+                table.ajax.reload();
+              },
+              error: function(err) {
+
+                Swal.fire({
+                  title: 'Error Occured! Tray Again Later.',
+                  text: "",
+                  type: 'error',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Close'
+                });
+              }
+            });
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
 	</script>
 @endsection

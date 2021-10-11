@@ -6,16 +6,15 @@ use App\Location;
 use Illuminate\Http\Request;
 use Auth;
 use DataTables;
-use DB;
-use Hash;
 use App\Http\Requests\LocationRequest;
+use App\Http\Requests\LocationUpdateRequest;
+use App\Http\Controllers\GeneralController as GC;
+use App\Http\Controllers\ActionController as AC;
 
 class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -30,7 +29,7 @@ class LocationController extends Controller
                     $data->push([
                         'name' => $j->location_name,
                         'code' => $j->location_code,
-                        'action' => 'action'
+                        'action' => AC::locationAction($j->id, $j->location_name)
                     ]);
                 }
             }
@@ -43,8 +42,6 @@ class LocationController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -53,9 +50,6 @@ class LocationController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(LocationRequest $request)
     {
@@ -69,53 +63,47 @@ class LocationController extends Controller
                 return 'saved';
             }
             else {
-                return abort(500);
+                return 'error';
             }
         }
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Location  $location
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Location $location)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
-     *
-     * @param  \App\Location  $location
-     * @return \Illuminate\Http\Response
      */
-    public function edit(Location $location)
+    public function edit($id)
     {
-        //
+        $location = Location::findorfail($id);
+        return view('includes.common.location.edit', ['system' => $this->system(), 'location' => $location]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Location  $location
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Location $location)
+    public function update(LocationUpdateRequest $request, $id)
     {
-        //
+        if($request->ajax()) {       
+            $loc = Location::findorfail($id);
+            $loc->location_name = $request->location_name;
+            $loc->location_code = $request->location_code;
+            $loc->description = $request->description;
+            $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
+            $loc->active = $request->active == 'on' ? 1 : 0;
+            if($loc->save()) {
+                return 'saved';
+            }
+            else {
+                return 'error';
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Location  $location
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(Location $location)
+    public function remove($id)
     {
-        //
+        
     }
 }

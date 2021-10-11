@@ -40,6 +40,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/locations', 'LocationController@index')->name('locations');
 	Route::get('/location/add', 'LocationController@create')->name('location.add');
 	Route::post('/location/add', 'LocationController@store')->name('location.post.add');
+	Route::get('/location/edit/{id}', 'LocationController@edit')->name('location.edit');
+	Route::post('/location/edit/{id}', 'LocationController@update')->name('location.update');
+	Route::get('/location/remove/{id}', 'LocationController@remove')->name('location.remove');
 
 	Route::get('/sub-locations', 'SubLocationController@index')->name('sub.locations');
 
