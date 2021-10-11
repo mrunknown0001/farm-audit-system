@@ -25,6 +25,17 @@
           <i class="fa fa-cog"></i> <span>System Config</span>
         </a>
       </li>
+      <li class="{{ route('access') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('access') }}">
+          <i class="fa fa-universal-access"></i> <span>User Access</span>
+        </a>
+      </li>
+      <li class="{{ route('database.backup') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('database.backup') }}">
+          <i class="fa fa-database"></i> <span>Database</span>
+        </a>
+      </li>
+      @include('includes.common.common-sidebar')
     </ul>
   </section>
 </aside>

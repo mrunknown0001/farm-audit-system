@@ -120,6 +120,13 @@ class AdminController extends Controller
     }
 
 
+    public function database()
+    {
+        return view('admin.backup', ['system' => $this->system()]);
+    }
+
+
+
     public function punches (Request $request)
     {
         if($request->ajax()) {

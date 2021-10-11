@@ -14,7 +14,7 @@ class AccessController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.access', ['system' => $this->system()]);
     }
 
     /**

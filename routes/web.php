@@ -36,7 +36,18 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/change-password', 'UserController@postChangePassword')->name('post.change.password');
 
 	# Access Driven
-	
+	# Location and Sublocation Management
+	Route::get('/locations', 'LocationController@index')->name('locations');
+	Route::get('/location/add', 'LocationController@create')->name('location.add');
+	Route::post('/location/add', 'LocationController@store')->name('location.post.add');
+
+	Route::get('/sub-locations', 'SubLocationController@index')->name('sub.locations');
+
+	# Supervisor and Caretaker/User Assignment to Locations
+	Route::get('/assignments', 'AssignmentController@index')->name('assignments');
+
+	# Audit Item Management
+
 });
 
 # Admin Route Group
@@ -58,6 +69,11 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 	Route::post('/user/update/{id}', 'AdminController@postUpdateUser')->name('admin.post.update.user');
 	# System Config
 	Route::get('/system/config', 'ConfigurationController@index')->name('system.config');
+	# Access Assignment
+	Route::get('/access', 'AccessController@index')->name('access');
+
+	# Database Backup
+	Route::get('/database-backup', 'AdminController@database')->name('database.backup');
 });
 
 # VP Route Group

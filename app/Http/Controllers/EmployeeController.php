@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 use App\EmployeeLog;
 use Auth;
-
 use DataTables;
-
 use DB;
 use Hash;
 

@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Location;
 use Illuminate\Http\Request;
+use Auth;
+use DataTables;
+use DB;
+use Hash;
+use App\Http\Requests\LocationRequest;
 
 class LocationController extends Controller
 {
@@ -14,7 +19,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //
+        return view('includes.common.location.index', ['system' => $this->system()]);
     }
 
     /**
@@ -24,7 +29,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        //
+        return view('includes.common.location.add', ['system' => $this->system()]);
     }
 
     /**
@@ -33,9 +38,19 @@ class LocationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LocationRequest $request)
     {
-        //
+        $loc = new Location();
+        $loc->location_name = $request->location_name;
+        $loc->location_code = $request->location_code;
+        $loc->description = $request->description;
+        $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
+        if($loc->save()) {
+            return 'saved';
+        }
+        else {
+            return abort(500);
+        }
     }
 
     /**

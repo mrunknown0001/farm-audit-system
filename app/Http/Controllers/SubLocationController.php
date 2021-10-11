@@ -14,7 +14,7 @@ class SubLocationController extends Controller
      */
     public function index()
     {
-        //
+        return view('includes.common.sublocation.index', ['system' => $this->system()]);
     }
 
     /**
