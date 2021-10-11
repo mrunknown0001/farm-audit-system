@@ -100,9 +100,15 @@
 
 @section('script')
 	<script>
-	$(document).ready(function (e) {
+	$(document).ready(function () {
+		// Location Form
 	  $('#locationForm').on('submit',(function(e) {
 	    e.preventDefault();
+	    // Remove Warning/Error Messages and Classes
+	    $("#LocationNameDiv").removeClass('has-error');
+	  	$("#LocationNameDiv span.help-block").remove();
+	  	$("#LocationCodeDiv").removeClass('has-error');
+	  	$("#LocationCodeDiv span.help-block").remove();
 			// Add Loading Animation here
 	  	$("body").addClass("loading"); 
 	    var formData = new FormData(this);
@@ -137,11 +143,32 @@
 					  title: 'Error Occured',
 					  text: 'Please Try Again.',
 					});
-		      // Continue validation
-					
+
+					var errors = data.responseJSON;
+          // Error Messages
+          if(errors.errors['location_name']) {
+          	$("#LocationNameDiv").addClass('has-error');
+          	$("#LocationNameDiv span.help-block").remove();
+          	$("#LocationNameDiv").append("<span class='help-block'><strong>" + errors.errors['location_name'][0] + "</strong></span>");
+          }
+          if(errors.errors['location_code']) {
+          	$("#LocationCodeDiv").addClass('has-error');
+          	$("#LocationCodeDiv span.help-block").remove();
+          	$("#LocationCodeDiv").append("<span class='help-block'><strong>" + errors.errors['location_code'][0] + "</strong></span>");
+          }
 	      }
 	    });
 	  }));
+
+	  $("#location_name").keypress(function () {
+	  	$("#LocationNameDiv").removeClass('has-error');
+	  	$("#LocationNameDiv span.help-block").remove();
+	  });
+
+	  $("#location_code").keypress(function () {
+	  	$("#LocationCodeDiv").removeClass('has-error');
+	  	$("#LocationCodeDiv span.help-block").remove();
+	  });
 	});
 	</script>
 @endsection

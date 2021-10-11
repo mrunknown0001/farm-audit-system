@@ -17,8 +17,27 @@ class LocationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->ajax()) {
+            $loc = Location::where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->get();
+ 
+            $data = collect();
+            if(count($loc) > 0) {
+                foreach($loc as $j) {
+                    $data->push([
+                        'name' => $j->location_name,
+                        'code' => $j->location_code,
+                        'action' => 'action'
+                    ]);
+                }
+            }
+            return DataTables::of($data)
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         return view('includes.common.location.index', ['system' => $this->system()]);
     }
 
@@ -40,16 +59,18 @@ class LocationController extends Controller
      */
     public function store(LocationRequest $request)
     {
-        $loc = new Location();
-        $loc->location_name = $request->location_name;
-        $loc->location_code = $request->location_code;
-        $loc->description = $request->description;
-        $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
-        if($loc->save()) {
-            return 'saved';
-        }
-        else {
-            return abort(500);
+        if($request->ajax()) {       
+            $loc = new Location();
+            $loc->location_name = $request->location_name;
+            $loc->location_code = $request->location_code;
+            $loc->description = $request->description;
+            $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
+            if($loc->save()) {
+                return 'saved';
+            }
+            else {
+                return abort(500);
+            }
         }
     }
 

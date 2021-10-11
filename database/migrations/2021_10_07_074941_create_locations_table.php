@@ -19,6 +19,8 @@ class CreateLocationsTable extends Migration
             $table->string('location_code', 20)->nullable();
             $table->text('description')->nullable();
             $table->boolean('has_sublocation')->default(0);
+            $table->boolean('active')->default(1);
+            $table->boolean('is_deleted')->default(0);
             $table->timestamps();
         });
     }
