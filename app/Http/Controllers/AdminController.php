@@ -41,7 +41,7 @@ class AdminController extends Controller
                         'last_name' => $j->last_name,
                         'type' => GC::getUserType($j->role_id),
                         'active' => $j->active == 1 ? 'Active' : 'Inactive',
-                        'action' => '<a href="' . route('admin.update.user', $j->id) . '" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</a>'
+                        'action' => '<a href="' . route('admin.update.user', $j->id) . '" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</a> <a href="' . route('set.access', ['id' => $j->id]) . '" class="btn btn-primary btn-xs"><i class="fa fa-universal-access"></i> Access</a>'
                     ]);
                 }
             }

@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('title')
-	Edit Location
+	Edit Sub Location
 @endsection
 
 @section('style')
 	<style>
 	  .overlay{
-	      display: none;
-	      position: fixed;
-	      width: 100%;
-	      height: 100%;
-	      top: 0;
-	      left: 0;
-	      z-index: 999;
-	      background: rgba(255,255,255,0.8) url("/gif/apple.gif") center no-repeat;
+      display: none;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.8) url("/gif/apple.gif") center no-repeat;
 	  }
 	  body.loading{
 	      overflow: hidden;   
@@ -46,7 +46,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Edit Location</a></h1>
+		<h1>Edit Sub Location</a></h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -55,51 +55,59 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
-				<p><a href="{{ route('locations') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Locations</a></p>
+				<p><a href="{{ route('sub.locations') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Sub Locations</a></p>
 				@include('includes.all')
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
-				<form id="locationForm" action="{{ route('location.update', ['id' => $location->id]) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+				<form id="SubLocationForm" action="{{ route('sub.location.update', ['id' => $sublocation->id]) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
 					<div id="LocationNameDiv" class="form-group {{ $errors->first('location_name') ? 'has-error' : ''  }}">
 						<label for="location_name">Location Name</label>
-						<input type="text" name="location_name" id="location_name" value="{{ $location->location_name }}" placeholder="Location Name" class="form-control" required>
+						<select name="location_name" id="location_name" class="form-control" required>
+							<option value="">Select Location Name</option>
+							@foreach($locations as $key => $l)
+								<option value="{{ $l->id }}" {{ $sublocation->location_id == $l->id ? 'selected' : '' }}>{{ $l->location_name }}</option>
+							@endforeach
+						</select>
 						@if($errors->first('location_name'))
             	<span class="help-block"><strong>{{ $errors->first('location_name') }}</strong></span>
             @endif
 					</div>
-					<div id="LocationCodeDiv" class="form-group {{ $errors->first('location_code') ? 'has-error' : ''  }}">
-						<label for="location_code">Location Code</label>
-						<input type="text" name="location_code" id="location_code" value="{{ $location->location_code }}" placeholder="Location Code" class="form-control" required>
-						@if($errors->first('location_code'))
-            	<span class="help-block"><strong>{{ $errors->first('location_code') }}</strong></span>
+					<div id="SubLocationNameDiv" class="form-group {{ $errors->first('sub_location_name') ? 'has-error' : ''  }}">
+						<label for="sub_location_name">Sub Location Name</label>
+						<input type="text" name="sub_location_name" id="sub_location_name" value="{{ $sublocation->sub_location_name }}"  placeholder="Sub Location Name" class="form-control" required>
+						@if($errors->first('sub_location_name'))
+            	<span class="help-block"><strong>{{ $errors->first('sub_location_name') }}</strong></span>
             @endif
 					</div>
-					<div id="LocationDescriptionDiv" class="form-group {{ $errors->first('description') ? 'has-error' : ''  }}">
+					<div id="SubLocationCodeDiv" class="form-group {{ $errors->first('sub_location_code') ? 'has-error' : ''  }}">
+						<label for="sub_location_code">Sub Location Code</label>
+						<input type="text" name="sub_location_code" id="sub_location_code" value="{{ $sublocation->sub_location_code }}" placeholder="Sub Location Code" class="form-control" required>
+						@if($errors->first('sub_location_code'))
+            	<span class="help-block"><strong>{{ $errors->first('sub_location_code') }}</strong></span>
+            @endif
+					</div>
+					<div id="SubLocationDescriptionDiv" class="form-group {{ $errors->first('description') ? 'has-error' : ''  }}">
 						<label for="description">Description</label>
-						<textarea name="description" id="description" placeholder="Description" class="form-control">{{ $location->description }}</textarea>
+						<textarea name="description" id="description" placeholder="Description" class="form-control">{{ $sublocation->description }}</textarea>
 						@if($errors->first('description'))
             	<span class="help-block"><strong>{{ $errors->first('description') }}</strong></span>
             @endif
 					</div>
-					<div  id="HasSubLocationDiv" class="form-group">
-						<input type="checkbox" name="has_sublocation" id="has_sublocation" {{ $location->has_sublocation == 1 ? 'checked' : '' }}>
-						<label for="has_sublocation">Has Sub Location</label>
-					</div>
 					<div  id="ActiveDiv" class="form-group">
-						<input type="checkbox" name="active" id="active" {{ $location->active == 1 ? 'checked' : '' }}>
+						<input type="checkbox" name="active" id="active" {{ $sublocation->active == 1 ? 'checked' : '' }}>
 						<label for="active">Active?</label>
 					</div>
 					@if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
 						<div  id="DeletedDiv" class="form-group">
-							<input type="checkbox" name="is_deleted" id="is_deleted" {{ $location->is_deleted == 1 ? 'checked' : '' }}>
+							<input type="checkbox" name="is_deleted" id="is_deleted" {{ $sublocation->is_deleted == 1 ? 'checked' : '' }}>
 							<label for="is_deleted">Is Deleted?</label>
 						</div>
 					@endif
 					<div class="form-group">
-						<button type="submit" id="locationSubmit" class="btn btn-primary"><i class="fa fa-save"></i> Update</button>
+						<button type="submit" id="SubLocationSubmit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
 					</div>
 				</form>
 			</div>
@@ -111,14 +119,16 @@
 @section('script')
 	<script>
 	$(document).ready(function () {
-		// Location Form
-	  $('#locationForm').on('submit',(function(e) {
+		// Sub Location Form
+	  $('#SubLocationForm').on('submit',(function(e) {
 	    e.preventDefault();
 	    // Remove Warning/Error Messages and Classes
 	    $("#LocationNameDiv").removeClass('has-error');
 	  	$("#LocationNameDiv span.help-block").remove();
-	  	$("#LocationCodeDiv").removeClass('has-error');
-	  	$("#LocationCodeDiv span.help-block").remove();
+	    $("#SubLocationNameDiv").removeClass('has-error');
+	  	$("#SubLocationNameDiv span.help-block").remove();
+	  	$("#SubLocationCodeDiv").removeClass('has-error');
+	  	$("#SubLocationCodeDiv span.help-block").remove();
 			// Add Loading Animation here
 	  	$("body").addClass("loading"); 
 	    var formData = new FormData(this);
@@ -134,7 +144,7 @@
 	        // Close Upload Animation here
 	        $("body").removeClass("loading");
 	        Swal.fire({
-	          title: 'Location Updated!',
+	          title: 'Sub Location Updated!',
 	          text: "",
 	          type: 'success',
 	          showCancelButton: false,
@@ -142,8 +152,6 @@
 	          cancelButtonColor: '#d33',
 	          confirmButtonText: 'Close'
 	        });
-	        // Load Updated Values
-
 	      },
 	      error: function(data){
 	        console.log("error");
@@ -155,29 +163,40 @@
 					});
 
 					var errors = data.responseJSON;
+					console.log(errors);
           // Error Messages
           if(errors.errors['location_name']) {
           	$("#LocationNameDiv").addClass('has-error');
           	$("#LocationNameDiv span.help-block").remove();
           	$("#LocationNameDiv").append("<span class='help-block'><strong>" + errors.errors['location_name'][0] + "</strong></span>");
           }
-          if(errors.errors['location_code']) {
-          	$("#LocationCodeDiv").addClass('has-error');
-          	$("#LocationCodeDiv span.help-block").remove();
-          	$("#LocationCodeDiv").append("<span class='help-block'><strong>" + errors.errors['location_code'][0] + "</strong></span>");
+          if(errors.errors['sub_location_code']) {
+          	$("#SubLocationCodeDiv").addClass('has-error');
+          	$("#SubLocationCodeDiv span.help-block").remove();
+          	$("#SubLocationCodeDiv").append("<span class='help-block'><strong>" + errors.errors['sub_location_code'][0] + "</strong></span>");
+          }
+          if(errors.errors['sub_location_name']) {
+          	$("#SubLocationNameDiv").addClass('has-error');
+          	$("#SubLocationNameDiv span.help-block").remove();
+          	$("#SubLocationNameDiv").append("<span class='help-block'><strong>" + errors.errors['sub_location_name'][0] + "</strong></span>");
           }
 	      }
 	    });
 	  }));
 
-	  $("#location_name").keypress(function () {
+	  $("#location_name").change(function () {
 	  	$("#LocationNameDiv").removeClass('has-error');
 	  	$("#LocationNameDiv span.help-block").remove();
 	  });
 
-	  $("#location_code").keypress(function () {
-	  	$("#LocationCodeDiv").removeClass('has-error');
-	  	$("#LocationCodeDiv span.help-block").remove();
+	  $("#sub_location_name").keypress(function () {
+	  	$("#SubLocationNameDiv").removeClass('has-error');
+	  	$("#SubLocationNameDiv span.help-block").remove();
+	  });
+
+	  $("#sub_location_code").keypress(function () {
+	  	$("#SubLocationCodeDiv").removeClass('has-error');
+	  	$("#SubLocationCodeDiv span.help-block").remove();
 	  });
 	});
 	</script>

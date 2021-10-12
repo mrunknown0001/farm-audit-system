@@ -45,6 +45,11 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/location/remove/{id}', 'LocationController@remove')->name('location.remove');
 
 	Route::get('/sub-locations', 'SubLocationController@index')->name('sub.locations');
+	Route::get('/sub-location/add', 'SubLocationController@create')->name('sub.location.add');
+	Route::post('/sub-location/add', 'SubLocationController@store')->name('sub.location.post.add');
+	Route::get('/sub-location/edit/{id}', 'SubLocationController@edit')->name('sub.location.edit');
+	Route::post('/sub-location/edit/{id}', 'SubLocationController@update')->name('sub.location.update');
+	Route::get('/sub-location/remove/{id}', 'SubLocationController@remove')->name('sub.location.remove');
 
 	# Supervisor and Caretaker/User Assignment to Locations
 	Route::get('/assignments', 'AssignmentController@index')->name('assignments');
@@ -74,6 +79,8 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 	Route::get('/system/config', 'ConfigurationController@index')->name('system.config');
 	# Access Assignment
 	Route::get('/access', 'AccessController@index')->name('access');
+	# Assign Access to Specific User
+	Route::get('/user/{id}/set-access', 'AccessController@create')->name('set.access');
 
 	# Database Backup
 	Route::get('/database-backup', 'AdminController@database')->name('database.backup');

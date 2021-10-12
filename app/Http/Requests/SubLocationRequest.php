@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 use Auth;
 
-class LocationRequest extends FormRequest
+class SubLocationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,9 @@ class LocationRequest extends FormRequest
     public function rules()
     {
         return [
-            'location_name' => 'required|unique:locations',
-            'location_code' => 'required|unique:locations'
+            'location_name' => 'required',
+            'sub_location_name' => 'required',
+            'sub_location_code' => 'required|unique:sub_locations'
         ];
     }
 
@@ -36,9 +37,9 @@ class LocationRequest extends FormRequest
     {
         return [
             'location_name.required' => 'Location Name is Required!',
-            'location_code.required' => 'Location Code is Required!',
-            'location_name.unique' => 'Location Name must be unique! Duplicate Location Found!',
-            'location_code.unique' => 'Location Code must be unique! Duplicate Location Found!'
+            'sub_location_name.required' => 'Sub Location Name is Required!',
+            'sub_location_code.required' => 'Sub Location Code is Required!',
+            'sub_location_code.unique' => 'Sub Location Code must be unique! Duplicate Sub Location Code Found!'
         ];
     }
 }

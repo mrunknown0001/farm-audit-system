@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Access;
 use Illuminate\Http\Request;
+use App\User;
 
 class AccessController extends Controller
 {
@@ -22,9 +23,10 @@ class AccessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $user = User::findorfail($id);
+        return view('admin.access-set', ['system' => $this->system(), 'user' => $user]);
     }
 
     /**

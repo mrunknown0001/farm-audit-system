@@ -17,9 +17,11 @@ class CreateSubLocationsTable extends Migration
             $table->id();
             $table->bigInteger('location_id')->unsigned();
             $table->foreign('location_id')->references('id')->on('locations');
-            $table->string('sublocation_name')->nullable();
-            $table->string('sublocation_code')->nullable();
+            $table->string('sub_location_name')->nullable();
+            $table->string('sub_location_code')->nullable();
             $table->text('description')->nullable();
+            $table->boolean('active')->default(1);
+            $table->boolean('is_deleted')->default(0);
             $table->timestamps();
         });
     }

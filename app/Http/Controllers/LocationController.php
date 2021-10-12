@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Auth;
 use DataTables;
 use App\Http\Requests\LocationRequest;
-use App\Http\Requests\LocationUpdateRequest;
 use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
+use App\Http\Controllers\UserLogController as Log;
 
 class LocationController extends Controller
 {
@@ -19,9 +19,14 @@ class LocationController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $loc = Location::where('active', 1)
-                            ->where('is_deleted', 0)
-                            ->get();
+            if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
+                $loc = Location::all();
+            }
+            else {
+                $loc = Location::where('active', 1)
+                                ->where('is_deleted', 0)
+                                ->get();
+            }
  
             $data = collect();
             if(count($loc) > 0) {
@@ -60,6 +65,7 @@ class LocationController extends Controller
             $loc->description = $request->description;
             $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
             if($loc->save()) {
+                $log = Log::log('create', 'locations', '', $loc, '', '');
                 return 'saved';
             }
             else {
@@ -81,16 +87,50 @@ class LocationController extends Controller
      * Update the specified resource in storage.
      *
      */
-    public function update(LocationUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        if($request->ajax()) {       
+        if($request->ajax()) {
+            $request->validate([
+                'location_name' => 'required',
+                'location_code' => 'required'
+            ]);
+
             $loc = Location::findorfail($id);
+            $old_val = $loc;
+            // Check for Location Name
+            $check_loc_name = Location::where('location_name', $request->location_name)
+                        ->where('is_deleted', 0)
+                        ->where('active', 1)
+                        ->first();
+            if(!empty($check_loc_name)) {
+                if($check_loc_name->id != $loc->id) {
+                    return $request->validate([
+                        'location_name' => 'unique:locations'
+                    ]);
+                }
+            }
+
+            // Check for Location Code
+            $check_loc_code = Location::where('location_code', $request->location_code)
+                        ->where('is_deleted', 0)
+                        ->where('active', 1)
+                        ->first();
+            if(!empty($check_loc_code)) {
+                if($check_loc_code->id != $loc->id) {
+                    return $request->validate([
+                        'location_code' => 'unique:locations'
+                    ]);
+                }
+            }
+
             $loc->location_name = $request->location_name;
             $loc->location_code = $request->location_code;
             $loc->description = $request->description;
             $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
             $loc->active = $request->active == 'on' ? 1 : 0;
+            $loc->is_deleted = $request->is_deleted == 'on' ? 1 : 0;
             if($loc->save()) {
+                $log = Log::log('update', 'locations', '', $loc, $old_val, '');
                 return 'saved';
             }
             else {
@@ -104,6 +144,15 @@ class LocationController extends Controller
      */
     public function remove($id)
     {
-        
+        $loc = Location::findorfail($id);
+        $old_val = $loc;
+        $loc->is_deleted = 1;
+        if($loc->save()) {
+            $log = Log::log('delete', 'locations', '', $loc, $old_val, '');
+            return 'deleted';
+        }
+        else {
+            return 'error';
+        }
     }
 }
