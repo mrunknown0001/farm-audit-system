@@ -30,6 +30,16 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h4>User: {{ $user->first_name . ' ' . $user->last_name }}</h4>
+				<form action="" method="POST" enctype="multipart/form-data" autocomplete="off">
+					<div class="form-group">
+						<h4>Location</h4>
+						<ul class="list-inline">
+							<li><input type="checkbox" name="location_add" id="location_add"> <label for="location_add">Add</label></li>
+							<li><input type="checkbox"> Edit</li>
+							<li><input type="checkbox"> Delete</li>
+						</ul>
+					</div>
+				</form>
 			</div>
 		</div>
 	</section>

@@ -27,7 +27,7 @@
       <div class="login-box">
         <div class="login-logo">
           <img  class="img" height="60px" src="{{ asset('img/bgc_logo.png') }}" alt="BGC">
-          <p>{{ $system->system_name }}</p>
+          <p><b>{{ $system->system_name }}</b></p>
         </div>
         <div class="login-box-body">
           @include('includes.all')
