@@ -56,18 +56,18 @@
 						</ul>
 					</div>
 					<div class="form-group">
-						<h4>Assignment:</h4>
-						<ul class="list-inline">
-							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'assignment_module') ? 'checked' : '' }} value="assignment_module" name="access[]" id="assignment_module"> <label for="assignment_module">Module</label></li>
-						</ul>
-					</div>
-					<div class="form-group">
 						<h4>Audit Item:</h4>
 						<ul class="list-inline">
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_module') ? 'checked' : '' }} value="audit_item_module" name="access[]" id="audit_item_module"> <label for="audit_item_module">Module</label></li>
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_add') ? 'checked' : '' }} value="audit_item_add" name="access[]" id="audit_item_add"> <label for="audit_item_add">Add</label></li>
-							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_delete') ? 'checked' : '' }} value="audit_item_edit" name="access[]" id="audit_item_edit"> <label for="audit_item_edit"> Edit</label></li>
+							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_edit') ? 'checked' : '' }} value="audit_item_edit" name="access[]" id="audit_item_edit"> <label for="audit_item_edit"> Edit</label></li>
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_delete') ? 'checked' : '' }} value="audit_item_delete" name="access[]" id="audit_item_delete"> <label for="audit_item_delete">Delete</label></li>
+						</ul>
+					</div>
+					<div class="form-group">
+						<h4>Assignment:</h4>
+						<ul class="list-inline">
+							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'assignment_module') ? 'checked' : '' }} value="assignment_module" name="access[]" id="assignment_module"> <label for="assignment_module">Module</label></li>
 						</ul>
 					</div>
 					<div class="form-group">

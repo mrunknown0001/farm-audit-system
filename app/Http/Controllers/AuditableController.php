@@ -17,6 +17,6 @@ class AuditableController extends Controller
 	 */
     public function index(Request $request)
     {
-    	
+    	return view('includes.common.auditable.index', ['system' => $this->system()]);
     }
 }

@@ -41,7 +41,7 @@ class SubLocationController extends Controller
                         'location' => $j->location->location_name,
                         'name' => $j->sub_location_name,
                         'code' => $j->sub_location_code,
-                        'action' => AC::locationAction($j->id, $j->sub_location_name)
+                        'action' => AC::subLocationAction($j->id, $j->sub_location_name)
                     ]);
                 }
             }
