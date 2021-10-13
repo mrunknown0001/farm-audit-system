@@ -19,6 +19,20 @@
         </a>
       </li>
     @endif
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_item_module')) 
+      <li class="{{ route('audit.item') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('audit.item') }}">
+          <i class="fa fa-list"></i> <span>Audit Item</span>
+        </a>
+      </li>
+    @endif
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'auditable_module')) 
+      <li class="{{ route('auditables') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('auditables') }}">
+          <i class="fa fa-list"></i> <span>Auditable</span>
+        </a>
+      </li>
+    @endif
       {{-- <li class="treeview ">
         <a href="javascript:void(0)">
           <i class="fa fa-users"></i> <span>Main Menu</span>

@@ -55,6 +55,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/assignments', 'AssignmentController@index')->name('assignments');
 
 	# Audit Item Management
+	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	
+
+	# Auditables
+	Route::get('/auditables', 'Auditablecontroller@index')->name('auditables');
 
 });
 

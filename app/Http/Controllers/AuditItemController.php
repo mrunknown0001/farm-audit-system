@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\AuditItem;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AccessController;
+use Auth;
+use DataTables;
+use App\Http\Controllers\GeneralController as GC;
+use App\Http\Controllers\ActionController as AC;
+use App\Http\Controllers\UserLogController as Log;
 
 class AuditItemController extends Controller
 {
@@ -12,9 +18,12 @@ class AuditItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(!AccessController::checkAccess(Auth::user()->id, 'audit_item_module')) {
+            return abort(403);
+        }
+        return view('includes.common.audit-item.index', ['system' => $this->system()]);
     }
 
     /**
