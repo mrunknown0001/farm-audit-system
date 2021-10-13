@@ -1,18 +1,18 @@
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'location_module')) 
       <li class="{{ route('locations') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('locations') }}">
           <i class="fa fa-location-arrow"></i> <span>Locations</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'sub_location_module')) 
       <li class="{{ route('sub.locations') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('sub.locations') }}">
           <i class="fa fa-location-arrow"></i> <span>Sub Locations</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'assignment_module')) 
       <li class="{{ route('assignments') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('assignments') }}">
           <i class="fa fa-people-carry"></i> <span>Assignments</span>

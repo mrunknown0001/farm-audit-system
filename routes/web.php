@@ -81,6 +81,7 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 	Route::get('/access', 'AccessController@index')->name('access');
 	# Assign Access to Specific User
 	Route::get('/user/{id}/set-access', 'AccessController@create')->name('set.access');
+	Route::post('/user/{id}/set-access', 'AccessController@store')->name('post.set.access');
 
 	# Database Backup
 	Route::get('/database-backup', 'AdminController@database')->name('database.backup');

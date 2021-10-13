@@ -11,6 +11,7 @@ use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
 use App\Http\Controllers\UserLogController as Log;
 use App\Http\Requests\SubLocationRequest;
+use App\Http\Controllers\AccessController;
 
 class SubLocationController extends Controller
 {
@@ -20,6 +21,9 @@ class SubLocationController extends Controller
      */
     public function index(Request $request)
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'sub_location_module')) {
+            return abort(403);
+        }
         if($request->ajax()) {
             if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2) {
                 $sub = SubLocation::all();
@@ -54,6 +58,9 @@ class SubLocationController extends Controller
      */
     public function create()
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'sub_location_add')) {
+            return abort(403);
+        }
         $locations = Location::where('active', 1)
                             ->where('is_deleted', 0)
                             ->where('has_sublocation', 1)
@@ -68,6 +75,9 @@ class SubLocationController extends Controller
      */
     public function store(SubLocationRequest $request)
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'sub_location_add')) {
+            return abort(403);
+        }
         $sub = new SubLocation();
 
         $sub->location_id = $request->location_name; // Location ID
@@ -90,6 +100,9 @@ class SubLocationController extends Controller
      */
     public function edit($id)
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'sub_location_edit')) {
+            return abort(403);
+        }
         $sub = SubLocation::findorfail($id);
         $locations = Location::where('active', 1)
                             ->where('is_deleted', 0)
@@ -104,6 +117,9 @@ class SubLocationController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'sub_location_edit')) {
+            return abort(403);
+        }
         if($request->ajax()) {
             $request->validate([
                 'location_name' => 'required',
@@ -150,6 +166,9 @@ class SubLocationController extends Controller
      */
     public function remove($id)
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'sub_location_delete')) {
+            return abort(403);
+        }
         $sub = SubLocation::findorfail($id);
         $old_val = $sub;
         $sub->is_deleted = 1;

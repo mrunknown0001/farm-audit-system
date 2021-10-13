@@ -11,7 +11,6 @@ class AccessController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -20,8 +19,6 @@ class AccessController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function create($id)
     {
@@ -31,57 +28,56 @@ class AccessController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $access = Access::where('user_id', $request->user_id)->first();
+
+        if(empty($access)) {
+            $access = new Access();
+            $access->user_id = $request->id;
+        }
+        if($request->access == '') {
+            $acc = NULL;
+        }
+        else {
+            $acc = implode(",",$request->access);
+        }
+        $access->access = "," . $acc;
+        if($access->save()) {
+            return redirect()->back()->with('success', 'Access Saved!');
+        }
+        else {
+            return redirect()->back()->with('error', 'Error Occured! Please Try Again.');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Access  $access
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Access $access)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Access  $access
-     * @return \Illuminate\Http\Response
+     * Check Access to user
      */
-    public function edit(Access $access)
+    public static function checkAccess($id, $acc)
     {
-        //
-    }
+        $user = User::findorfail($id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Access  $access
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Access $access)
-    {
-        //
-    }
+        if($user->role_id == 1 || $user->role_id == 2) {
+            return true;
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Access  $access
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Access $access)
-    {
-        //
-    }
+        $access = Access::where('user_id', $user->id)->first();
+
+        if(empty($access)) {
+            return false;
+        }
+
+        $str = strpos($access->access, ",".$acc);
+
+        if($str === false) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    } 
+
 }
