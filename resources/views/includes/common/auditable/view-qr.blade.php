@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-	Auditables
+	Auditable View QR
 @endsection
 
 @section('style')
-  <link href="{{ asset('datatables/jquery.dataTables.min.css') }}" rel="stylesheet">
-  <link href="{{ asset('datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+
 @endsection
 
 @section('sidebar')
@@ -30,7 +29,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Auditables</h1>
+		<h1>View QR</h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -39,19 +38,14 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
+				<p><a href="{{ route('auditables') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Auditables</a></p>
 				@include('includes.all')
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
-		      <table id="auditables" class="table cell-border compact stripe hover display nowrap" width="99%">
-			      <thead>
-		          <tr>
-		            <th scope="col">Name</th>
-		            <th scope="col">Action</th>
-		          </tr>
-		        </thead>
-		      </table>
+			<div class="col-md-8 col-md-offset-2 text-center">
+				<h3>{{ $name }}</h3>
+				<img src="{{ asset('/uploads/qr/' . $qrname) }}" alt="{{ $name }}">
 			</div>
 		</div>
 	</section>
@@ -59,23 +53,5 @@
 @endsection
 
 @section('script')
-	<script src="{{ asset('js/dataTables.js') }}"></script>
-	<script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
-	<script>
-		$(document).ready(function () {
-			let jotable = $('#auditables').DataTable({
-        processing: true,
-        serverSide: true,
-        scrollX: true,
-        columnDefs: [
-          { className: "dt-center", targets: [ 1 ] }
-        ],
-        ajax: "{{ route('auditables') }}",
-        columns: [
-            {data: 'name', name: 'name'},
-            {data: 'action', name: 'action', orderable: false, searchable: false},
-        ]
-	      });
-		});
-	</script>
+
 @endsection

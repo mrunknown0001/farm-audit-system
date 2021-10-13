@@ -59,6 +59,11 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Auditables
 	Route::get('/auditables', 'Auditablecontroller@index')->name('auditables');
+	Route::get('/auditable/{cat}/{id}/view-qr', 'Auditablecontroller@viewQr')->name('auditable.view.qr');
+	Route::get('/auditable/{cat}/{id}/download-qr', 'Auditablecontroller@downloadQr')->name('auditable.download.qr');
+
+	# Audit
+	Route::get('/audit/{cat}/{id}', 'AuditController@audit')->name('audit');
 
 });
 

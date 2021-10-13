@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class AuditController extends Controller
 {
+
+    // Audit
+    public function audit($cat, $id)
+    {
+        
+    }
+
     /**
      * Display a listing of the resource.
      *
