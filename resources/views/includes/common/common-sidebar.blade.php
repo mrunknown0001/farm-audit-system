@@ -33,6 +33,20 @@
         </a>
       </li>
     @endif
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_marshal')) 
+      <li class="{{ route('audit.index') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('audit.index') }}">
+          <i class="fa fa-list"></i> <span>Audit</span>
+        </a>
+      </li>
+    @endif
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_reviewer')) 
+      <li class="">
+        <a href="">
+          <i class="fa fa-list"></i> <span>Audit Reviewer</span>
+        </a>
+      </li>
+    @endif
       {{-- <li class="treeview ">
         <a href="javascript:void(0)">
           <i class="fa fa-users"></i> <span>Main Menu</span>

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Audit;
 use Illuminate\Http\Request;
+use App\Location;
+use App\SubLocation;
+use Image;
+use DB;
 
 class AuditController extends Controller
 {
@@ -11,17 +15,21 @@ class AuditController extends Controller
     // Audit
     public function audit($cat, $id)
     {
+        // Search Location/SubLocation Based on Cat and ID to be display on page
         
+        // Validations
+
+        // Audit Items
+
+        // Save
     }
 
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        return view('includes.common.audit.index', ['system' => $this->system()]);
     }
 
     /**
