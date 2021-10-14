@@ -49,7 +49,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12 text-center">
-				<button id='auditbutton' class="btn btn-primary btn-lg"><i class="fa fa-search"></i> Start Audit</button>
+				<a href="{{ route('audit.qr') }}" id='auditbutton' class="btn btn-primary btn-lg"><i class="fa fa-search"></i> Start Audit</a>
 			</div>
 		</div>
 	</section>

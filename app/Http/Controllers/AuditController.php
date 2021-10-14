@@ -24,6 +24,14 @@ class AuditController extends Controller
         // Save
     }
 
+
+    // QR Reader
+    public function qr()
+    {
+        return view('includes.common.audit.qr-reader', ['system' => $this->system()]);
+    }
+
+
     /**
      * Display a listing of the resource.
      */

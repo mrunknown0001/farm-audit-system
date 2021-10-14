@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Audit
 	Route::get('/audit', 'AuditController@index')->name('audit.index');
+	Route::get('/audit/qr', 'AuditController@qr')->name('audit.qr');
 	Route::get('/audit/{cat}/{id}', 'AuditController@audit')->name('audit');
 
 
