@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Access;
 use Illuminate\Http\Request;
 use App\User;
+use DataTables;
 
 class AccessController extends Controller
 {
@@ -12,8 +13,40 @@ class AccessController extends Controller
      * Display a listing of the resource.
      *
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->ajax()) {
+            $users = User::all();
+ 
+            $data = collect();
+            if(count($users) > 0) {
+                foreach($users as $j) {
+                    if(!empty($j->access)) {
+                        if($j->access->access == ',') {
+                            $data->push([
+                                'name' => $this->accesslink($j->first_name . ' ' . $j->last_name, $j->id),
+                                'action' => 'Not Defined'
+                            ]);
+                        }
+                        else {
+                            $data->push([
+                                'name' => $this->accesslink($j->first_name . ' ' . $j->last_name, $j->id),
+                                'action' => $this->accesslist($j->access->access)
+                            ]);
+                        }
+                    }
+                    else {
+                        $data->push([
+                            'name' => $this->accesslink($j->first_name . ' ' . $j->last_name, $j->id),
+                            'action' => 'Not Defined'
+                        ]);
+                    }
+                }
+            }
+            return DataTables::of($data)
+                    ->rawColumns(['name','action'])
+                    ->make(true);
+        }
         return view('admin.access', ['system' => $this->system()]);
     }
 
@@ -79,5 +112,33 @@ class AccessController extends Controller
             return true;
         }
     } 
+
+
+
+    /**
+     * Return Access List in badge
+     */
+    private function accesslist($acc)
+    {
+         $acc = substr($acc, 1);
+         $arr = explode(',', $acc);
+
+         $str = "";
+         foreach($arr as $a) {
+            $str .= " <span class='badge'>". strtoupper($a) . "</span>";
+         }
+
+         return $str;
+    }
+
+
+
+    /**
+     * access Link
+     */
+    private function accesslink($name, $id)
+    {
+        return "<a href='" . route('set.access', ['id' => $id]) . "'>" . $name . "</a>";
+    }
 
 }

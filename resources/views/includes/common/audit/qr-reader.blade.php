@@ -43,14 +43,20 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12 text-center">
-				<video id="preview" class="p-1 border" style="width:100%;"></video>
+				<video id="preview" class="p-1 border" style="width:80%;"></video>
 				<div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
+				  <button class="btn btn-success" id="startcamera">
+					Start Scanner
+				  </button>
 				  <label class="btn btn-primary active">
 					<input type="radio" name="options" value="1" autocomplete="off" checked> Front Camera
 				  </label>
 				  <label class="btn btn-warning">
 					<input type="radio" name="options" value="2" autocomplete="off"> Back Camera
 				  </label>
+				  <button class="btn btn-danger" id="stopcamera">
+					Stop Scanner
+				  </button>
 				</div>
 			</div>
 		</div>
@@ -59,11 +65,13 @@
 @endsection
 
 @section('script')
-	<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+	{{-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> --}}
+	<script src="{{ asset('js/instascan.js') }}"></script>
 	<script type="text/javascript">
-		var scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5, mirror: false });
+		let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5, mirror: false });
 		scanner.addListener('scan',function(content){
-			alert(content);
+			// Validation
+			// alert(content);
 			window.location.href=content;
 		});
 		Instascan.Camera.getCameras().then(function (cameras){
@@ -74,23 +82,64 @@
 						if(cameras[0]!=""){
 							scanner.start(cameras[0]);
 						}else{
-							alert('No Front camera found!');
+							// alert('No Front camera found!');
+	            Swal.fire({
+	              title: 'No Front camera found!',
+	              text: "",
+	              type: 'info',
+	              showCancelButton: false,
+	              confirmButtonColor: '#3085d6',
+	              cancelButtonColor: '#d33',
+	              confirmButtonText: 'Close'
+	            });
 						}
 					}else if($(this).val()==2){
 						if(cameras[1]!=""){
 							scanner.start(cameras[1]);
 						}else{
-							alert('No Back camera found!');
+							// alert('No Back camera found!');
+	            Swal.fire({
+	              title: 'No Back camera found!',
+	              text: "",
+	              type: 'info',
+	              showCancelButton: false,
+	              confirmButtonColor: '#3085d6',
+	              cancelButtonColor: '#d33',
+	              confirmButtonText: 'Close'
+	            });
 						}
 					}
 				});
 			}else{
 				console.error('No cameras found.');
-				alert('No cameras found.');
+        Swal.fire({
+          title: 'No cameras found.',
+          text: "",
+          type: 'info',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Close'
+        });
 			}
 		}).catch(function(e){
 			console.error(e);
-			alert(e);
+      Swal.fire({
+        title: 'Error!',
+        text: "Please try again.",
+        type: 'error',
+        showCancelButton: false,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Close'
+      });
+		});
+
+		$("#stopcamera").click(function() {
+			scanner.stop();
+		});
+		$("#startcamera").click(function() {
+			scanner.start();
 		});
 	</script>
 @endsection

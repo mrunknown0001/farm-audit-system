@@ -79,13 +79,13 @@
 					<div class="form-group">
 						<h4>Audit Reviewer</h4>
 						<ul class="list-inline">
-							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_reviewer') ? 'checked' : '' }} value="audit_reviewer" name="access[]" id="audit_reviewer"> <label for="auditable_module">Module</label></li>
+							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_reviewer') ? 'checked' : '' }} value="audit_reviewer" name="access[]" id="audit_reviewer"> <label for="audit_reviewer">Module</label></li>
 						</ul>
 					</div>
 					<div class="form-group">
 						<h4>Audit Marshal</h4>
 						<ul class="list-inline">
-							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_marshal') ? 'checked' : '' }} value="audit_marshal" name="access[]" id="audit_marshal"> <label for="auditable_module">Module</label></li>
+							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_marshal') ? 'checked' : '' }} value="audit_marshal" name="access[]" id="audit_marshal"> <label for="audit_marshal">Module</label></li>
 						</ul>
 					</div>
 					<div class="form-group">
