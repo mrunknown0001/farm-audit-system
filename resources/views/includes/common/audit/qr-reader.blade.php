@@ -74,7 +74,37 @@
 		scanner.addListener('scan',function(content){
 			// Validation
 			// alert(content);
-			window.location.href=content;
+			
+			if(isUrl(content)) {
+				var pathArray = content.split("/");
+				var host = window.location.host;
+				if(pathArray[1] == host) {
+					window.location.href = content;
+				}
+				else {
+	        Swal.fire({
+	          title: 'Invalid URL!',
+	          text: "Different URL Reading.",
+	          type: 'error',
+	          showCancelButton: false,
+	          confirmButtonColor: '#3085d6',
+	          cancelButtonColor: '#d33',
+	          confirmButtonText: 'Close'
+	        });
+				}
+			}
+			else {
+        Swal.fire({
+          title: 'Invalid URL!',
+          text: "Please Try Again.",
+          type: 'error',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Close'
+        });
+			}
+			
 		});
 		Instascan.Camera.getCameras().then(function (cameras){
 			if(cameras.length>0){
@@ -143,5 +173,10 @@
 		$("#startcamera").click(function() {
 			scanner.start();
 		});
+
+		function isUrl(s) {
+		 var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+		 return regexp.test(s);
+		}
 	</script>
 @endsection
