@@ -28,6 +28,7 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
+				<p><a href="{{ route('access') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Access List</a></p>
 				@include('includes.all')
 			</div>
 		</div>

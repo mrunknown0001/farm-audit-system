@@ -125,7 +125,7 @@ class AccessController extends Controller
 
          $str = "";
          foreach($arr as $a) {
-            $str .= " <span class='badge'>". strtoupper($a) . "</span>";
+            $str .= " <span class='label label-primary'>". strtoupper($a) . "</span>";
          }
 
          return $str;
