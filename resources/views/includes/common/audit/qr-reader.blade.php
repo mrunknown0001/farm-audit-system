@@ -46,15 +46,17 @@
 				<video id="preview" class="p-1 border" style="width:80%;"></video>
 				<div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
 				  <button class="btn btn-success" id="startcamera">
+				  	<i class="fa fa-play-circle"></i>
 					Start Scanner
 				  </button>
 				  <label class="btn btn-primary active">
-					<input type="radio" name="options" value="1" autocomplete="off" checked> Front Camera
+					<input type="radio" name="options" value="1" autocomplete="off" checked><i class="fa fa-sync"></i> Front Camera
 				  </label>
 				  <label class="btn btn-warning">
-					<input type="radio" name="options" value="2" autocomplete="off"> Back Camera
+					<input type="radio" name="options" value="2" autocomplete="off"><i class="fa fa-camera"></i> Back Camera
 				  </label>
 				  <button class="btn btn-danger" id="stopcamera">
+				  	<i class="fa fa-stop-circle"></i>
 					Stop Scanner
 				  </button>
 				</div>

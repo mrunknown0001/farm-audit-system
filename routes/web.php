@@ -67,7 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/audit/qr', 'AuditController@qr')->name('audit.qr');
 	Route::get('/audit/{cat}/{id}', 'AuditController@audit')->name('audit');
 
-
+	# Audit Review
+	
 });
 
 # Admin Route Group
