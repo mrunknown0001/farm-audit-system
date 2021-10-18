@@ -47,7 +47,6 @@
 				<div class="btn-group btn-group-toggle mb-5" data-toggle="buttons">
 				  <button class="btn btn-success" id="startcamera">
 				  	<i class="fa fa-play-circle"></i>
-					Start Scanner
 				  </button>
 				  <label class="btn btn-primary active">
 					<input type="radio" name="options" value="1" autocomplete="off" checked><i class="fa fa-sync"></i> Front Camera
@@ -57,7 +56,6 @@
 				  </label>
 				  <button class="btn btn-danger" id="stopcamera">
 				  	<i class="fa fa-stop-circle"></i>
-					Stop Scanner
 				  </button>
 				</div>
 			</div>
@@ -79,9 +77,11 @@
 				var pathArray = content.split("/");
 				var host = window.location.host;
 				if(pathArray[1] == host) {
+					alert('path1' . pathArray[1])
 					window.location.href = content;
 				}
 				else {
+					alert(content)
 	        Swal.fire({
 	          title: 'Invalid URL!',
 	          text: "Different URL Reading.",
@@ -95,6 +95,7 @@
 			}
 			else {
         Swal.fire({
+        	alert(content)
           title: 'Invalid URL!',
           text: "Please Try Again.",
           type: 'error',
