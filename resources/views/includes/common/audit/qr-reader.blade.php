@@ -72,39 +72,40 @@
 		scanner.addListener('scan',function(content){
 			// Validation
 			// alert(content);
-			
-			if(isUrl(content)) {
-				var pathArray = content.split("/");
-				var host = window.location.host;
-				if(pathArray[1] == host) {
-					alert('path1' . pathArray[1])
-					window.location.href = content;
-				}
-				else {
-					alert(content)
-	        Swal.fire({
-	          title: 'Invalid URL!',
-	          text: "Different URL Reading.",
-	          type: 'error',
-	          showCancelButton: false,
-	          confirmButtonColor: '#3085d6',
-	          cancelButtonColor: '#d33',
-	          confirmButtonText: 'Close'
-	        });
-				}
-			}
-			else {
-				alert(content)
-        Swal.fire({
-          title: 'Invalid URL!',
-          text: "Please Try Again.",
-          type: 'error',
-          showCancelButton: false,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Close'
-        });
-			}
+			window.location.href = content;
+			// URL Validation 
+			// if(isUrl(content)) {
+			// 	var pathArray = content.split("/");
+			// 	var host = window.location.host;
+			// 	if(pathArray[1] == host) {
+			// 		alert('path1' . pathArray[1])
+			// 		window.location.href = content;
+			// 	}
+			// 	else {
+			// 		alert(content)
+	  //       Swal.fire({
+	  //         title: 'Invalid URL!',
+	  //         text: "Different URL Reading.",
+	  //         type: 'error',
+	  //         showCancelButton: false,
+	  //         confirmButtonColor: '#3085d6',
+	  //         cancelButtonColor: '#d33',
+	  //         confirmButtonText: 'Close'
+	  //       });
+			// 	}
+			// }
+			// else {
+			// 	alert(content)
+   //      Swal.fire({
+   //        title: 'Invalid URL!',
+   //        text: "Please Try Again.",
+   //        type: 'error',
+   //        showCancelButton: false,
+   //        confirmButtonColor: '#3085d6',
+   //        cancelButtonColor: '#d33',
+   //        confirmButtonText: 'Close'
+   //      });
+			// }
 			
 		});
 		Instascan.Camera.getCameras().then(function (cameras){
