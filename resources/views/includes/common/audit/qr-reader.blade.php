@@ -94,8 +94,8 @@
 				}
 			}
 			else {
+				alert(content)
         Swal.fire({
-        	alert(content)
           title: 'Invalid URL!',
           text: "Please Try Again.",
           type: 'error',
