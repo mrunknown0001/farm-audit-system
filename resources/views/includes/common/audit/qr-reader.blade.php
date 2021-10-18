@@ -49,10 +49,10 @@
 				  	<i class="fa fa-play-circle"></i>
 				  </button>
 				  <label class="btn btn-primary active">
-					<input type="radio" name="options" value="1" autocomplete="off" checked><i class="fa fa-sync"></i> Front Camera
+					<input type="radio" name="options" value="1" autocomplete="off" checked><i class="fa fa-sync"></i> Front
 				  </label>
 				  <label class="btn btn-warning">
-					<input type="radio" name="options" value="2" autocomplete="off"><i class="fa fa-camera"></i> Back Camera
+					<input type="radio" name="options" value="2" autocomplete="off"><i class="fa fa-camera"></i> Back
 				  </label>
 				  <button class="btn btn-danger" id="stopcamera">
 				  	<i class="fa fa-stop-circle"></i>
