@@ -53,6 +53,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Supervisor and Caretaker/User Assignment to Locations
 	Route::get('/assignments', 'AssignmentController@index')->name('assignments');
+	Route::get('/assign-user', 'AssignmentController@create')->name('assign.user');
+	Route::post('/assign-user', 'AssignmentController@store')->name('post.assign.user');
 
 	# Audit Item Management
 	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	
@@ -65,10 +67,11 @@ Route::group(['middleware' => 'auth'], function () {
 	# Audit
 	Route::get('/audit', 'AuditController@index')->name('audit.index');
 	Route::get('/audit/qr', 'AuditController@qr')->name('audit.qr');
+	# This will audit the auditables by marshal
 	Route::get('/audit/{cat}/{id}', 'AuditController@audit')->name('audit');
 
 	# Audit Review
-	
+
 });
 
 # Admin Route Group

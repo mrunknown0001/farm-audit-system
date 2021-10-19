@@ -8,13 +8,17 @@ use App\Location;
 use App\SubLocation;
 use Image;
 use DB;
+use App\Http\Controllers\AccessController;
 
 class AuditController extends Controller
 {
 
-    // Audit
+    // Audit 
     public function audit($cat, $id)
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'audit_marshal')) {
+            return abort(403);
+        }
         // Search Location/SubLocation Based on Cat and ID to be display on page
         
         // Validations
@@ -28,6 +32,9 @@ class AuditController extends Controller
     // QR Reader
     public function qr()
     {
+        if(!AccessController::checkAccess(Auth::user()->id, 'audit_marshal')) {
+            return abort(403);
+        }
         return view('includes.common.audit.qr-reader', ['system' => $this->system()]);
     }
 

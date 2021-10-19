@@ -44,15 +44,15 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-		      <table id="locations" class="table cell-border compact stripe hover display nowrap" width="99%">
-			      <thead>
-		          <tr>
-		            <th scope="col">Location Name</th>
-		            <th scope="col">Location Code</th>
-		            <th scope="col">Action</th>
-		          </tr>
-		        </thead>
-		      </table>
+	      <table id="locations" class="table cell-border compact stripe hover display nowrap" width="99%">
+		      <thead>
+	          <tr>
+	            <th scope="col">Location Name</th>
+	            <th scope="col">Location Code</th>
+	            <th scope="col">Action</th>
+	          </tr>
+	        </thead>
+	      </table>
 			</div>
 		</div>
 	</section>
