@@ -77,5 +77,94 @@
         ]
       });
 		});
+
+    $(document).on('click', '#update', function (e) {
+        e.preventDefault();
+        // var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Update Assignment?',
+          text: 'Are you sure you want to update location assignments?',
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Update',
+        }).then((result) => {
+          if (result.value) {
+          	window.location.href = "/assign-user/update/" + id;
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
+
+    $(document).on('click', '#remove', function (e) {
+        e.preventDefault();
+        // var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Remove Assignment?',
+          text: 'Are you sure you want to remove assignments?',
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Remove',
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+              url: "/assign-user/remove/" + id,
+              type: "GET",
+              success: function() {
+                Swal.fire({
+                  title: 'Assignment Removed!',
+                  text: "",
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Close'
+                });
+
+                var table = $('#assignments').DataTable();
+                table.ajax.reload();
+              },
+              error: function(err) {
+
+                Swal.fire({
+                  title: 'Error Occured! Tray Again Later.',
+                  text: "",
+                  type: 'error',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Close'
+                });
+              }
+            });
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
 	</script>
 @endsection

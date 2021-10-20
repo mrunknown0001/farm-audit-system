@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/assign-user', 'AssignmentController@create')->name('assign.user');
 	Route::post('/assign-user', 'AssignmentController@store')->name('post.assign.user');
 	Route::get('/assign-user/update/{id}', 'AssignmentController@update')->name('update.user.assignment');
+	Route::get('/assign-user/remove/{id}', 'AssignmentController@remove')->name('remove.user.assignment');
 
 	# Audit Item Management
 	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	
@@ -102,6 +103,9 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 
 	# Database Backup
 	Route::get('/database-backup', 'AdminController@database')->name('database.backup');
+
+	# User Logs/ Audit Trail
+	Route::get('/user-logs', 'UserLogController@index')->name('user.logs');
 });
 
 # VP Route Group

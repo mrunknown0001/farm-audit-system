@@ -39,12 +39,9 @@
 			        	<th>User Email</th>
 			          <th>Action Made</th>
 			          <th>Table</th>
-			          <th>Record ID</th>
 			          <th>New Value</th>
 			          <th>Old Value</th>
-			          <th>Device</th>
-			          <th>MAC Address</th>
-			          <th>IP Address</th>
+			          <th>Difference</th>
 	              <th>Date and Time Created</th>
 			        </tr>
 			      </thead>
@@ -67,22 +64,19 @@
 	      serverSide: true,
 	      scrollX: true,
 				columnDefs: [
-					{ className: "dt-center", targets: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ] }
+					{ className: "dt-center", targets: [ 0, 1, 2, 3, 4 ] }
 				],
-	      ajax: "{{ route('admin.show.log.entries') }}",
-	      order: [11, 'desc'],
+	      ajax: "{{ route('user.logs') }}",
+	      order: [8, 'desc'],
 	      columns: [
       		{data: 'id', name : 'id'},
-      		{data: 'name', name: 'name'},
+      		{data: 'user', name: 'user'},
       		{data: 'email', name: 'email'},
           {data: 'action', name: 'action'},
           {data: 'table_name', name: 'table_name'},
-          {data: 'record_id', name: 'record_id'},
-          {data: 'new_val', name: 'new_val'},
-          {data: 'old_val', name: 'old_val'},
-          {data: 'device', name: 'device'},
-          {data: 'mac', name: 'mac_address'},
-          {data: 'ip1', name: 'ip1'},
+          {data: 'data1', name: 'data1'},
+          {data: 'data2', name: 'data2'},
+          {data: 'data3', name: 'data3'},
           {data: 'created_at', name: 'created_at'},
 	      ]
 	    });

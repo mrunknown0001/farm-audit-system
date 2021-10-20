@@ -12,6 +12,7 @@ use App\Location;
 use App\SubLocation;
 use App\Http\Controllers\AccessController;
 use App\Http\Requests\AssignmentRequest;
+use App\Http\Controllers\UserLogController as Log;
 
 class AssignmentController extends Controller
 {
@@ -26,14 +27,14 @@ class AssignmentController extends Controller
         }
 
         if($request->ajax()) {
-            $assignments = User::where('role_id', '!=', 1)->where('role_id', '!=', 2)->get();
+            $assignments = User::whereBetween('role_id', [4,8])->get();
 
             $data = collect();
             if(count($assignments) > 0) {
                 foreach($assignments as $j) {
                     $data->push([
                         'name' => "<a href='" . route('update.user.assignment', ['id' => $j->id]) . "'>" . $j->first_name . ' ' . $j->last_name . "</a>",
-                        'action' => 'edit|delete'
+                        'action' => "<button id='update' class='btn btn-warning btn-xs' data-id='" . $j->id . "'><i class='fa fa-edit'></i> Update</button> <button id='remove' class='btn btn-danger btn-xs' data-id='" . $j->id . "'><i class='fa fa-trash'></i> Remove</button>"
                     ]);
                 }
             }
@@ -53,8 +54,7 @@ class AssignmentController extends Controller
             return abort(403);
         }
         $users = User::where('active', 1)
-                            ->where('role_id', '!=', 1)
-                            ->where('role_id', '!=', 2)
+                            ->whereBetween('role_id', [4,8])
                             ->where('is_deleted', 0)
                             ->select(['id', 'first_name', 'last_name'])
                             ->orderBy('last_name', 'asc')
@@ -78,8 +78,8 @@ class AssignmentController extends Controller
             return abort(403);
         }
         $user = User::findorfail($request->user);
-        if($user->active == 0 || $user->is_deleted == 1 || $user->id == 1) {
-            return abort(500);
+        if($user->active == 0 || $user->is_deleted == 1 || $user->id == 1 || $user->role_id < 4) {
+            return abort(500); // 'Unable to Assign to User';
         }
 
         if($request->ajax()) {
@@ -112,10 +112,34 @@ class AssignmentController extends Controller
                         'cat' => 'loc',
                         'location_id' => $l
                     ];
+
+                    $loc = Location::findorfail($l);
+
+                    if(!empty($loc)) {
+                        if($loc->has_sublocation == 1) {
+                            if(count($loc->sub_locations) > 0) {
+                                $data3 = [];
+                                foreach($loc->sub_locations as $s) {
+                                    $sub = Assignment::where('user_id', $request->user)
+                                                    ->where('sub_location_id', $s->id)
+                                                    ->first();
+
+                                    if(empty($sub)) {
+                                        $data3[] = [
+                                            'user_id' => $request->user,
+                                            'cat' => 'sub',
+                                            'sub_location_id' => $s->id
+                                        ];
+                                    }
+                                }
+                            }
+                            DB::table('assignments')->insert($data3);
+                        }
+                    }
                 }
                 DB::table('assignments')->insert($data2);
             }
-
+            $log = Log::log('create/update', 'assignments', '', 'Create/Update Auditable Location', 'User ID: ' . $request->user, '');
             return 'success';
         }
         else {
@@ -138,6 +162,11 @@ class AssignmentController extends Controller
                             ->where('is_deleted', 0)
                             ->first();
 
+
+        if(empty($user) || $user->role_id < 4) {
+            return abort(500);
+        }
+
         $locations = Location::where('active', 1)
                             ->where('is_deleted', 0)
                             ->orderBy('location_name', 'asc')
@@ -145,6 +174,35 @@ class AssignmentController extends Controller
 
         return view('includes.common.assignment.add', ['system' => $this->system(), 'user' => $user, 'locations' => $locations]);
     }
+
+
+    /**
+     * Remove User Assignment
+     */
+    public function remove($id)
+    {
+        if(!AccessController::checkAccess(Auth::user()->id, 'assignment_module')) {
+            return abort(403);
+        }
+        $user = User::where('id', $id)
+                            ->where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->first();
+
+
+        if(empty($user) || $user->role_id < 4) {
+            return abort(500);
+        }
+
+        if(DB::table('assignments')->where('user_id', $id)->delete()) {
+            $log = Log::log('delete', 'assignments', '', 'Deleted Auditable Location', $user, '');
+            return 'success';
+        }
+
+        return 'error';
+
+    }
+
 
 
 

@@ -35,6 +35,11 @@
           <i class="fa fa-database"></i> <span>Database</span>
         </a>
       </li>
+      <li class="{{ route('user.logs') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('user.logs') }}">
+          <i class="fa fa-history"></i> <span>User Logs</span>
+        </a>
+      </li>
       @include('includes.common.common-sidebar')
     </ul>
   </section>

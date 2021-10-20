@@ -6,6 +6,7 @@ use App\Access;
 use Illuminate\Http\Request;
 use App\User;
 use DataTables;
+use App\Http\Controllers\UserLogController as Log;
 
 class AccessController extends Controller
 {
