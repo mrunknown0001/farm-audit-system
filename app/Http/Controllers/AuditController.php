@@ -8,6 +8,8 @@ use App\Location;
 use App\SubLocation;
 use Image;
 use DB;
+use Auth;
+use App\Assignment;
 use App\Http\Controllers\AccessController;
 
 class AuditController extends Controller
@@ -19,13 +21,21 @@ class AuditController extends Controller
         if(!AccessController::checkAccess(Auth::user()->id, 'audit_marshal')) {
             return abort(403);
         }
-        // Search Location/SubLocation Based on Cat and ID to be display on page
-        
-        // Validations
+        // Show 
+        if($cat == 'loc') {
+            $dat = Location::findorfail($id);
+            // validate if location and date is not audited
+            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'loc']);
+        }
+        elseif($cat == 'sub') {
+            $dat = SubLocation::findorfail($id);
 
-        // Audit Items
 
-        // Save
+        }
+        else {
+            return abort(500);
+        }
+
     }
 
 
