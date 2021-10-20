@@ -64,29 +64,38 @@
 			<div class="col-md-8 col-md-offset-2">
 				<form id="assignmentform" action="{{ route('post.assign.user') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
-					<div id="nameDiv" class="form-group {{ $errors->first('user') ? 'has-error' : ''  }}">
-						<label for="user">User</label>
-						<select id="user" name="user" class="form-control" required>
-							<option value="">Select User</option>
-							@foreach($users as $key => $u)
-								<option value="{{ $u->id }}">{{ $u->last_name . ', ' . $u->first_name }}</option>
-							@endforeach
-						</select>
-						@if($errors->first('user'))
-            	<span class="help-block"><strong>{{ $errors->first('user') }}</strong></span>
-            @endif
-					</div>
+					@if(isset($users))
+						<div id="nameDiv" class="form-group {{ $errors->first('user') ? 'has-error' : ''  }}">
+							<label for="user">User</label>
+							<select id="user" name="user" class="form-control" required>
+								<option value="">Select User</option>
+								@foreach($users as $key => $u)
+									<option value="{{ $u->id }}">{{ $u->last_name . ', ' . $u->first_name }}</option>
+								@endforeach
+							</select>
+							@if($errors->first('user'))
+	            	<span class="help-block"><strong>{{ $errors->first('user') }}</strong></span>
+	            @endif
+						</div>
+					@else
+						<div id="nameDiv" class="form-group {{ $errors->first('user') ? 'has-error' : ''  }}">
+							<label for="name">User</label>
+							<input type="text" name="name" id="user" readonly class="form-control" value="{{ $user->first_name . ' ' . $user->last_name }}">
+							<input type="hidden" name="user" value="{{ $user->id }}">
+						</div>
+					@endif
+
 					<div class="form-group">
 						<h4>Auditable Locations</h4>
 						@foreach($locations as $key => $l)
 							<div>
-								<input type="checkbox" name="location[]" id="loc-{{ $l->id }}" value="{{ $l->id }}">
+								<input type="checkbox" name="location[]" id="loc-{{ $l->id }}" value="{{ $l->id }}" {{ isset($user) ? \App\Http\Controllers\AssignmentController::checkAssignment($user->id, 'loc', $l->id) ? 'checked' : '' : '' }}>
 								<label for="loc-{{ $l->id }}">{{ $l->location_name }}</label>
 								@if($l->has_sublocation == 1)
 									<div class="row">
 										<div class="col-md-10 col-md-offset-1"  id="divloc-{{ $l->id }}">
 											@foreach($l->sub_locations as $key => $s)
-												<input type="checkbox" name="sub_location[]" id="sub-{{ $s->id }}" value="{{ $s->id }}">
+												<input type="checkbox" name="sub_location[]" id="sub-{{ $s->id }}" value="{{ $s->id }}" {{ isset($user) ? \App\Http\Controllers\AssignmentController::checkAssignment($user->id, 'sub', $s->id) ? 'checked' : '' : '' }}>
 												<label for="sub-{{ $s->id }}">{{ $s->sub_location_name }}</label>
 											@endforeach
 										</div>
@@ -150,6 +159,8 @@
 		      }
 		    });
 		  }));
+
+		  
 		});
 
 	</script>

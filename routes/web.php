@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/assignments', 'AssignmentController@index')->name('assignments');
 	Route::get('/assign-user', 'AssignmentController@create')->name('assign.user');
 	Route::post('/assign-user', 'AssignmentController@store')->name('post.assign.user');
+	Route::get('/assign-user/update/{id}', 'AssignmentController@update')->name('update.user.assignment');
 
 	# Audit Item Management
 	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	

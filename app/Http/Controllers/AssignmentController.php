@@ -9,6 +9,7 @@ use DB;
 use DataTables;
 use App\User;
 use App\Location;
+use App\SubLocation;
 use App\Http\Controllers\AccessController;
 use App\Http\Requests\AssignmentRequest;
 
@@ -25,19 +26,19 @@ class AssignmentController extends Controller
         }
 
         if($request->ajax()) {
-            $assignments = Assignment::all();
+            $assignments = User::all();
 
             $data = collect();
             if(count($assignments) > 0) {
                 foreach($assignments as $j) {
                     $data->push([
-                        'name' => $j->user->first_name . ' ' . $j->user->last_name,
-                        'action' => 'show|edit'
+                        'name' => "<a href='" . route('update.user.assignment', ['id' => $j->id]) . "'>" . $j->first_name . ' ' . $j->last_name . "</a>",
+                        'action' => 'edit|delete'
                     ]);
                 }
             }
             return DataTables::of($data)
-                    ->rawColumns(['action'])
+                    ->rawColumns(['name', 'action'])
                     ->make(true);
         }
         return view('includes.common.assignment.index', ['system' => $this->system()]);
@@ -74,20 +75,32 @@ class AssignmentController extends Controller
         if(!AccessController::checkAccess(Auth::user()->id, 'assignment_module')) {
             return abort(403);
         }
-        if($request->ajax()) {       
+        $user = User::findorfail($request->user);
+        if($user->active == 0 || $user->is_deleted == 1 || $user->id == 1) {
+            return abort(500);
+        }
+
+        if($request->ajax()) {
+
+            $dat1 = DB::table('assignments')->where('user_id', $request->user)->where('cat', 'sub')->get();
+            if(count($dat1) > 0) {
+                DB::table('assignments')->where('user_id', $request->user)->where('cat', 'sub')->delete();
+            }
+
+            $dat2 = DB::table('assignments')->where('user_id', $request->user)->where('cat', 'loc')->get();
+            if(count($dat2) > 0) {
+                DB::table('assignments')->where('user_id', $request->user)->where('cat', 'loc')->delete();
+            }
             if(!empty($request->sub_location)) {
                 $data1 = [];
                 foreach($request->sub_location as $s) {
-                    // check assigned if exist
                     $data1[] = [
                         'user_id' => $request->user,
                         'cat' => 'sub',
                         'sub_location_id' => $s
                     ];
-
-                    DB::table('assignments')->where('user_id', $request->user)->where('cat', 'sub')->delete();
-                    DB::table('assignments')->insert($data1);
                 }
+                DB::table('assignments')->insert($data1);
             }
             if(!empty($request->location)) {
                 $data2 = [];
@@ -98,55 +111,71 @@ class AssignmentController extends Controller
                         'location_id' => $l
                     ];
                 }
+                DB::table('assignments')->insert($data2);
             }
+
+            return 'success';
         }
         else {
-            return abort(500);
+            return 'error';
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Assignment  $assignment
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Assignment $assignment)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Assignment  $assignment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Assignment $assignment)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Assignment  $assignment
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Assignment $assignment)
+    public function update($id)
     {
-        //
+        if(!AccessController::checkAccess(Auth::user()->id, 'assignment_module')) {
+            return abort(403);
+        }
+        $user = User::where('id', $id)
+                            ->where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->first();
+
+        $locations = Location::where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->orderBy('location_name', 'asc')
+                            ->get();
+
+        return view('includes.common.assignment.add', ['system' => $this->system(), 'user' => $user, 'locations' => $locations]);
     }
 
+
+
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Assignment  $assignment
-     * @return \Illuminate\Http\Response
+     * check assignment in blade
      */
-    public function destroy(Assignment $assignment)
+    public static function checkAssignment($user_id, $cat, $id)
     {
-        //
+        if($cat == 'loc') {
+            $assign = Assignment::where('user_id', $user_id)
+                            ->where('location_id', $id)
+                            ->first();
+            if(!empty($assign)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        if($cat == 'sub') {
+            $assign = Assignment::where('user_id', $user_id)
+                            ->where('sub_location_id', $id)
+                            ->first();
+
+
+
+            if(!empty($assign)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     }
+
 }
