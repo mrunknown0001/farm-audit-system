@@ -26,7 +26,7 @@ class AssignmentController extends Controller
         }
 
         if($request->ajax()) {
-            $assignments = User::all();
+            $assignments = User::where('role_id', '!=', 1)->where('role_id', '!=', 2)->get();
 
             $data = collect();
             if(count($assignments) > 0) {
@@ -53,6 +53,8 @@ class AssignmentController extends Controller
             return abort(403);
         }
         $users = User::where('active', 1)
+                            ->where('role_id', '!=', 1)
+                            ->where('role_id', '!=', 2)
                             ->where('is_deleted', 0)
                             ->select(['id', 'first_name', 'last_name'])
                             ->orderBy('last_name', 'asc')
