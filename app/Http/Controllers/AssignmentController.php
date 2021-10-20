@@ -238,4 +238,25 @@ class AssignmentController extends Controller
         }
     }
 
+
+
+    /**
+     * Get Caretackers
+     * # 8 - caretaker/first line employee/user
+     */
+    public static function getCaretakers($cat, $id)
+    {
+
+    }
+
+
+    /**
+     * Get Supervisors
+     * # 6 - supervisor
+     */
+    public static function getSupervisors($cat, $id)
+    {
+        
+    }
+
 }
