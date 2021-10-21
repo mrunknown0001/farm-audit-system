@@ -60,6 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Audit Item Management
 	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	
+	Route::get('/audit-item/add', 'AuditItemController@create')->name('audit.item.add');
+	Route::post('/audit-item/add', 'AuditItemController@store')->name('audit.item.post.add');
 
 	# Auditables
 	Route::get('/auditables', 'Auditablecontroller@index')->name('auditables');

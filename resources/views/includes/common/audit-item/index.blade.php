@@ -5,7 +5,8 @@
 @endsection
 
 @section('style')
-
+  <link href="{{ asset('datatables/jquery.dataTables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
 
 @section('sidebar')
@@ -29,7 +30,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Audit Item</h1>
+		<h1>Audit Item <a href="{{ route('audit.item.add') }}"><i class="fa fa-plus"></i></a></h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -42,12 +43,128 @@
 			</div>
 		</div>
 		<div class="row">
-			
+			<div class="col-md-12">
+	      <table id="items" class="table cell-border compact stripe hover display nowrap" width="99%">
+		      <thead>
+	          <tr>
+	            <th scope="col">Audit Item Name</th>
+	            <th scope="col">Action</th>
+	          </tr>
+	        </thead>
+	      </table>
+			</div>
 		</div>
 	</section>
 </div>
 @endsection
 
 @section('script')
+	<script src="{{ asset('js/dataTables.js') }}"></script>
+	<script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+	<script>
+		$(document).ready(function () {
+			let datatable = $('#items').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        scrollX: true,
+		        columnDefs: [
+		          { className: "dt-center", targets: [ 1 ] }
+		        ],
+		        ajax: "{{ route('audit.item') }}",
+		        columns: [
+		            {data: 'name', name: 'name'},
+		            {data: 'action', name: 'action', orderable: false, searchable: false},
+		        ]
+	      });
+		});
 
+    $(document).on('click', '#edit', function (e) {
+        e.preventDefault();
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Edit Location?',
+          text: text,
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Edit',
+        }).then((result) => {
+          if (result.value) {
+          	window.location.href = "/location/edit/" + id;
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
+
+    $(document).on('click', '#remove', function (e) {
+        e.preventDefault();
+        var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'Remove Location?',
+          text: text,
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Remove',
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+              url: "/location/remove/" + id,
+              type: "GET",
+              success: function() {
+                Swal.fire({
+                  title: 'Location Removed!',
+                  text: "",
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Close'
+                });
+
+                var table = $('#locations').DataTable();
+                table.ajax.reload();
+              },
+              error: function(err) {
+
+                Swal.fire({
+                  title: 'Error Occured! Tray Again Later.',
+                  text: "",
+                  type: 'error',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Close'
+                });
+              }
+            });
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
+	</script>
 @endsection
