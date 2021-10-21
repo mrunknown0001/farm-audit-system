@@ -81,6 +81,10 @@
 						@csrf
 						<input type="hidden" name="audit_id" id="audit_id" value="">
 						<input type="hidden" name="audit_item_id" id="audit_item_id" value="{{ $l->audit_item->id }}">
+						<input type="hidden" name="cat" value="{{ $cat }}">
+						<input type="hidden" name="dat_id" value="{{ $dat->id }}">
+						<input type="hidden" name="lat" id="lat" value="">
+						<input type="hidden" name="lon" id="lon" value="">
 						<h3>{{ $l->audit_item->item_name . '(' . $l->audit_item->time_range . ')' }}</h3>
 						<p>{{ $l->audit_item->description }}</p>
 						<div class="row">
@@ -213,9 +217,19 @@
       	$(noncomplianceremarks).show();
       	$(upload).attr('required');
       }
+      else {
+      	var noncomplianceremarks = '#noncomplianceremarks-' + id;
+      	var noncompliancecamera = '#noncompliancecamera-' + id;
+      	let upload = '#upload-' + id;
+      	$(noncompliancecamera).hide();
+      	$(noncomplianceremarks).hide();
+      	$(upload).removeAttr('required');
+      }
     });
 
 		$(document).ready(function (e) {
+			var formid = $(this).data('id');
+			getLocation();
 		  $('#auditform').on('submit',(function(e) {
 		    e.preventDefault();
 				// Add Loading Animation here
@@ -230,10 +244,11 @@
 		      processData: false,
 		      success:function(data){
 		        console.log("success");
+		        console.log(data);
 		        // Close Upload Animation here
 		        $("body").removeClass("loading");
 		        Swal.fire({
-		          title: 'Image Uploaded!',
+		          title: 'Audit Submitted!',
 		          text: "",
 		          type: 'success',
 		          showCancelButton: false,
@@ -241,6 +256,8 @@
 		          cancelButtonColor: '#d33',
 		          confirmButtonText: 'Close'
 		        });
+		        // remove
+
 		      },
 		      error: function(data){
 		        console.log("error");
@@ -254,9 +271,84 @@
 		    });
 		  }));
 
-		  $(upload).on("change", function() {
-		    $("#auditform").submit();
-		  });
 		});
+
+
+
+		var options = {
+		  enableHighAccuracy: true,
+		  timeout: 10000,
+		  maximumAge: 10000
+		};
+
+		function getLocation() {
+		  if (navigator.geolocation) {
+		    navigator.geolocation.getCurrentPosition(showPosition, showError, options);
+		  } else { 
+	      Swal.fire({
+				  type: 'error',
+				  title: 'Geolocation Error',
+				  text: 'Geolocation is not supported by this browser.',
+				  // footer: '<a href="">Why do I have this issue?</a>'
+				})
+		  }
+		}
+
+		function showPosition(position) {
+		  console.log('Latitude:' + position.coords.latitude);
+		  console.log('Longitude:' + position.coords.longitude);
+		  $('#lat').val(position.coords.latitude);
+		  $('#lon').val(position.coords.longitude);
+		}
+
+		function showError(error) {
+			// Error Show on Sweet Alert
+		  switch(error.code) {
+		    case error.PERMISSION_DENIED:
+		      // x.innerHTML = "User denied the request for Geolocation."
+		      console.log("User denied the request for Geolocation.");
+		      $("body").removeClass("loading"); 
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Permission Denied',
+					  text: 'User denied the request for Geolocation.',
+					  // footer: '<a href="">Why do I have this issue?</a>'
+					})
+		      break;
+		    case error.POSITION_UNAVAILABLE:
+		      // x.innerHTML = "Location information is unavailable."
+		      console.log("Location information is unavailable.");
+		      $("body").removeClass("loading"); 
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Position Unavailable',
+					  text: 'Location information is unavailable.',
+					  // footer: '<a href="">Why do I have this issue?</a>'
+					});
+		      break;
+		    case error.TIMEOUT:
+		      // x.innerHTML = "The request to get user location timed out."
+		      console.log("The request to get user location timed out.");
+		      $("body").removeClass("loading"); 
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Timeout Error',
+					  text: 'The request to get user location timed out.',
+					  // footer: '<a href="">Why do I have this issue?</a>'
+					})
+		      break;
+		    case error.UNKNOWN_ERROR:
+		      // x.innerHTML = "An unknown error occurred."
+		      console.log("An unknown error occurred.");
+		      $("body").removeClass("loading"); 
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Unknown Error',
+					  text: 'An unknown error occurred.',
+					  // footer: '<a href="">Why do I have this issue?</a>'
+					});
+		      break;
+		  }
+		}
 	</script>
 @endsection

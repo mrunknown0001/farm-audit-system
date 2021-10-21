@@ -49,10 +49,11 @@ class TestController extends Controller
         $request->validate([
             'upload' => 'required|image'
         ]);
+        
         $upload = $request->file('upload');
         $ts = date('m-j-Y H-i-s', strtotime(now()));
         $filename =  $ts . '.jpg';
-        $upload->move(public_path('/uploads/test/'), $filename);
+        $upload->move(public_path('/uploads/images/'), $filename);
 
         $img = Image::make(public_path('uploads/test/'. $filename));  
         $timestamp = date('F j, Y H:i:s', strtotime(now()));
@@ -63,7 +64,7 @@ class TestController extends Controller
             $font->align('left');
         });  
 
-       $img->save(public_path('uploads/test/' . $filename));  
+       $img->save(public_path('uploads/images/' . $filename));  
 
        DB::table('upload')->insert([
         'filename' => $filename
