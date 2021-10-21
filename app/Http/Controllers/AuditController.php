@@ -30,7 +30,7 @@ class AuditController extends Controller
         elseif($cat == 'sub') {
             $dat = SubLocation::findorfail($id);
 
-
+            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'sub']);
         }
         else {
             return abort(500);

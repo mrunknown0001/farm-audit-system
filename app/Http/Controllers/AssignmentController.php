@@ -256,7 +256,61 @@ class AssignmentController extends Controller
      */
     public static function getSupervisors($cat, $id)
     {
-        
+        $data = [];
+
+        if($cat == 'loc') {
+            $dat = Assignment::where('location_id', $id)
+                            ->get();
+
+            if(count($dat) > 0) {
+                foreach($dat as $d) {
+                    if($d->user->role_id == 6) {
+                        $data[] = [
+                            'name' => $d->user->first_name . ' ' . $d->user->last_name
+                        ];
+                    }
+                }
+                // Return Array of Assigned Supervisors
+                return $data;
+            }
+            else {
+                // This can be audited cause no assigned 
+                return 'no assigned';
+            }
+        }
+        elseif($cat == 'sub') {
+            $dat = Assignment::where('sub_location_id', $id)
+                            ->get();
+
+            if(count($dat) > 0) {
+                foreach($dat as $d) {
+                    if($d->user->role_id == 6) {                 
+                        $data[] = [
+                            'name' => $d->user->first_name . ' ' . $d->user->last_name
+                        ];
+                    }
+                    else {
+                        $sub = SubLocation::find($id);
+                        $check = Assignment::where('location_id', $sub->location->id)
+                                        ->get();
+                        if(count($check) > 0) {
+                            foreach($check as $c) {
+                                $data[] = [
+                                    'name' => $c->user->first_name . ' ' . $c->user->last_name
+                                ];
+                            }
+                        }
+                    }
+
+                }
+                // Return Array of Assigned Supervisors
+                return $data;
+            }
+        }
+        else {
+            return abort(500);
+        }
+
     }
 
 }

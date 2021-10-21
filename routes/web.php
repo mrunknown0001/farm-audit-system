@@ -72,8 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 	# This will audit the auditables by marshal
 	Route::get('/audit/{cat}/{id}', 'AuditController@audit')->name('audit');
 	# Get Supervisor and Caretaker in Auditable
-	Route::get('/auditable/assigned/supervisor', 'AssignmentController@getSupervisors')->name('get.assigned.supervisors');
-	Route::get('/auditable/assigned/caretaker', 'AssignmentController@getCaretakers')->name('get.assigned.caretakers');
+	Route::get('/auditable/assigned/supervisor/{cat}/{id}', 'AssignmentController@getSupervisors')->name('get.assigned.supervisors');
+	Route::get('/auditable/assigned/caretaker/{cat}/{id}', 'AssignmentController@getCaretakers')->name('get.assigned.caretakers');
 
 	# Audit Review
 
