@@ -57,7 +57,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				<form action="{{ route('upload') }}" id="imageUploadForm" method="POST" enctype="multipart/form-data">
+				{{-- <form action="{{ route('upload') }}" id="imageUploadForm" method="POST" enctype="multipart/form-data">
 					@csrf
 					<div class="image-upload">
 						<input type="file" id="upload" name="upload" accept="image/*" capture>
@@ -65,7 +65,7 @@
 							<span id="camera"><i class="fa fa-camera fa-3x"></i></span>
 						</label>
 					</div>
-				</form>
+				</form> --}}
 			</div>		
 		</div>
 		<div class="row">
