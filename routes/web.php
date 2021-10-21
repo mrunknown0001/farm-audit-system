@@ -62,13 +62,13 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	
 	Route::get('/audit-item/add', 'AuditItemController@create')->name('audit.item.add');
 	Route::post('/audit-item/add', 'AuditItemController@store')->name('audit.item.post.add');
-	Route::get('/audit-item/edit/{id}', 'AuditItemcontroller@edit')->name('audit.item.edit');
-	Route::get('/audit-item/remove/{id}', 'AuditItemcontroller@remove')->name('audit.item.remove');
+	Route::get('/audit-item/edit/{id}', 'AuditItemController@edit')->name('audit.item.edit');
+	Route::get('/audit-item/remove/{id}', 'AuditItemController@remove')->name('audit.item.remove');
 
 	# Auditables
-	Route::get('/auditables', 'Auditablecontroller@index')->name('auditables');
-	Route::get('/auditable/{cat}/{id}/view-qr', 'Auditablecontroller@viewQr')->name('auditable.view.qr');
-	Route::get('/auditable/{cat}/{id}/download-qr', 'Auditablecontroller@downloadQr')->name('auditable.download.qr');
+	Route::get('/auditables', 'AuditableController@index')->name('auditables');
+	Route::get('/auditable/{cat}/{id}/view-qr', 'AuditableController@viewQr')->name('auditable.view.qr');
+	Route::get('/auditable/{cat}/{id}/download-qr', 'AuditableController@downloadQr')->name('auditable.download.qr');
 
 	# Audit
 	Route::get('/audit', 'AuditController@index')->name('audit.index');
