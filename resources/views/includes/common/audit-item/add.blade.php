@@ -134,7 +134,7 @@
 	        $(".itemrowclass").remove();
 	      },
 	      error: function(data){
-	        console.log("error");
+	        console.log(data.responseJSON);
 	        $("body").removeClass("loading");
 		      Swal.fire({
 					  type: 'error',

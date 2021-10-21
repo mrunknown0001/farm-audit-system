@@ -265,7 +265,7 @@ class AssignmentController extends Controller
             }
             else {
                 // This can be audited cause no assigned 
-                return 'no assigned';
+                return 'No Assigned Caretakers';
             }
         }
         elseif($cat == 'sub') {
@@ -284,6 +284,10 @@ class AssignmentController extends Controller
                 }
                 // Return Array of Assigned Supervisors
                 return $data;
+            }
+            else {
+                // This can be audited cause no assigned 
+                return 'No Assigned Caretakers';
             }
         }
         else {
@@ -318,7 +322,7 @@ class AssignmentController extends Controller
             }
             else {
                 // This can be audited cause no assigned 
-                return 'no assigned';
+                return 'No Assigned Supervisor';
             }
         }
         elseif($cat == 'sub') {
@@ -348,6 +352,10 @@ class AssignmentController extends Controller
                 }
                 // Return Array of Assigned Supervisors
                 return $data;
+            }
+            else {
+                // This can be audited cause no assigned 
+                return 'No Assigned Supervisor';
             }
         }
         else {

@@ -6,6 +6,7 @@ use App\AuditItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AccessController;
 use Auth;
+use DB;
 use DataTables;
 use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
@@ -25,14 +26,14 @@ class AuditItemController extends Controller
             return abort(403);
         }
         if($request->ajax()) {
-            $items = AuditItem::all();
+            $items = AuditItem::where('active', 1)->where('is_deleted', 0)->get();
  
             $data = collect();
             if(count($items) > 0) {
                 foreach($items as $j) {
                     $data->push([
                         'name' => strtoupper($j->item_name),
-                        'action' => 'action'
+                        'action' => '<button id="edit" class="btn btn-warning btn-xs" data-id="' . $j->id . '"><i class="fa fa-edit"></i> Edit</button> <button id="remove" data-id="' . $j->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>'
                     ]);
                 }
             }
@@ -67,63 +68,62 @@ class AuditItemController extends Controller
         $ai->item_name = $request->audit_item_name;
         $ai->description = $request->description;
         $ai->time_range = $request->time_range;
+        $ai->save();
+        
         if(count($request->locations) > 0) {
-            $loc = ',';
+            $insert1 = [];
             foreach($request->locations as $l) {
-                $loc .= $l . ',';
+                $insert1[] = [
+                    'audit_item_id' => $ai->id,
+                    'location_id' => $l
+                ];
             }
-            $ai->location_ids = $loc;
+            DB::table('audit_item_locations')->insert($insert1);
         }
         
-        $ai->save();
 
         // checklists
+        if(isset($request->checklist)) {
+            $insert2 = [];
+            foreach($request->checklist as $c) {
+                $insert2[] = [
+                    'audit_item_id' => $ai->id,
+                    'checklist' => $c
+                ];
+            }
+            DB::table('audit_item_checklists')->insert($insert2);
+        }
 
         // reeturn
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\AuditItem  $auditItem
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AuditItem $auditItem)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\AuditItem  $auditItem
-     * @return \Illuminate\Http\Response
      */
-    public function edit(AuditItem $auditItem)
+    public function edit($id)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AuditItem  $auditItem
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AuditItem $auditItem)
+    public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\AuditItem  $auditItem
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(AuditItem $auditItem)
+    public function remove($id)
     {
-        //
+        $data = AuditItem::findorfail($id);
+        $data->is_deleted = 1;
+        $data->save();
     }
 }

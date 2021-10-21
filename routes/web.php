@@ -62,6 +62,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/audit-items', 'AuditItemController@index')->name('audit.item');	
 	Route::get('/audit-item/add', 'AuditItemController@create')->name('audit.item.add');
 	Route::post('/audit-item/add', 'AuditItemController@store')->name('audit.item.post.add');
+	Route::get('/audit-item/edit/{id}', 'AuditItemcontroller@edit')->name('audit.item.edit');
+	Route::get('/audit-item/remove/{id}', 'AuditItemcontroller@remove')->name('audit.item.remove');
 
 	# Auditables
 	Route::get('/auditables', 'Auditablecontroller@index')->name('auditables');
@@ -77,7 +79,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/auditable/assigned/supervisor/{cat}/{id}', 'AssignmentController@getSupervisors')->name('get.assigned.supervisors');
 	Route::get('/auditable/assigned/caretaker/{cat}/{id}', 'AssignmentController@getCaretakers')->name('get.assigned.caretakers');
 
+	Route::post('/audit/store', 'AuditController@store')->name('audit.store');
+
 	# Audit Review
+	Route::get('/audit-review', 'AuditReviewController@index')->name('audit.review');
 
 });
 

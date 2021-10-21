@@ -11,6 +11,8 @@ use DB;
 use Auth;
 use App\Assignment;
 use App\Http\Controllers\AccessController;
+use App\AuditItem;
+use App\AuditItemLocation;
 
 class AuditController extends Controller
 {
@@ -25,12 +27,20 @@ class AuditController extends Controller
         if($cat == 'loc') {
             $dat = Location::findorfail($id);
             // validate if location and date is not audited
+            
+            // get audit items under this location 
+            $audit_locs = AuditItemLocation::where('location_id', $dat->id)->get();
+
             return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'loc']);
         }
         elseif($cat == 'sub') {
             $dat = SubLocation::findorfail($id);
             // validate if location and date is not audited
-            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'sub']);
+
+            // get audit items under the location of this sublocation 
+            $audit_locs = AuditItemLocation::where('location_id', $dat->location->id)->get();
+
+            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'sub', 'audit_locs' => $audit_locs]);
         }
         else {
             return abort(500);
@@ -57,25 +67,14 @@ class AuditController extends Controller
         return view('includes.common.audit.index', ['system' => $this->system()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

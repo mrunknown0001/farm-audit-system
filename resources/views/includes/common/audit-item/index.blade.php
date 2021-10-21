@@ -80,11 +80,11 @@
 
     $(document).on('click', '#edit', function (e) {
         e.preventDefault();
-        var text = $(this).data('text');
+        // var text = $(this).data('text');
         var id = $(this).data('id');
         Swal.fire({
-          title: 'Edit Location?',
-          text: text,
+          title: 'Edit Audit Item?',
+          text: '',
           type: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -92,7 +92,7 @@
           confirmButtonText: 'Edit',
         }).then((result) => {
           if (result.value) {
-          	window.location.href = "/location/edit/" + id;
+          	window.location.href = "/audit-item/edit/" + id;
           }
           else {
             Swal.fire({
@@ -110,11 +110,11 @@
 
     $(document).on('click', '#remove', function (e) {
         e.preventDefault();
-        var text = $(this).data('text');
+        // var text = $(this).data('text');
         var id = $(this).data('id');
         Swal.fire({
-          title: 'Remove Location?',
-          text: text,
+          title: 'Remove Audit Item?',
+          text: '',
           type: 'question',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -123,11 +123,11 @@
         }).then((result) => {
           if (result.value) {
             $.ajax({
-              url: "/location/remove/" + id,
+              url: "/audit-item/remove/" + id,
               type: "GET",
               success: function() {
                 Swal.fire({
-                  title: 'Location Removed!',
+                  title: 'Audit Item Removed!',
                   text: "",
                   type: 'success',
                   showCancelButton: false,
@@ -136,7 +136,7 @@
                   confirmButtonText: 'Close'
                 });
 
-                var table = $('#locations').DataTable();
+                var table = $('#items').DataTable();
                 table.ajax.reload();
               },
               error: function(err) {
