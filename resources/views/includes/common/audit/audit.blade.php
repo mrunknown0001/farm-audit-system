@@ -257,10 +257,11 @@
 		          confirmButtonText: 'Close'
 		        });
 		        // remove
-
+		        $("#auditform").remove(); 
 		      },
 		      error: function(data){
 		        console.log("error");
+		        console.log(data.responseJSON);
 		        $("body").removeClass("loading");
 			      Swal.fire({
 						  type: 'error',

@@ -125,7 +125,8 @@ class AuditController extends Controller
             $filename =  $ts . '.jpg';
             $upload->move(public_path('/uploads/images/'), $filename);
 
-            $img = Image::make(public_path('uploads/test/'. $filename));  
+            $img = Image::make(public_path('uploads/images/'. $filename));  
+            // $img = Image::make($request->file('upload')->getRealPath());
             $timestamp = date('F j, Y H:i:s', strtotime(now()));
             $img->text($timestamp, 50, 120, function($font) {  
                 $font->file(public_path('fonts/RobotoMonoBold.ttf'));  
@@ -140,7 +141,7 @@ class AuditController extends Controller
             'audit_id' => $audit->id,
             'filename' => $filename,
             'latitude' => $audit->latitude,
-            'longitude'
+            'longitude' => $audit->longitude
            ]);
 
            return 'success';
