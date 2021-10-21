@@ -33,7 +33,7 @@
 @section('content')
 <div class="content-wrapper">
 	<section class="content-header">
-		<h1>Auditable Location: <strong>{{ $cat == 'loc' ? $dat->location_name : $dat->sub_location_name }}</strong></h1>
+		<h1>Auditable Location: <strong>{{ $cat == 'loc' ? $dat->location_name : $dat->location->location_name . ' - ' . $dat->sub_location_name }}</strong></h1>
 		{{-- <ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>

@@ -29,7 +29,7 @@ class AuditController extends Controller
         }
         elseif($cat == 'sub') {
             $dat = SubLocation::findorfail($id);
-
+            // validate if location and date is not audited
             return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'sub']);
         }
         else {
