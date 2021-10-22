@@ -32,7 +32,7 @@ class AuditController extends Controller
             // get audit items under this location 
             $audit_locs = AuditItemLocation::where('location_id', $dat->id)->get();
 
-            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'loc']);
+            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'loc', 'audit_locs' => $audit_locs]);
         }
         elseif($cat == 'sub') {
             $dat = SubLocation::findorfail($id);
