@@ -20,7 +20,7 @@ class AuditReviewController extends Controller
             return abort(403);
         }
 
-        // if($request->ajax()) {
+        if($request->ajax()) {
             $audits = Audit::where('reviewed', 0)
                             ->where('verified', 0)
                             ->get();
@@ -35,7 +35,7 @@ class AuditReviewController extends Controller
                         'action' => $this->reviewaction($j->id, $j->latitude, $j->longitude, $j->images)
                     ]);
                 }
-            // }
+            }
             return DataTables::of($data)
                     ->rawColumns(['action'])
                     ->make(true);

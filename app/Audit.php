@@ -18,7 +18,7 @@ class Audit extends Model
 
     public function sub_location()
     {
-    	return $this->belongsTo('App\Sublocation');
+    	return $this->belongsTo('App\SubLocation');
     }
 
     public function audit_item()
