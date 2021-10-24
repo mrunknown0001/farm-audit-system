@@ -70,9 +70,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-6">
-				@foreach($uploads as $key => $u)
-					<p><a href="/uploads/test/{{ $u->filename }}">{{ $u->filename }}</a></p>
-				@endforeach
+
 			</div>
 		</div>
 		<div class="overlay"></div>

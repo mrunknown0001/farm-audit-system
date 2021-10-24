@@ -13,6 +13,7 @@ use Hash;
 use App\Http\Controllers\GeneralController as GC;
 use Excel;
 use App\Exports\EmployeeLogExport;
+use Illuminate\Support\Facades\View;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
      */
     public function profile()
     {
-        return view('includes.common.profile', ['system' => $this->system()]);
+        return View::make('includes.common.profile', ['system' => $this->system()]);
     }
 
     /**
@@ -59,8 +60,7 @@ class UserController extends Controller
      */
     public function dashboard()
     {
-        $uploads = DB::table('upload')->select('filename')->get();
-    	return view('user.dashboard', ['system' => $this->system(), 'uploads' => $uploads]);
+    	return View::make('user.dashboard', ['system' => $this->system()]);
     }
 
 
@@ -171,5 +171,9 @@ class UserController extends Controller
     }
 
 
+    public function users()
+    {
+        return 'users';
+    }
     ## End Codes
 }
