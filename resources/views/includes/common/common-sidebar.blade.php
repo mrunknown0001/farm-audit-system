@@ -1,46 +1,48 @@
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'location_module')) 
+    @inject('accesscontroller', '\App\Http\Controllers\AccessController')
+  
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'location_module')) 
       <li class="{{ route('locations') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('locations') }}">
           <i class="fa fa-location-arrow"></i> <span>Locations</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'sub_location_module')) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'sub_location_module')) 
       <li class="{{ route('sub.locations') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('sub.locations') }}">
           <i class="fa fa-location-arrow"></i> <span>Sub Locations</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'assignment_module')) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'assignment_module')) 
       <li class="{{ route('assignments') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('assignments') }}">
           <i class="fa fa-people-carry"></i> <span>Assignments</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_item_module')) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'audit_item_module')) 
       <li class="{{ route('audit.item') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('audit.item') }}">
           <i class="fa fa-list"></i> <span>Audit Item</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'auditable_module')) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'auditable_module')) 
       <li class="{{ route('auditables') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('auditables') }}">
           <i class="fa fa-list"></i> <span>Auditable</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_marshal')) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'audit_marshal')) 
       <li class="{{ route('audit.index') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('audit.index') }}">
           <i class="fa fa-list"></i> <span>Audit</span>
         </a>
       </li>
     @endif
-    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || \App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_reviewer')) 
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'audit_reviewer')) 
       <li class="{{ route('audit.review') == url()->current() ? 'active' : ''}}">
         <a href="{{ route('audit.review') }}">
           <i class="fa fa-list"></i> <span>Audit Reviewer</span>

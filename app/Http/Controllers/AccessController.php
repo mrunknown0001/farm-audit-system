@@ -6,6 +6,7 @@ use App\Access;
 use Illuminate\Http\Request;
 use App\User;
 use DataTables;
+use Auth;
 use App\Http\Controllers\UserLogController as Log;
 
 class AccessController extends Controller
@@ -48,7 +49,7 @@ class AccessController extends Controller
                     ->rawColumns(['name','action'])
                     ->make(true);
         }
-        return view('admin.access', ['system' => $this->system()]);
+        return view('admin.access');
     }
 
     /**
@@ -57,7 +58,7 @@ class AccessController extends Controller
     public function create($id)
     {
         $user = User::findorfail($id);
-        return view('admin.access-set', ['system' => $this->system(), 'user' => $user]);
+        return view('admin.access-set',['user' => $user]);
     }
 
     /**
@@ -85,6 +86,45 @@ class AccessController extends Controller
             return redirect()->back()->with('error', 'Error Occured! Please Try Again.');
         }
     }
+
+
+
+    /**
+     * Return Access List in badge
+     */
+    private function accesslist($acc)
+    {
+         $acc = substr($acc, 1);
+         $arr = explode(',', $acc);
+
+         $str = "";
+         foreach($arr as $a) {
+            $str .= " <span class='label label-primary'>". strtoupper($a) . "</span>";
+         }
+
+         return $str;
+    }
+
+
+
+    /**
+     * access Link
+     */
+    private function accesslink($name, $id)
+    {
+        return "<a href='" . route('set.access', ['id' => $id]) . "'>" . $name . "</a>";
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -116,30 +156,5 @@ class AccessController extends Controller
 
 
 
-    /**
-     * Return Access List in badge
-     */
-    private function accesslist($acc)
-    {
-         $acc = substr($acc, 1);
-         $arr = explode(',', $acc);
-
-         $str = "";
-         foreach($arr as $a) {
-            $str .= " <span class='label label-primary'>". strtoupper($a) . "</span>";
-         }
-
-         return $str;
-    }
-
-
-
-    /**
-     * access Link
-     */
-    private function accesslink($name, $id)
-    {
-        return "<a href='" . route('set.access', ['id' => $id]) . "'>" . $name . "</a>";
-    }
 
 }

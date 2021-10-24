@@ -59,8 +59,8 @@
 @endsection
 
 @section('script')
-	<script src="{{ asset('js/dataTables.js') }}"></script>
-	<script src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('js/dataTables.js') }}" defer="defer"></script>
+	<script src="{{ asset('js/dataTables.bootstrap4.min.js') }}" defer="defer"></script>
 	<script>
 		$(document).ready(function () {
 			let datatable = $('#items').DataTable({

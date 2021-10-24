@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@inject('assignmentcontroller', '\App\Http\Controllers\AssignmentController')
+
 @section('title')
 	User Assignment
 @endsection
@@ -89,13 +91,13 @@
 						<h4>Auditable Locations</h4>
 						@foreach($locations as $key => $l)
 							<div>
-								<input type="checkbox" name="location[]" id="loc-{{ $l->id }}" value="{{ $l->id }}" {{ isset($user) ? \App\Http\Controllers\AssignmentController::checkAssignment($user->id, 'loc', $l->id) ? 'checked' : '' : '' }}>
+								<input type="checkbox" name="location[]" id="loc-{{ $l->id }}" value="{{ $l->id }}" {{ isset($user) ? $assignmentcontroller->checkAssignment($user->id, 'loc', $l->id) ? 'checked' : '' : '' }}>
 								<label for="loc-{{ $l->id }}">{{ $l->location_name }}</label>
 								@if($l->has_sublocation == 1)
 									<div class="row">
 										<div class="col-md-10 col-md-offset-1"  id="divloc-{{ $l->id }}">
 											@foreach($l->sub_locations as $key => $s)
-												<input type="checkbox" name="sub_location[]" id="sub-{{ $s->id }}" value="{{ $s->id }}" {{ isset($user) ? \App\Http\Controllers\AssignmentController::checkAssignment($user->id, 'sub', $s->id) ? 'checked' : '' : '' }}>
+												<input type="checkbox" name="sub_location[]" id="sub-{{ $s->id }}" value="{{ $s->id }}" {{ isset($user) ? $assignmentcontroller->checkAssignment($user->id, 'sub', $s->id) ? 'checked' : '' : '' }}>
 												<label for="sub-{{ $s->id }}">{{ $s->sub_location_name }}</label>
 											@endforeach
 										</div>

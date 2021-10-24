@@ -21,7 +21,7 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-    	return view('admin.dashboard', ['system' => $this->system()]);
+    	return view('admin.dashboard');
     }
 
 
@@ -49,7 +49,7 @@ class AdminController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
         }
-        return view('admin.users', ['system' => $this->system()]);
+        return view('admin.users');
     }
 
 
@@ -60,7 +60,7 @@ class AdminController extends Controller
     public function addUser()
     {
         $roles = Role::all();
-        return view('admin.user-add', ['roles' => $roles, 'system' => $this->system()]);
+        return view('admin.user-add', ['roles' => $roles]);
     }
 
 
@@ -91,8 +91,7 @@ class AdminController extends Controller
     {
         $user = User::findorfail($id);
         $roles = Role::all();
-        $system = $this->system();
-        return view('admin.user-update', compact('roles', 'user', 'system'));
+        return view('admin.user-update', compact('roles', 'user'));
     }
 
 
@@ -122,7 +121,7 @@ class AdminController extends Controller
 
     public function database()
     {
-        return view('admin.backup', ['system' => $this->system()]);
+        return view('admin.backup');
     }
 
 

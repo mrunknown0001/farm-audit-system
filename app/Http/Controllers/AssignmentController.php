@@ -42,7 +42,7 @@ class AssignmentController extends Controller
                     ->rawColumns(['name', 'action'])
                     ->make(true);
         }
-        return view('includes.common.assignment.index', ['system' => $this->system()]);
+        return view('includes.common.assignment.index');
     }
 
     /**
@@ -65,7 +65,7 @@ class AssignmentController extends Controller
                             ->orderBy('location_name', 'asc')
                             ->get();
 
-        return view('includes.common.assignment.add', ['system' => $this->system(), 'users' => $users, 'locations' => $locations]);
+        return view('includes.common.assignment.add', ['users' => $users, 'locations' => $locations]);
     }
 
     /**
@@ -172,7 +172,7 @@ class AssignmentController extends Controller
                             ->orderBy('location_name', 'asc')
                             ->get();
 
-        return view('includes.common.assignment.add', ['system' => $this->system(), 'user' => $user, 'locations' => $locations]);
+        return view('includes.common.assignment.add', ['user' => $user, 'locations' => $locations]);
     }
 
 

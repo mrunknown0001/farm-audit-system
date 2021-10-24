@@ -29,8 +29,8 @@
     @yield('content')
     @include('includes.footer')
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.js') }}"></script>
+    <script src="{{ asset('adminlte/js/adminlte.min.js') }}" defer="defer"></script>
+    <script src="{{ asset('js/sweetalert.js') }}" defer="defer"></script>
     @yield('script')
     @include('includes.timeout')
   </body>
