@@ -27,7 +27,7 @@
 	      top: 0;
 	      left: 0;
 	      z-index: 999;
-	      background: rgba(255,255,255,0.8) url("/gif/chicken.gif") center no-repeat;
+	      background: rgba(255,255,255,0.8) url("/gif/apple.gif") center no-repeat;
 	  }
 	  body.loading{
 	      overflow: hidden;   
