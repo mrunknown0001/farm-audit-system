@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Auth;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -13,7 +14,7 @@ class LoginController extends Controller
 	 */
     public function login()
     {
-    	return view('login', ['system' => $this->system()]);
+    	return view('login');
     }
 
 
@@ -28,6 +29,15 @@ class LoginController extends Controller
     	]);
 
     	if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'active' => 1])) {
+            $user = User::where('email', $request['email'])->firstOrFail();
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            response()->json([
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ]);
+
             switch (Auth::user()->role_id) {
                 case 1;
                 return redirect()->route('admin.dashboard')->with('success', 'Welcome Back!');
@@ -96,6 +106,8 @@ class LoginController extends Controller
     public function logout()
     {
         if(Auth::user()) {
+            $user = Auth::user();
+            $user->tokens()->delete();
             Auth::logout();
             return redirect()->route('login')->with('success', 'Logout Success!');
         }

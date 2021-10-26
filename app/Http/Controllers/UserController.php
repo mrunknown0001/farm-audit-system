@@ -173,7 +173,7 @@ class UserController extends Controller
 
     public function users()
     {
-        return 'users';
+        return 'api users';
     }
     ## End Codes
 }
