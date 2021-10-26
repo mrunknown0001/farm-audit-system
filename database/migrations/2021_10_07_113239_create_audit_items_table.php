@@ -20,11 +20,10 @@ class CreateAuditItemsTable extends Migration
             $table->text('description')->nullable();
             $table->string('time_range')->nullable(); // To be Display
             $table->string('display_time_range')->nullable(); // Array of Time Range When to display
+            $table->string('location_ids')->nullable(); // Moved with separate model
+            $table->boolean('active')->default(1);
+            $table->boolean('is_deleted')->default(0);
             $table->timestamps();
-            // Added in Update Migration
-            // $table->string('location_ids')->nullable()->after('display_time_range'); 
-            // $table->boolean('active')->default(1);
-            // $table->boolean('is_deleted')->default(0);
         });
     }
 

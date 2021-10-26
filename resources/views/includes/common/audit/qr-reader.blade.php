@@ -66,7 +66,7 @@
 
 @section('script')
 	{{-- <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js" defer="defer"></script> --}}
-	<script src="{{ asset('js/instascan.js') }}" defer="defer"></script>
+	<script src="{{ asset('js/instascan.js') }}"></script>
 	<script type="text/javascript">
 		let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), scanPeriod: 5, mirror: false });
 		scanner.addListener('scan',function(content){

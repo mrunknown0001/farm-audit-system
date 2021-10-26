@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
+@inject('audititemcontroller', '\App\Http\Controllers\AuditItemController')
+
 @section('title')
-	Add Audit Item
+	Update Audit Item
 @endsection
 
 @section('style')
@@ -46,7 +48,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Add Audit Item</h1>
+		<h1>Update Audit Item</h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -61,38 +63,44 @@
 		</div>
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
-				<form id="audititemform" action="{{ route('audit.item.post.add') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
+				<form id="audititemform" action="{{ route('audit.item.update', ['id' => $item->id]) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
+					<input type="hidden" name="id" value="{{ $item->id }}">
 					<div class="form-group {{ $errors->first('audit_item_name') ? 'has-error' : ''  }}">
 						<label for="audit_item_name">Audit Item Name</label>
-						<input type="text" name="audit_item_name" id="audit_item_name" placeholder="Audit Item Name" class="form-control" required>
+						<input type="text" name="audit_item_name" id="audit_item_name" value="{{ $item->item_name }}" placeholder="Audit Item Name" class="form-control" required>
 						@if($errors->first('audit_item_name'))
             	<span class="help-block"><strong>{{ $errors->first('audit_item_name') }}</strong></span>
             @endif
 					</div>
 					<div class="form-group {{ $errors->first('description') ? 'has-error' : ''  }}">
 						<label for="description">Description</label>
-						<textarea class="form-control" id="description" name="description"></textarea>
+						<textarea class="form-control" id="description" name="description">{{ $item->description }}</textarea>
 						@if($errors->first('description'))
             	<span class="help-block"><strong>{{ $errors->first('description') }}</strong></span>
             @endif
 					</div>
 					<div class="form-group {{ $errors->first('time_range') ? 'has-error' : ''  }}">
 						<label for="time_range">Time Range</label>
-						<input type="text" name="time_range" id="time_range" placeholder="Example: 8am-9am, 5pm-6pm" class="form-control" required>
+						<input type="text" name="time_range" id="time_range" value="{{ $item->time_range }}" placeholder="Example: 8am-9am, 5pm-6pm" class="form-control" required>
 						@if($errors->first('time_range'))
             	<span class="help-block"><strong>{{ $errors->first('time_range') }}</strong></span>
             @endif
 					</div>
 					<div class="form-group" id="items">
 						<p><label>Checklist</label> <button id="addChecklist" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button></p>
+						@if(count($item->checklists) > 0)
+							@foreach($item->checklists as $key => $c)
+								<div id="itemrow{{ $c->id }}" class="itemrowclass row form-group"><div class="col-md-11"><input class="form-control" value="{{ $c->checklist }}" name="checklist[]" placeholder="Audit Item Checklist" required/></div><div class="col-md-1"><button type="button" class="btn btn-danger" onclick="remove('{{ $c->id }}')"><i class="fa fa-times-circle"></i></button></div></div>
+							@endforeach
+						@endif
 					</div>
 					<div class="form-group">
 						<h3>Locations Applied</h3>
 						@if(count($locations) > 0)
 							<div class="row"> 
 								@foreach($locations as $key => $l)
-									<div class="col-md-3"><input type="checkbox" name="locations[]" id="location{{ $l->id }}" value="{{ $l->id }}"> <label for="location{{ $l->id }}">{{ $l->location_name }}</label></div>
+									<div class="col-md-3"><input type="checkbox" name="locations[]" {{ $audititemcontroller->checkifset($item->id, $l->id) ? 'checked' : '' }} id="location{{ $l->id }}" value="{{ $l->id }}"> <label for="location{{ $l->id }}">{{ $l->location_name }}</label></div>
 								@endforeach
 							</div>
 						@else
@@ -112,7 +120,7 @@
 @section('script')
 	<script>
 		$(document).ready(function() {
-			var id=1;
+			var id= {{ count($item->checklists) }};
 			$("#addChecklist").click(function (e) {
 				id += 1;
 			  $("#items").append('<div id="itemrow' + id + '" class="itemrowclass row form-group"><div class="col-md-11"><input class="form-control" name="checklist[]" placeholder="Audit Item Checklist" required/></div><div class="col-md-1"><button type="button" class="btn btn-danger" onclick="remove(' + id + ')"><i class="fa fa-times-circle"></i></button></div></div>');
@@ -138,7 +146,7 @@
 	        // Close Upload Animation here
 	        $("body").removeClass("loading");
 	        Swal.fire({
-	          title: 'Audit Item Added!',
+	          title: 'Audit Item Updated!',
 	          text: "",
 	          type: 'success',
 	          showCancelButton: false,
@@ -146,9 +154,6 @@
 	          cancelButtonColor: '#d33',
 	          confirmButtonText: 'Close'
 	        });
-	        // Clear Form
-	        $("#audititemform").trigger("reset");
-	        $(".itemrowclass").remove();
 	      },
 	      error: function(data){
 	        console.log(data.responseJSON);

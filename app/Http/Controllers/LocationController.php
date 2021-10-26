@@ -77,10 +77,12 @@ class LocationController extends Controller
             $loc->has_sublocation = $request->has_sublocation == 'on' ? 1 : 0;
             if($loc->save()) {
                 $log = Log::log('create', 'locations', '', $loc, '', '');
-                return 'saved';
+                return response('Location Saved', 200)
+                  ->header('Content-Type', 'text/plain');
             }
             else {
-                return 'error';
+                return response('Error Saving Location', 500)
+                  ->header('Content-Type', 'text/plain');
             }
         }
     }
@@ -94,7 +96,7 @@ class LocationController extends Controller
             return abort(403);
         }
         $location = Location::findorfail($id);
-        return view('includes.common.location.edit', ['system' => $this->system(), 'location' => $location]);
+        return view('includes.common.location.edit', ['location' => $location]);
     }
 
     /**
@@ -148,10 +150,12 @@ class LocationController extends Controller
             $loc->is_deleted = $request->is_deleted == 'on' ? 1 : 0;
             if($loc->save()) {
                 $log = Log::log('update', 'locations', '', $loc, $old_val, '');
-                return 'saved';
+                return response('Location Updated', 200)
+                  ->header('Content-Type', 'text/plain');
             }
             else {
-                return 'error';
+                return response('Error Updating Location', 500)
+                  ->header('Content-Type', 'text/plain');
             }
         }
     }
@@ -169,10 +173,12 @@ class LocationController extends Controller
         $loc->is_deleted = 1;
         if($loc->save()) {
             $log = Log::log('delete', 'locations', '', $loc, $old_val, '');
-            return 'deleted';
+            return response('Location Removed', 403)
+                  ->header('Content-Type', 'text/plain');
         }
         else {
-            return 'error';
+            return response('Error in Removing Location', 500)
+                  ->header('Content-Type', 'text/plain');
         }
     }
 }

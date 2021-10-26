@@ -8,6 +8,12 @@ class AuditItem extends Model
 {
     public function checklists()
     {
-    	return $this->hasMany('App\AuditItemChecklist');
+    	return $this->hasMany('App\AuditItemChecklist', 'audit_item_id');
+    }
+
+
+    public function locations()
+    {
+    	return $this->hasMany('App\AuditItemLocation', 'audit_item_id');
     }
 }

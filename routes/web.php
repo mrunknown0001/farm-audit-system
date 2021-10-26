@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/audit-item/add', 'AuditItemController@create')->name('audit.item.add');
 	Route::post('/audit-item/add', 'AuditItemController@store')->name('audit.item.post.add');
 	Route::get('/audit-item/edit/{id}', 'AuditItemController@edit')->name('audit.item.edit');
+	Route::post('/audit-item/edit/{id}', 'AuditItemController@update')->name('audit.item.update');
 	Route::get('/audit-item/remove/{id}', 'AuditItemController@remove')->name('audit.item.remove');
 
 	# Auditables

@@ -123,6 +123,7 @@
 				@endforeach
 			</div>
 		</div>
+		<div class="overlay"></div>
 	</section>
 </div>
 
@@ -216,6 +217,14 @@
       	$(noncompliancecamera).show();
       	$(noncomplianceremarks).show();
       	$(upload).attr('required');
+      }
+      else if(value == null) {
+      	var noncomplianceremarks = '#noncomplianceremarks-' + id;
+      	var noncompliancecamera = '#noncompliancecamera-' + id;
+      	let upload = '#upload-' + id;
+      	$(noncompliancecamera).hide();
+      	$(noncomplianceremarks).hide();
+      	$(upload).removeAttr('required');
       }
       else {
       	var noncomplianceremarks = '#noncomplianceremarks-' + id;
