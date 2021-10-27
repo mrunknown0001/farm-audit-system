@@ -77,21 +77,21 @@
 		<div class="row">
 			<div class="col-md-12">
 				@foreach($audit_locs as $key => $l)
-					<form id="auditform" data-id={{ $l->id }} action="{{ route('audit.store') }}" method="POST" enctype="multipart/form-data">
+					<form class="auditformclass" data-id={{ $l->id }} action="{{ route('audit.store') }}" method="POST" enctype="multipart/form-data">
 						@csrf
-						<input type="hidden" name="audit_id" id="audit_id" value="">
+						<input type="hidden" name="audit_id" id="audit_id-{{ $l->id }}" value="">
 						<input type="hidden" name="audit_item_id" id="audit_item_id" value="{{ $l->audit_item->id }}">
 						<input type="hidden" name="cat" value="{{ $cat }}">
 						<input type="hidden" name="dat_id" value="{{ $dat->id }}">
-						<input type="hidden" name="lat" id="lat" value="">
-						<input type="hidden" name="lon" id="lon" value="">
+						<input type="hidden" class="lat" name="lat" id="lat" value="">
+						<input type="hidden" class="lon" name="lon" id="lon" value="">
 						<h3>{{ $l->audit_item->item_name . '(' . $l->audit_item->time_range . ')' }}</h3>
 						<p>{{ $l->audit_item->description }}</p>
 						<div class="row">
 							<div class="col-md-6 form-group">
 								<label>Compliant ba?</label>
 								<select name="compliance" id="compliance" data-id="{{ $l->id }}" class="form-control" required>
-									<option value="">Pumili ng Isa</option>
+									<option value="n">Pumili ng Isa</option>
 									<option value="1">Compliant</option>
 									<option value="0">Non-Compliant</option>
 								</select>
@@ -217,30 +217,33 @@
       	$(noncompliancecamera).show();
       	$(noncomplianceremarks).show();
       	$(upload).attr('required');
+      	return true;
       }
-      else if(value == null) {
+      else if(value == 1) {
       	var noncomplianceremarks = '#noncomplianceremarks-' + id;
       	var noncompliancecamera = '#noncompliancecamera-' + id;
       	let upload = '#upload-' + id;
       	$(noncompliancecamera).hide();
       	$(noncomplianceremarks).hide();
       	$(upload).removeAttr('required');
+      	return true;
       }
-      else {
+      else if(value == 'n') {
       	var noncomplianceremarks = '#noncomplianceremarks-' + id;
       	var noncompliancecamera = '#noncompliancecamera-' + id;
       	let upload = '#upload-' + id;
       	$(noncompliancecamera).hide();
       	$(noncomplianceremarks).hide();
       	$(upload).removeAttr('required');
+      	return true;
       }
     });
 
 		$(document).ready(function (e) {
-			var formid = $(this).data('id');
-			getLocation();
-		  $('#auditform').on('submit',(function(e) {
+		  $('.auditformclass').on('submit',(function(e) {
 		    e.preventDefault();
+		    getLocation();
+		    var formid = $(this).data('id');
 				// Add Loading Animation here
 		  	$("body").addClass("loading"); 
 		    var formData = new FormData(this);
@@ -252,30 +255,35 @@
 		      contentType: false,
 		      processData: false,
 		      success:function(data){
-		        console.log("success");
-		        console.log(data);
+		        // console.log("success");
+		        // console.log(data);
+		        // console.log(formData);
 		        // Close Upload Animation here
 		        $("body").removeClass("loading");
 		        Swal.fire({
 		          title: 'Audit Submitted!',
-		          text: "",
+		          text: data.message,
 		          type: 'success',
 		          showCancelButton: false,
 		          confirmButtonColor: '#3085d6',
 		          cancelButtonColor: '#d33',
 		          confirmButtonText: 'Close'
 		        });
+
+		        var auditid = '#audit_id-' + formid;
+		        $(auditid).val(data.id)
+
 		        // remove
-		        $("#auditform").remove(); 
+		        // $(this).remove(); 
 		      },
 		      error: function(data){
 		        console.log("error");
-		        console.log(data.responseJSON);
+		        console.log(data);
 		        $("body").removeClass("loading");
 			      Swal.fire({
 						  type: 'error',
 						  title: 'Error Occured',
-						  text: 'Please Try Again.',
+						  text: data.responseText,
 						});
 		      }
 		    });
@@ -286,29 +294,24 @@
 
 
 		var options = {
-		  enableHighAccuracy: true,
-		  timeout: 10000,
-		  maximumAge: 10000
+		  enableHighAccuracy: false,
+		  timeout: 30000,
+		  maximumAge: 15000
 		};
 
 		function getLocation() {
 		  if (navigator.geolocation) {
 		    navigator.geolocation.getCurrentPosition(showPosition, showError, options);
 		  } else { 
-	      Swal.fire({
-				  type: 'error',
-				  title: 'Geolocation Error',
-				  text: 'Geolocation is not supported by this browser.',
-				  // footer: '<a href="">Why do I have this issue?</a>'
-				})
+	      console.log('Geolocation Error');
 		  }
 		}
 
 		function showPosition(position) {
-		  console.log('Latitude:' + position.coords.latitude);
-		  console.log('Longitude:' + position.coords.longitude);
-		  $('#lat').val(position.coords.latitude);
-		  $('#lon').val(position.coords.longitude);
+			$('.lon').val(position.coords.longitude);
+			$('.lat').val(position.coords.latitude)
+			console.log('Longitude:' + position.coords.longitude);
+			console.log('Latitude:' + position.coords.latitude);
 		}
 
 		function showError(error) {
@@ -317,46 +320,18 @@
 		    case error.PERMISSION_DENIED:
 		      // x.innerHTML = "User denied the request for Geolocation."
 		      console.log("User denied the request for Geolocation.");
-		      $("body").removeClass("loading"); 
-		      Swal.fire({
-					  type: 'error',
-					  title: 'Permission Denied',
-					  text: 'User denied the request for Geolocation.',
-					  // footer: '<a href="">Why do I have this issue?</a>'
-					})
 		      break;
 		    case error.POSITION_UNAVAILABLE:
 		      // x.innerHTML = "Location information is unavailable."
 		      console.log("Location information is unavailable.");
-		      $("body").removeClass("loading"); 
-		      Swal.fire({
-					  type: 'error',
-					  title: 'Position Unavailable',
-					  text: 'Location information is unavailable.',
-					  // footer: '<a href="">Why do I have this issue?</a>'
-					});
 		      break;
 		    case error.TIMEOUT:
 		      // x.innerHTML = "The request to get user location timed out."
 		      console.log("The request to get user location timed out.");
-		      $("body").removeClass("loading"); 
-		      Swal.fire({
-					  type: 'error',
-					  title: 'Timeout Error',
-					  text: 'The request to get user location timed out.',
-					  // footer: '<a href="">Why do I have this issue?</a>'
-					})
 		      break;
 		    case error.UNKNOWN_ERROR:
 		      // x.innerHTML = "An unknown error occurred."
 		      console.log("An unknown error occurred.");
-		      $("body").removeClass("loading"); 
-		      Swal.fire({
-					  type: 'error',
-					  title: 'Unknown Error',
-					  text: 'An unknown error occurred.',
-					  // footer: '<a href="">Why do I have this issue?</a>'
-					});
 		      break;
 		  }
 		}

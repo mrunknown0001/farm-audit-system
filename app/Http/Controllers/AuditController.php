@@ -76,6 +76,10 @@ class AuditController extends Controller
     public function store(Request $request)
     {
         if($request->ajax()) {
+            if($request->compliance == 'n') {
+                return response('Error in Compliance Selection', 500)
+                  ->header('Content-Type', 'text/plain');
+            }
             // check
             // $request->cat
             // $request->dat_id
@@ -96,15 +100,23 @@ class AuditController extends Controller
                             ->first();
             }
             else {
-                return abort(500);
+                return response('Location with Selected Audit Item was Conducted', 500)
+                      ->header('Content-Type', 'text/plain');
             }
 
 
             if(!empty($check)) {
-                return abort(500);
+                return response('Location with Selected Audit Item was Conducted', 500)
+                      ->header('Content-Type', 'text/plain');
             }
 
-            $audit = new Audit();
+            if($request->audit_id == null) {
+                $audit = new Audit();
+            }
+            else {
+                $audit = Audit::find($request->audit_id);
+            }
+
             $audit->user_id = Auth::user()->id;
             $audit->audit_item_id = $request->audit_item_id;
             $audit->field1 = $request->cat;
@@ -120,31 +132,38 @@ class AuditController extends Controller
             $audit->longitude = $request->lon;
             $audit->save();
 
-            $upload = $request->file('upload');
-            $ts = date('m-j-Y H-i-s', strtotime(now()));
-            $filename =  $ts . '.jpg';
-            $upload->move(public_path('/uploads/images/'), $filename);
+            if($request->hasFile('upload')) {
+                $upload = $request->file('upload');
+                $ts = date('m-j-Y H-i-s', strtotime(now()));
+                $filename =  $ts . '.jpg';
+                $upload->move(public_path('/uploads/images/'), $filename);
 
-            $img = Image::make(public_path('uploads/images/'. $filename));  
-            // $img = Image::make($request->file('upload')->getRealPath());
-            $timestamp = date('F j, Y H:i:s', strtotime(now()));
-            $img->text($timestamp, 50, 120, function($font) {  
-                $font->file(public_path('fonts/RobotoMonoBold.ttf'));  
-                $font->size(80);
-                $font->color('#ffa500');
-                $font->align('left');
-            });  
+                $img = Image::make(public_path('uploads/images/'. $filename));  
+                // $img = Image::make($request->file('upload')->getRealPath());
+                $timestamp = date('F j, Y H:i:s', strtotime(now()));
+                $img->text($timestamp, 50, 120, function($font) {  
+                    $font->file(public_path('fonts/RobotoMonoBold.ttf'));  
+                    $font->size(80);
+                    $font->color('#ffa500');
+                    $font->align('left');
+                });  
 
-           $img->save(public_path('uploads/images/' . $filename));  
+               $img->save(public_path('uploads/images/' . $filename));  
 
-           DB::table('audit_images')->insert([
-            'audit_id' => $audit->id,
-            'filename' => $filename,
-            'latitude' => $audit->latitude,
-            'longitude' => $audit->longitude
-           ]);
+               DB::table('audit_images')->insert([
+                'audit_id' => $audit->id,
+                'filename' => $filename,
+                'latitude' => $request->lat,
+                'longitude' => $request->lon,
+               ]);
+           }
 
-           return 'success';
+           $data = [
+            'id' => $audit->id,
+            'message' => 'Audit Succeeded!'
+           ];
+           return response()->json($data, 200)
+                  ->header('Content-Type', 'text/plain');
         }
     }
 

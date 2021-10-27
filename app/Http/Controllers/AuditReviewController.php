@@ -117,9 +117,12 @@ class AuditReviewController extends Controller
     {
         if(count($images) > 0) {
             $img = $images->first();
+            return '<a href="" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a> <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a> <a href="/uploads/images/' . $img->filename . '" target="_blank" class="btn btn-danger btn-xs"><i class="fa fa-image"></i></a>';
         }
-        return '<a href="" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a> 
-        <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a> <a href="/uploads/images/' . $img->filename . '" target="_blank" class="btn btn-danger btn-xs"><i class="fa fa-image"></i></a>';
+        else {
+            return '<a href="" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a> <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a>';
+        }
+        
 
         //https://www.google.com/search?q=15.336105%2C+120.5953213
     }
