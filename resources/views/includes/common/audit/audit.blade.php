@@ -274,7 +274,7 @@
 		        $(auditid).val(data.id)
 
 		        // remove
-		        // $(this).remove(); 
+		        $(this).remove(); 
 		      },
 		      error: function(data){
 		        console.log("error");

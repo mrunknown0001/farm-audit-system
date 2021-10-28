@@ -100,12 +100,14 @@ class AuditController extends Controller
                             ->first();
             }
             else {
-                return response('Location with Selected Audit Item was Conducted', 500)
+                // Error Check Possible Moanipulation
+                return response('Oops Error', 500)
                       ->header('Content-Type', 'text/plain');
             }
 
 
             if(!empty($check)) {
+                // Error Message to show when 
                 return response('Location with Selected Audit Item was Conducted', 500)
                       ->header('Content-Type', 'text/plain');
             }
