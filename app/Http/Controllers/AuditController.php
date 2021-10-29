@@ -27,6 +27,10 @@ class AuditController extends Controller
         // Show 
         if($cat == 'loc') {
             $dat = Location::findorfail($id);
+            // if Location has sub location auditables
+            if(count($dat->sub_locations) > 0) {
+                return abort(404);
+            }
             // validate if location and date is not audited
             
             // get audit items under this location 
@@ -44,7 +48,7 @@ class AuditController extends Controller
             return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'sub', 'audit_locs' => $audit_locs]);
         }
         else {
-            return abort(500);
+            return abort(404);
         }
 
     }

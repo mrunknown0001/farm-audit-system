@@ -83,8 +83,8 @@
 						<input type="hidden" name="audit_item_id" id="audit_item_id" value="{{ $l->audit_item->id }}">
 						<input type="hidden" name="cat" value="{{ $cat }}">
 						<input type="hidden" name="dat_id" value="{{ $dat->id }}">
-						<input type="hidden" class="lat" name="lat" id="lat" value="">
-						<input type="hidden" class="lon" name="lon" id="lon" value="">
+						<input type="hidden" class="lat" name="lat" id="latitude">
+						<input type="hidden" class="lon" name="lon" id="longitude">
 						<h3>{{ $l->audit_item->item_name . '(' . $l->audit_item->time_range . ')' }}</h3>
 						<p>{{ $l->audit_item->description }}</p>
 						<div class="row">
@@ -131,6 +131,60 @@
 
 @section('script')
 	<script>
+		$(document).ready(function (e) {
+			getLocation();
+		  $('.auditformclass').on('submit',(function(e) {
+		    e.preventDefault();
+		    getLocation();
+		    var formid = $(this).data('id');
+				// Add Loading Animation here
+		  	$("body").addClass("loading"); 
+		    var formData = new FormData(this);
+		    $.ajax({
+		      type:'POST',
+		      url: $(this).attr('action'),
+		      data:formData,
+		      cache:false,
+		      contentType: false,
+		      processData: false,
+		      success:function(data){
+		      	console.log(formData)
+		        // console.log("success");
+		        // console.log(data);
+		        // console.log(formData);
+		        // Close Upload Animation here
+		        $("body").removeClass("loading");
+		        Swal.fire({
+		          title: 'Audit Submitted!',
+		          text: data.message,
+		          type: 'success',
+		          showCancelButton: false,
+		          confirmButtonColor: '#3085d6',
+		          cancelButtonColor: '#d33',
+		          confirmButtonText: 'Close'
+		        });
+
+		        var auditid = '#audit_id-' + formid;
+		        $(auditid).val(data.id)
+
+		        // remove
+		        $(this).remove(); 
+		      },
+		      error: function(data){
+		        console.log("error");
+		        console.log(data);
+		        $("body").removeClass("loading");
+			      Swal.fire({
+						  type: 'error',
+						  title: 'Error Occured',
+						  text: data.responseText,
+						});
+		      }
+		    });
+		  }));
+
+		});
+
 		$("#viewsupervisors").click(function() {
 			var cat = '{{ $cat }}';
 	    $.ajax({
@@ -238,60 +292,6 @@
       	return true;
       }
     });
-
-		$(document).ready(function (e) {
-		  $('.auditformclass').on('submit',(function(e) {
-		    e.preventDefault();
-		    getLocation();
-		    var formid = $(this).data('id');
-				// Add Loading Animation here
-		  	$("body").addClass("loading"); 
-		    var formData = new FormData(this);
-		    $.ajax({
-		      type:'POST',
-		      url: $(this).attr('action'),
-		      data:formData,
-		      cache:false,
-		      contentType: false,
-		      processData: false,
-		      success:function(data){
-		        // console.log("success");
-		        // console.log(data);
-		        // console.log(formData);
-		        // Close Upload Animation here
-		        $("body").removeClass("loading");
-		        Swal.fire({
-		          title: 'Audit Submitted!',
-		          text: data.message,
-		          type: 'success',
-		          showCancelButton: false,
-		          confirmButtonColor: '#3085d6',
-		          cancelButtonColor: '#d33',
-		          confirmButtonText: 'Close'
-		        });
-
-		        var auditid = '#audit_id-' + formid;
-		        $(auditid).val(data.id)
-
-		        // remove
-		        $(this).remove(); 
-		      },
-		      error: function(data){
-		        console.log("error");
-		        console.log(data);
-		        $("body").removeClass("loading");
-			      Swal.fire({
-						  type: 'error',
-						  title: 'Error Occured',
-						  text: data.responseText,
-						});
-		      }
-		    });
-		  }));
-
-		});
-
-
 
 		var options = {
 		  enableHighAccuracy: false,
