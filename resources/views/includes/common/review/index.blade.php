@@ -30,7 +30,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Review Audit</h1>
+		<h1>Review Audit <button id="reloadtable" class="btn btn-primary"><i class="fa fa-sync"></i></button></h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -47,6 +47,7 @@
 	      <table id="audits" class="table cell-border compact stripe hover display nowrap" width="99%">
 		      <thead>
 	          <tr>
+	            <th scope="col">Status</th>
 	            <th scope="col">Location</th>
 	            <th scope="col">Audit Item</th>
 	            <th scope="col">Date & Time</th>
@@ -70,17 +71,57 @@
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
-		          { className: "dt-center", targets: [ 1, 2, 3 ] }
+		          { className: "dt-center", targets: [ 2, 3, 4 ] }
 		        ],
+	         	order: [[ 3, 'desc' ]],
 		        ajax: "{{ route('audit.review') }}",
 		        columns: [
+		        		{data: 'stat', name: 'stat'},
 		            {data: 'location', name: 'location'},
 		            {data: 'item', name: 'item'},
 		            {data: 'date_time', name: 'date_time'},
 		            {data: 'action', name: 'action', orderable: false, searchable: false},
 		        ]
 	      });
+
+			$("#reloadtable").click(function () { 
+				jotable.ajax.reload();
+			});
+
+			// setInterval(function(){
+			// 	jotable.ajax.reload();
+			// }, 10000);
 		});
 
+
+    $(document).on('click', '#view', function (e) {
+        e.preventDefault();
+        // var text = $(this).data('text');
+        var id = $(this).data('id');
+        Swal.fire({
+          title: 'View Audit?',
+          text: '',
+          type: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'View',
+        }).then((result) => {
+          if (result.value) {
+          	window.location.href = "/audit-review/" + id;
+          }
+          else {
+            Swal.fire({
+              title: 'Action Cancelled',
+              text: "",
+              type: 'info',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Close'
+            });
+          }
+        });
+    });
 	</script>
 @endsection

@@ -93,7 +93,7 @@
 								<input type="hidden" class="lon" name="lon" id="longitude-{{ $l->id }}">
 								<div class="row">
 									<div class="col-md-6 form-group">
-										<h3>{{ $l->audit_item->item_name . '(' . $l->audit_item->time_range . ')' }}</h3>
+										<h3>{{ $l->audit_item->item_name . ' (' . $l->audit_item->time_range . ')' }}</h3>
 										<p>{{ $l->audit_item->description }}</p>
 										@if(count($l->audit_item->checklists) > 0)
 											<ol>
@@ -150,7 +150,7 @@
 				<div id="errorcontainer" class="text-center">
 					@if($ittirate == 0)
 						<h3>No Available Audit Item at the Moment</h3>
-						<button type="button" class="btn btn-primary" onclick="location.reload()"><i class="fa fa-sync"></i> Reload</button>
+						<a href="{{ route('audit.index') }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Return to Audit Page</a> <button type="button" class="btn btn-primary" onclick="location.reload()"><i class="fa fa-sync"></i> Reload</button> 
 					@endif
 				</div>
 			</div>
@@ -223,7 +223,7 @@
 
 		        // auditformclass if none found display 
 		        if ($(".auditformclass").length < 1) {
-						   $("#errorcontainer").append('<h3 class="text-center">No Available Audit Item at the Moment</h3><button type="button" class="btn btn-primary" onclick="location.reload()"><i class="fa fa-sync"></i> Reload</button>');
+						   $("#errorcontainer").append('<h3>No Available Audit Item at the Moment</h3> <a href="{{ route("audit.index") }}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Return to Audit Page</a> <button type="button" class="btn btn-primary" onclick="location.reload()"><i class="fa fa-sync"></i> Reload</button> ');
 						}
 		      },
 		      error: function(data){
@@ -378,6 +378,19 @@
 
   	function formdatasave(form) {
 	    var formid = $(form).data('id');
+	    var latitude = '#latitude-' + formid;
+	    var longitude = '#longitude-' + formid;
+	    var latitude_coor = $(latitude).val();
+	    var longitude_coor = $(longitude).val();
+	    if(latitude_coor == '' || latitude_coor == null) {
+	    	// Stop form when this error detected
+	      Swal.fire({
+				  type: 'error',
+				  title: 'Error Occured',
+				  text: 'Please Reload and Try Again or Allow Location Permission',
+				});
+				return false;
+	    }
 			// Add Loading Animation here
 	  	$("body").addClass("loading"); 
 	    var formData = new FormData(form);
