@@ -191,4 +191,32 @@ class AuditItemController extends Controller
             return false;
         }
     }
+
+
+
+    /**
+     * [timecheck description]
+     * return array type of time
+     */
+    public static function timecheck($timerange)
+    {
+        // exployed using ,
+        $range = explode(",", $timerange);
+
+        // check if more that 1
+        foreach($range as $r) {
+            // explode using -
+
+            // check current time from|to
+            $time = explode("-", $r);
+            $time_now = date('h:i a', strtotime(now()));
+            $time0 = date('h:i a', strtotime($time[0]));
+            $time1 = date('h:i a', strtotime($time[1]));
+            if($time_now >= $time0 && $time_now <= $time1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

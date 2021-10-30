@@ -28,7 +28,7 @@ class CreateAuditsTable extends Migration
             $table->boolean('verified')->default(0); // Reviewed and Validated Non-Compliance
             $table->boolean('done')->default(0); // Marks 1 if the audit was done
             $table->text('field1')->nullable(); // Category for loc/sub
-            $table->text('field2')->nullable();
+            $table->text('field2')->nullable(); // additional remarks
             $table->text('field3')->nullable();
             $table->timestamps();
         });

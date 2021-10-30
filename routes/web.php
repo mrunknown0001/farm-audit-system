@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/qr', function () {
 // 	return view('qr');
 // });
+// 
+// Route::get('timecheck/{time}', 'AuditItemController@timecheck');
 
 Route::get('/', function () {
     return redirect()->route('login');
