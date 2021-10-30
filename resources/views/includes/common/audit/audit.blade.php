@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@inject('auditcontroller', '\App\Http\Controllers\AuditController')
+
 @section('title')
 	Audit
 @endsection
@@ -77,49 +79,62 @@
 		<div class="row">
 			<div class="col-md-12">
 				@foreach($audit_locs as $key => $l)
-					<form class="auditformclass" data-id={{ $l->id }} action="{{ route('audit.store') }}" method="POST" enctype="multipart/form-data">
-						@csrf
-						<input type="hidden" name="audit_id" id="audit_id-{{ $l->id }}" value="">
-						<input type="hidden" name="audit_item_id" id="audit_item_id" value="{{ $l->audit_item->id }}">
-						<input type="hidden" name="cat" value="{{ $cat }}">
-						<input type="hidden" name="dat_id" value="{{ $dat->id }}">
-						<input type="hidden" class="lat" name="lat" id="latitude">
-						<input type="hidden" class="lon" name="lon" id="longitude">
-						<h3>{{ $l->audit_item->item_name . '(' . $l->audit_item->time_range . ')' }}</h3>
-						<p>{{ $l->audit_item->description }}</p>
-						<div class="row">
-							<div class="col-md-6 form-group">
-								<label>Compliant ba?</label>
-								<select name="compliance" id="compliance" data-id="{{ $l->id }}" class="form-control" required>
-									<option value="n">Pumili ng Isa</option>
-									<option value="1">Compliant</option>
-									<option value="0">Non-Compliant</option>
-								</select>
-							</div>
-						</div>
-						<div class="row" id="noncomplianceremarks-{{ $l->id }}" style="display: none;">
-							<div class="col-md-6 form-group">
-								<label>Bakit hindi compliance?</label>
-								<textarea name="remarks" id="remarks" class="form-control"></textarea>
-							</div>
-						</div>
-
-						<div class="row" id="noncompliancecamera-{{ $l->id }}" style="display: none;">
-							<div class="col-md-6 form-group text-center">
-								<div class="image-upload">
-									<input type="file" id="upload-{{ $l->id }}" name="upload" accept="image/*" capture style="display: none">
-									<label for="upload-{{ $l->id }}">
-										<span id="camera" class="btn btn-primary"><i class="fa fa-camera fa-3x"></i></span>
-									</label>
+					@if($auditcontroller->auditCheck($cat, $dat->id, $l->audit_item->id))
+						<form class="auditformclass" id="form-{{ $l->id }}" data-id={{ $l->id }} action="{{ route('audit.store') }}" method="POST" enctype="multipart/form-data">
+							@csrf
+							<input type="hidden" name="audit_id" id="audit_id-{{ $l->id }}" value="">
+							<input type="hidden" name="audit_item_id" id="audit_item_id" value="{{ $l->audit_item->id }}">
+							<input type="hidden" name="cat" value="{{ $cat }}">
+							<input type="hidden" name="dat_id" value="{{ $dat->id }}">
+							<input type="hidden" class="lat" name="lat" id="latitude-{{ $l->id }}">
+							<input type="hidden" class="lon" name="lon" id="longitude-{{ $l->id }}">
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<h3>{{ $l->audit_item->item_name . '(' . $l->audit_item->time_range . ')' }}</h3>
+									<p>{{ $l->audit_item->description }}</p>
+									@if(count($l->audit_item->checklists) > 0)
+										<ol>
+											@foreach($l->audit_item->checklists as $c)
+												<li>{{ $c->checklist }}</li>
+											@endforeach
+										</ol>
+									@endif
 								</div>
 							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6 form-group text-center">
-								<button type="submit" id="" class="btn btn-primary">Submit</button>
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label>Compliant ba?</label>
+									<select name="compliance" id="compliance" data-id="{{ $l->id }}" class="form-control" required>
+										<option value="n">Pumili ng Isa</option>
+										<option value="1">Compliant</option>
+										<option value="0">Non-Compliant</option>
+									</select>
+								</div>
 							</div>
-						</div>
-					</form>
+							<div class="row" id="noncomplianceremarks-{{ $l->id }}" style="display: none;">
+								<div class="col-md-6 form-group">
+									<label>Bakit hindi compliance?</label>
+									<textarea name="remarks" id="remarks" class="form-control"></textarea>
+								</div>
+							</div>
+
+							<div class="row" id="noncompliancecamera-{{ $l->id }}" style="display: none;">
+								<div class="col-md-6 form-group text-center">
+									<div class="image-upload">
+										<input type="file" id="upload-{{ $l->id }}" name="upload" accept="image/*" capture style="display: none">
+										<label for="upload-{{ $l->id }}">
+											<span id="camera" class="btn btn-primary"><i class="fa fa-camera fa-3x"></i></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 form-group text-center">
+									<button type="submit" id="" class="btn btn-primary">Submit</button>
+								</div>
+							</div>
+						</form>
+					@endif
 				@endforeach
 			</div>
 		</div>
@@ -137,6 +152,18 @@
 		    e.preventDefault();
 		    getLocation();
 		    var formid = $(this).data('id');
+		    var latitude = '#latitude-' + formid;
+		    var longitude = '#longitude-' + formid;
+		    var latitude_coor = $(latitude).val();
+		    var longitude_coor = $(longitude).val();
+		    if(latitude_coor == '' || latitude_coor == null) {
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Error Occured',
+					  text: 'Please Reload and Try Again or Allow Location Permission',
+					});
+					return false;
+		    }
 				// Add Loading Animation here
 		  	$("body").addClass("loading"); 
 		    var formData = new FormData(this);
@@ -151,7 +178,6 @@
 		      	console.log(formData)
 		        // console.log("success");
 		        // console.log(data);
-		        // console.log(formData);
 		        // Close Upload Animation here
 		        $("body").removeClass("loading");
 		        Swal.fire({
@@ -167,8 +193,9 @@
 		        var auditid = '#audit_id-' + formid;
 		        $(auditid).val(data.id)
 
-		        // remove
-		        $(this).remove(); 
+		        // remove form once done
+		        var frmId = '#form-' + formid;
+		        $(frmId).remove(); 
 		      },
 		      error: function(data){
 		        console.log("error");

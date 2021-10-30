@@ -36,7 +36,7 @@ class AuditController extends Controller
             // get audit items under this location 
             $audit_locs = AuditItemLocation::where('location_id', $dat->id)->get();
 
-            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'loc', 'audit_locs' => $audit_locs]);
+            return view('includes.common.audit.audit', ['dat' => $dat, 'cat' => 'loc', 'audit_locs' => $audit_locs]);
         }
         elseif($cat == 'sub') {
             $dat = SubLocation::findorfail($id);
@@ -45,7 +45,7 @@ class AuditController extends Controller
             // get audit items under the location of this sublocation 
             $audit_locs = AuditItemLocation::where('location_id', $dat->location->id)->get();
 
-            return view('includes.common.audit.audit', ['system' => $this->system(), 'dat' => $dat, 'cat' => 'sub', 'audit_locs' => $audit_locs]);
+            return view('includes.common.audit.audit', ['dat' => $dat, 'cat' => 'sub', 'audit_locs' => $audit_locs]);
         }
         else {
             return abort(404);
@@ -69,7 +69,7 @@ class AuditController extends Controller
      */
     public function index()
     {
-        return view('includes.common.audit.index', ['system' => $this->system()]);
+        return view('includes.common.audit.index');
     }
 
 
@@ -88,19 +88,20 @@ class AuditController extends Controller
             // $request->cat
             // $request->dat_id
             // date today
-            $current = Carbon::now();
             if($request->cat == 'loc') {
                 $check = Audit::where('field1', 'loc')
                             ->where('location_id', $request->dat_id)
                             ->where('audit_item_id', $request->audit_item_id)
-                            ->whereDate('created_at', '>=', date('Y-m-d', strtotime($current->addHour(8))))
+                            ->where('done', 0)
+                            ->whereDate('created_at', date('Y-m-d', strtotime(now())))
                             ->first();
             }
             elseif($request->cat == 'sub') {
                 $check = Audit::where('field1', 'sub')
                             ->where('sub_location_id', $request->dat_id)
                             ->where('audit_item_id', $request->audit_item_id)
-                            ->whereDate('created_at', '>=', date('Y-m-d', strtotime($current->addHour(8))))
+                            ->where('done', 0)
+                            ->whereDate('created_at', date('Y-m-d', strtotime(now())))
                             ->first();
             }
             else {
@@ -168,53 +169,55 @@ class AuditController extends Controller
             'id' => $audit->id,
             'message' => 'Audit Succeeded!'
            ];
+
            return response()->json($data, 200)
                   ->header('Content-Type', 'text/plain');
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Audit $audit)
-    {
-        //
-    }
+
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
+     * Audit item check
      */
-    public function edit(Audit $audit)
+    public static function auditCheck($cat, $id, $item_id)
     {
-        //
+        if($cat == 'loc') {
+            $check = Audit::where('field1', 'loc')
+                        ->where('location_id', $id)
+                        ->where('audit_item_id', $item_id)
+                        ->where('done', 0)
+                        ->whereDate('created_at', date('Y-m-d', strtotime(now())))
+                        ->first();
+        }
+        elseif($cat == 'sub') {
+            $check = Audit::where('field1', 'sub')
+                        ->where('sub_location_id', $id)
+                        ->where('audit_item_id', $item_id)
+                        ->where('done', 0)
+                        ->whereDate('created_at', date('Y-m-d', strtotime(now())))
+                        ->first();
+        }
+
+        if(!empty($check)) {
+           return false;
+        }
+        else {
+            return true;
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Audit $audit)
-    {
-        //
-    }
+
+
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Audit  $audit
-     * @return \Illuminate\Http\Response
+     * auditDone
+     * Mark audit item on specific auditbles was done
      */
-    public function destroy(Audit $audit)
+    public function auditDone(Request $request)
     {
-        //
+        // validate audit item on auditables
+
+        // mark as done
     }
 }

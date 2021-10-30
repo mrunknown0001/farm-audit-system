@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/auditable/assigned/caretaker/{cat}/{id}', 'AssignmentController@getCaretakers')->name('get.assigned.caretakers');
 
 	Route::post('/audit/store', 'AuditController@store')->name('audit.store');
+	Route::post('/audit/done/{id}', 'AuditController@auditDone')->name('audit.done');
 
 	# Audit Review
 	Route::get('/audit-review', 'AuditReviewController@index')->name('audit.review');
