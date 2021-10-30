@@ -64,6 +64,7 @@
 						<p><i>{{ $audit->field2 }}</i></p>
 					@endif
 					@if(count($audit->images) > 0)
+						<h4>Images Uploaded</h4>
 						<div class="image-set m-t-20">
 							@foreach($audit->images as $i)
 								<a data-magnify="gallery" data-src="" data-caption="{{ $i->filename }}" data-group="a" href="{{ asset('/uploads/images/' . $i->filename) }}">
