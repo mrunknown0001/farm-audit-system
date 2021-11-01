@@ -59,7 +59,7 @@ return [
         |
         */
         'properties'             => [
-            'creator'        => '',
+            'creator'        => 'Mr.Unknown',
             'lastModifiedBy' => '',
             'title'          => '',
             'description'    => '',
@@ -67,7 +67,7 @@ return [
             'keywords'       => '',
             'category'       => '',
             'manager'        => '',
-            'company'        => '',
+            'company'        => 'Brookside Group of Companies',
         ],
     ],
 

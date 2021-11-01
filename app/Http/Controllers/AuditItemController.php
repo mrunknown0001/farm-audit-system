@@ -54,7 +54,11 @@ class AuditItemController extends Controller
         if(!AccessController::checkAccess(Auth::user()->id, 'audit_item_module')) {
             return abort(403);
         }
-        $locations = Location::where('active', 1)->where('is_deleted', 0)->orderBy('location_name', 'asc')->get();
+        $locations = Location::where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->orderBy('location_name', 'asc')
+                            ->orderBy('LENGTH(location_name)', 'ASC')
+                            ->get();
         return view('includes.common.audit-item.add', ['locations' => $locations]);
     }
 
@@ -108,7 +112,11 @@ class AuditItemController extends Controller
     public function edit($id)
     {
         $item = AuditItem::where('id', $id)->where('active', 1)->where('is_deleted', 0)->first();
-        $locations = Location::where('active', 1)->where('is_deleted', 0)->orderBy('location_name', 'asc')->get();
+        $locations = Location::where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->orderBy('location_name', 'asc')
+                            ->orderBy('LENGTH(location_name)', 'ASC')
+                            ->get();
         return view('includes.common.audit-item.edit', ['locations' => $locations, 'item' => $item]);
 
     }
