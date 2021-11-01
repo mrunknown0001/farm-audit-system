@@ -53,7 +53,7 @@
 					<p><span class="label label-danger">NON-COMPLIANT <i class="fa fa-times"></i></span></p>
 				@endif
 				<p><button class="btn btn-primary btn-xs" id="showmap"><i class="fa fa-map-marked-alt"></i> View Location</button></p>
-				<div id="mapholder" style="min-height: 200px"></div>
+				<div id="mapholder"></div>
 				<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
 				<hr>
 				<p>Audit Item: <strong>{{ $audit->audit_item->item_name . ' (' . $audit->audit_item->time_range . ')' }}</strong></p>
@@ -95,6 +95,7 @@
 	<script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
 	<script src="{{ asset('magnify/js/jquery.magnify.js') }}"></script>
 	<script src="{{ asset('summernote/summernote.min.js') }}"></script>
+	<script src="https://maps.google.com/maps/api/js?key=AIzaSyAQvHBXoM12klgegEIh1rTfklVQR3XkAXw"></script>
   <script>
 		$(document).ready(function() {
 		 $('#summernote').summernote({
