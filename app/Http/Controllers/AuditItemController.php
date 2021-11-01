@@ -57,8 +57,8 @@ class AuditItemController extends Controller
         $locations = Location::where('active', 1)
                             ->where('is_deleted', 0)
                             ->orderBy('location_name', 'asc')
-                            ->orderByRaw('LENGTH(location_name)', 'ASC')
                             ->get();
+        $locations = $locations->sortBy('location_name', SORT_REGULAR, false);
         return view('includes.common.audit-item.add', ['locations' => $locations]);
     }
 
@@ -115,8 +115,8 @@ class AuditItemController extends Controller
         $locations = Location::where('active', 1)
                             ->where('is_deleted', 0)
                             ->orderBy('location_name', 'asc')
-                            ->orderByRaw('LENGTH(location_name)', 'ASC')
                             ->get();
+        $locations = $locations->sortBy('location_name', SORT_REGULAR, false);
         return view('includes.common.audit-item.edit', ['locations' => $locations, 'item' => $item]);
 
     }
