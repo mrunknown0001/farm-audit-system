@@ -53,7 +53,7 @@
 					<p><span class="label label-danger">NON-COMPLIANT <i class="fa fa-times"></i></span></p>
 				@endif
 				<p><button class="btn btn-primary btn-xs" id="showmap"><i class="fa fa-map-marked-alt"></i> View Location</button></p>
-				<div id="mapholder" style="display: none;"></div>
+				<div id="mapholder" style="min-height: 200px"></div>
 				<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
 				<hr>
 				<p>Audit Item: <strong>{{ $audit->audit_item->item_name . ' (' . $audit->audit_item->time_range . ')' }}</strong></p>
