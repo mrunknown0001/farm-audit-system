@@ -88,6 +88,7 @@ Route::group(['middleware' => 'auth'], function () {
 	# Audit Review
 	Route::get('/audit-review', 'AuditReviewController@index')->name('audit.review');
 	Route::get('/audit-review/{id}', 'AuditReviewController@show')->name('audit.review.show');
+	Route::post('/audit-review/{id}', 'AuditReviewController@review')->name('audit.post.review');
 
 });
 

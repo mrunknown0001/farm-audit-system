@@ -71,7 +71,8 @@
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
-		          { className: "dt-center", targets: [ 2, 3, 4 ] }
+		          { className: "dt-center", targets: [ 2, 3, 4 ] },
+		          { type: 'date', 'targets': [3] }
 		        ],
 	         	order: [[ 3, 'desc' ]],
 		        ajax: "{{ route('audit.review') }}",
@@ -79,7 +80,10 @@
 		        		{data: 'stat', name: 'stat'},
 		            {data: 'location', name: 'location'},
 		            {data: 'item', name: 'item'},
-		            {data: 'date_time', name: 'date_time'},
+		            {
+		               data: 'date_time',
+		               name: 'date_time',
+		            },
 		            {data: 'action', name: 'action', orderable: false, searchable: false},
 		        ]
 	      });

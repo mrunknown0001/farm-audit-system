@@ -29,7 +29,7 @@ class CreateAuditsTable extends Migration
             $table->boolean('done')->default(0); // Marks 1 if the audit was done
             $table->string('field1')->nullable(); // Category for loc/sub
             $table->text('field2')->nullable(); // additional remarks
-            $table->text('field3')->nullable();
+            $table->text('field3')->nullable(); // Verified by id of the reviewer
             $table->boolean('read')->default(0);
             $table->bigInteger('read_by')->nullable();
             $table->timestamp('read_timestamp')->nullable();

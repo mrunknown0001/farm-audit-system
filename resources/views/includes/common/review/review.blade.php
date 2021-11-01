@@ -52,8 +52,9 @@
 				@else
 					<p><span class="label label-danger">NON-COMPLIANT <i class="fa fa-times"></i></span></p>
 				@endif
-				<p><a href=""><i class="fa fa-map-marked-alt"></i> View Location</a></p>
-				<p>Timestamp: {{ $audit->created_at }}</p>
+				<p><button class="btn btn-primary btn-xs" id="showmap"><i class="fa fa-map-marked-alt"></i> View Location</button></p>
+				<div id="mapholder" style="display: none;"></div>
+				<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
 				<hr>
 				<p>Audit Item: <strong>{{ $audit->audit_item->item_name . ' (' . $audit->audit_item->time_range . ')' }}</strong></p>
 				@if($audit->compliance == 0)
@@ -75,9 +76,15 @@
 					@endif
 				@endif
 				<hr>
-				<h4>Reviewer Remarks</h4>
-				<textarea id="summernote" name="editordata"></textarea>
-				<button class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+				<form accept="{{ route('audit.post.review', ['id' => $audit->id]) }}" method="POST" enctype="multipart/form-data">
+					@csrf
+					<div class="form-group">
+						<input type="checkbox" name="verified" id="verified" value="1"> <label for="verified">Verify Correct</label>
+					</div>
+					<h4>Reviewer Remarks</h4>
+					<textarea id="summernote" name="editordata"></textarea>
+					<button class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+				</form>
 			</div>
 		</div>
 	</section>
@@ -105,6 +112,14 @@
           ['view', ['fullscreen', 'help']]
         ]
 		 });
+
+			var latlon = {{ $audit->latitude }} + "," + {{ $audit->longitude }};
+			var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false&key=AIzaSyAQvHBXoM12klgegEIh1rTfklVQR3XkAXw";
+			document.getElementById("mapholder").innerHTML = "<img class='img img-responsive' src='"+img_url+"'>";
+
+			$("#showmap").click(function () {
+				$("#mapholder").show();
+			});
 		});
     window.prettyPrint && prettyPrint();
 
