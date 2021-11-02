@@ -70,9 +70,10 @@
 				@else
 					<p><span class="label label-danger">NON-COMPLIANT <i class="fa fa-times"></i></span></p>
 				@endif
+				<p>Marshal: <strong>{{ $audit->auditor->first_name . ' ' . $audit->auditor->last_name }}</strong></p>
+				<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
 				<p><button class="btn btn-primary btn-xs" id="showmap"><i class="fa fa-map-marked-alt"></i> View Location</button></p>
 				<div id="mapholder" style="display: none;"></div>
-				<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
 				<hr>
 				<p>Audit Item: <strong>{{ $audit->audit_item->item_name . ' (' . $audit->audit_item->time_range . ')' }}</strong></p>
 				@if($audit->compliance == 0)
@@ -105,6 +106,10 @@
 						<button id="reviewsubmitbutton" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
 					@endif
 				</form>
+				@if($audit->reviewed == 1)
+					<p>Reviewed by: <strong>{{ $audit->reviewer->first_name . ' ' . $audit->reviewer->last_name }}</strong></p>
+					<p>Review Timestamp: <strong>{{ $audit->review->created_at }}</strong></p>
+				@endif
 			</div>
 		</div>
 		<div class="overlay"></div>

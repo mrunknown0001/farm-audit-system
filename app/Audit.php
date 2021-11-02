@@ -30,4 +30,15 @@ class Audit extends Model
     {
         return $this->hasOne('App\AuditReview');
     }
+
+
+    public function reviewer()
+    {
+        return $this->belongsTo('App\User', 'field3');
+    }
+
+    public function auditor()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
 }
