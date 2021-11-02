@@ -137,7 +137,13 @@ class AuditController extends Controller
                 $audit->sub_location_id = $request->dat_id;
             }
             $audit->compliance = $request->compliance; // 1 or 0
-            $audit->non_compliance_remarks = $request->remarks;
+            if($request->compliance == 0) {
+                $audit->non_compliance_remarks = $request->remarks;
+            }
+            else {
+                $audit->non_compliance_remarks = null;
+            }
+            
             if($request->done == 1) {
                 $audit->done = 1;
             }
