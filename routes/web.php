@@ -101,6 +101,9 @@ Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/audit/reviewedby/{id}', 'AuditReviewController@reviewedby')->name('audit.reviewedby');
 	Route::get('/auditor/review/{id}','AuditReviewController@auditorreview')->name('auditor.review');
 
+	# Audit Reviewer Notification
+	Route::get('/reviwer/notification', 'ReviewerNotificationController@notif')->name('reviewer.notification');
+
 });
 
 # Admin Route Group

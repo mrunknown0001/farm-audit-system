@@ -93,9 +93,6 @@
 				jotable.ajax.reload();
 			});
 
-			// setInterval(function(){
-			// 	jotable.ajax.reload();
-			// }, 10000);
 		});
 
 
@@ -128,5 +125,74 @@
           }
         });
     });
+
+
+
+
+	  /**
+	   * showNotification
+	   * 
+	   */
+	  function showNotification()
+	  {
+	    const notification = new Notification("New Audit Notification", {
+	      body: "New Audit Notification.",
+	      icon: "{{ asset('img/BGC.png') }}"
+	    });
+
+	    notification.addEventListener('click', () => {
+  			$("#reloadtable").click(function () { 
+					jotable.ajax.reload();
+				});
+	    });
+	  }
+
+	  /**
+	   * triggerNotification
+	   *
+	   */
+	  function triggerNotification() { 
+	    if (Notification.permission === "granted") {
+	      showNotification();
+	    } 
+	    else if (Notification.permission !== "denied") {
+	      Notification.requestPermission().then(permission => {
+	      if(permission === "granted") {
+	        showNotification();
+	      } else {
+	        alert('Permission Denied');
+	      }
+	      });
+	    }
+	  }
+
+
+	  /**
+	   * checkForUpdates
+	   * 
+	   */
+	  function checkForUpdates() {
+	    
+	    a = $.ajax({
+	      type: "GET",
+	      url: '{{ route('reviewer.notification') }}',
+	      success: function(data) {
+	        if(data == 1) {
+	        	triggerNotification();
+	        }
+	      },
+	      dataType: "json"
+	    });
+	  
+	    return a;
+	  }
+
+
+	  (function(){
+	    // do something here
+	    var num = checkForUpdates();
+
+	    setTimeout(arguments.callee, 3000);
+	  })();
 	</script>
 @endsection
