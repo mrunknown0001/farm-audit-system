@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	Review Audit
+	Reviewed Audit
 @endsection
 
 @section('style')
@@ -39,7 +39,7 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
-				<p><a href="{{ route('audit.reviewed') }}">Reviewed Audit</a></p>
+				<p><a href="{{ route('audit.review') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Audit</a></p>
 				@include('includes.all')
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 		          { type: 'date', 'targets': [3] }
 		        ],
 	         	order: [[ 3, 'desc' ]],
-		        ajax: "{{ route('audit.review') }}",
+		        ajax: "{{ route('audit.reviewed') }}",
 		        columns: [
 		        		{data: 'stat', name: 'stat'},
 		            {data: 'location', name: 'location'},

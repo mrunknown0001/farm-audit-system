@@ -8,6 +8,24 @@
 	<link href="https://cdn.bootcss.com/balloon-css/0.5.0/balloon.min.css" rel="stylesheet">
   <link href="{{ asset('magnify/css/jquery.magnify.css') }}" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="{{ asset('summernote/summernote.min.css') }}">
+  <style>
+	  .overlay{
+      display: none;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 999;
+      background: rgba(255,255,255,0.8) url("/gif/apple.gif") center no-repeat;
+	  }
+	  body.loading{
+	      overflow: hidden;   
+	  }
+	  body.loading .overlay{
+	      display: block;
+	  }
+  </style>
 @endsection
 
 @section('sidebar')
@@ -76,17 +94,20 @@
 					@endif
 				@endif
 				<hr>
-				<form accept="{{ route('audit.post.review', ['id' => $audit->id]) }}" method="POST" enctype="multipart/form-data">
+				<form id="reviewform" accept="{{ route('audit.post.review', ['id' => $audit->id]) }}" method="POST" enctype="multipart/form-data">
 					@csrf
 					<div class="form-group">
-						<input type="checkbox" name="verified" id="verified" value="1"> <label for="verified">Verify Correct</label>
+						<input type="checkbox" name="verified" id="verified" value="1" {{ $audit->verified == 1 ? 'checked' : '' }}> <label for="verified">Verify Correct</label>
 					</div>
 					<h4>Reviewer Remarks</h4>
-					<textarea id="summernote" name="editordata"></textarea>
-					<button class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+					<textarea id="summernote" name="editordata">{{ $audit->reviewed == 1 ? $audit->review->review : '' }}</textarea>
+					@if($audit->reviewed == 0)
+						<button id="reviewsubmitbutton" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+					@endif
 				</form>
 			</div>
 		</div>
+		<div class="overlay"></div>
 	</section>
 </div>
 @endsection
@@ -98,6 +119,10 @@
 	<script src="https://maps.google.com/maps/api/js?key=AIzaSyAQvHBXoM12klgegEIh1rTfklVQR3XkAXw"></script>
   <script>
 		$(document).ready(function() {
+			@if($audit->reviewed == 1)
+				$('#summernote').summernote('disable');
+			@endif
+
 		 $('#summernote').summernote({
         placeholder: 'Reviewer Remarks...',
         tabsize: 2,
@@ -108,7 +133,7 @@
           ['color', ['color']],
           ['para', ['ul', 'ol', 'paragraph']],
           ['table', ['table']],
-          ['insert', []]
+          ['insert', []],
           // ['insert', ['link', 'picture', 'video']],
           ['view', ['fullscreen', 'help']]
         ]
@@ -134,6 +159,55 @@
 			$("#showmap").click(function () {
 				$("#mapholder").show();
 			});
+
+
+	  $('#reviewform').on('submit',(function(e) {
+	    e.preventDefault();
+			// Add Loading Animation here
+	  	$("body").addClass("loading"); 
+	    var formData = new FormData(this);
+	    $.ajax({
+	      type:'POST',
+	      url: $(this).attr('action'),
+	      data:formData,
+	      cache:false,
+	      contentType: false,
+	      processData: false,
+	      success:function(data){
+	        console.log("success");
+	        // Close Upload Animation here
+	        $("body").removeClass("loading");
+	        Swal.fire({
+	          title: 'Review Submitted!',
+	          text: "",
+	          type: 'success',
+	          showCancelButton: false,
+	          confirmButtonColor: '#3085d6',
+	          cancelButtonColor: '#d33',
+	          confirmButtonText: 'Close'
+	        });
+	        // remove submit button
+	        $('#reviewsubmitbutton').remove();
+	        // readonly summernote
+	        $('#summernote').summernote('disable');
+	      },
+	      error: function(data){
+	        console.log("error");
+	        $("body").removeClass("loading");
+		      Swal.fire({
+					  type: 'error',
+					  title: 'Error Occured',
+					  text: 'Please Try Again.',
+					});
+
+					var errors = data.responseJSON;
+					console.log(errors);
+	      }
+	    });
+	  }));
+
+
+
 		});
     window.prettyPrint && prettyPrint();
 

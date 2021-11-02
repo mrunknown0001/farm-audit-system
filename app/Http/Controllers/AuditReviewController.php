@@ -49,12 +49,29 @@ class AuditReviewController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function review(Request $request, $id)
     {
-        //
+        if($request->ajax()) {
+            // validation
+            $audit = Audit::findorfail($id);
+            if($audit->reviewed == 1) {
+                return response('This is already reviewed.', 500)
+                      ->header('Content-Type', 'text/plain');
+            }
+            $audit->reviewed = 1;
+            $audit->date_reviewed = date('Y-m-d h:i:s', strtotime(now()));
+            $audit->verified = $request->verified;
+            $audit->field3 = Auth::user()->id;
+            $audit->save();
+
+            $review = new AuditReview();
+            $review->audit_id = $audit->id;
+            $review->user_id = Auth::user()->id;
+            $review->verified = $request->verified;
+            $review->review = $request->editordata;
+            $review->save();
+        }
     }
 
     /**
@@ -73,38 +90,40 @@ class AuditReviewController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the reviewed audit
      *
-     * @param  \App\AuditReview  $auditReview
-     * @return \Illuminate\Http\Response
      */
-    public function edit(AuditReview $auditReview)
+    public function reviewed(Request $request)
     {
-        //
+        if(!AccessController::checkAccess(Auth::user()->id, 'audit_reviewer')) {
+            return abort(403);
+        }
+
+        if($request->ajax()) {
+            $audits = Audit::where('reviewed', 1)
+                            ->where('done', 1)
+                            ->get();
+ 
+            $data = collect();
+            if(count($audits) > 0) {
+                foreach($audits as $j) {
+                    $data->push([
+                        'stat' => $j->read == 0 ? '<span class="label label-warning badge-pill">NEW</span>' : '<span class="label label-success badge-pill">SEEN</span>',
+                        'location' => $j->field1 == 'loc' ? $j->location->location_name : $j->sub_location->location->location_name . ' - ' . $j->sub_location->sub_location_name,
+                        'item' => $j->audit_item->item_name,
+                        'date_time' => date('F j, Y H:i:s', strtotime($j->created_at)),
+                        'action' => $this->reviewaction($j->id, $j->latitude, $j->longitude, $j->images)
+                    ]);
+                }
+            }
+            return DataTables::of($data)
+                    ->rawColumns(['stat', 'action'])
+                    ->make(true);
+        }
+        return view('includes.common.review.reviewed');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AuditReview  $auditReview
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, AuditReview $auditReview)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\AuditReview  $auditReview
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(AuditReview $auditReview)
-    {
-        //
-    }
 
 
 

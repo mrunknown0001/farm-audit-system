@@ -25,4 +25,9 @@ class Audit extends Model
     {
     	return $this->belongsTo('App\AuditItem');
     }
+
+    public function review()
+    {
+        return $this->hasOne('App\AuditReview');
+    }
 }

@@ -94,6 +94,7 @@
 				</form>
 			</div>
 		</div>
+		<div class="overlay"></div>
 	</section>
 </div>
 @endsection
