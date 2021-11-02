@@ -274,7 +274,7 @@ class AssignmentController extends Controller
 
             if(count($dat) > 0) {
                 foreach($dat as $d) {
-                    if($d->user->role_id == 8) {                 
+                    if($d->user->role_id == 8 || $d->user->role_id == 7) {                 
                         $data[] = [
                             'name' => $d->user->first_name . ' ' . $d->user->last_name
                         ];
