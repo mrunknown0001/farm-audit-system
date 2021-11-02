@@ -303,7 +303,7 @@ class AssignmentController extends Controller
      */
     public static function getSupervisors($cat, $id)
     {
-        $data = [];
+        $data = array();
 
         if($cat == 'loc') {
             $dat = Assignment::where('location_id', $id)
@@ -312,9 +312,7 @@ class AssignmentController extends Controller
             if(count($dat) > 0) {
                 foreach($dat as $d) {
                     if($d->user->role_id == 6) {
-                        $data[] = [
-                            'name' => $d->user->first_name . ' ' . $d->user->last_name
-                        ];
+                        array_push($data, $d->user->first_name . ' ' . $d->user->last_name);
                     }
                 }
                 // Return Array of Assigned Supervisors
@@ -331,27 +329,20 @@ class AssignmentController extends Controller
 
             if(count($dat) > 0) {
                 foreach($dat as $d) {
-                    if($d->user->role_id == 6) {                 
-                        $data[] = [
-                            'name' => $d->user->first_name . ' ' . $d->user->last_name
-                        ];
-                    }
-                    else {
-                        $sub = SubLocation::find($id);
-                        $check = Assignment::where('location_id', $sub->location->id)
-                                        ->get();
-                        if(count($check) > 0) {
-                            foreach($check as $c) {
-                                $data[] = [
-                                    'name' => $c->user->first_name . ' ' . $c->user->last_name
-                                ];
+                    $sub = SubLocation::find($id);
+                    $check = Assignment::where('location_id', $sub->location->id)
+                                    ->get();
+                    if(count($check) > 0) {
+                        foreach($check as $c) {
+                            if($c->user->role_id == 6) {
+                                array_push($data, $c->user->first_name . ' ' . $c->user->last_name);
                             }
                         }
                     }
 
                 }
                 // Return Array of Assigned Supervisors
-                return $data;
+                return array_unique($data, SORT_STRING);
             }
             else {
                 // This can be audited cause no assigned 

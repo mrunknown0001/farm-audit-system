@@ -30,6 +30,9 @@ class RolesTableSeeder extends Seeder
         	[
         		'name' => 'Supervisor'
         	],
+            [
+                'name' => 'Officer'
+            ],
         	[
         		'name' => 'First Line' // Rank and File
         	]

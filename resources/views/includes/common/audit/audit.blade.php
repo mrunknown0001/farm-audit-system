@@ -250,11 +250,11 @@
 	      success: function(data) {
 	        // console.log(data);
 	        var sup = '<b>Supervisor(s)</b><ul class="">';
-	        if(Array.isArray(data)) {
+	        if(Array.isArray(data) && data.length > 0) {
 						var arrayLength = data.length;
 						// console.log(arrayLength)
 						for (var i = 0; i < arrayLength; i++) {
-						  sup += "<li>" + data[i].name + "</li>" 
+						  sup += "<li>" + data[i] + "</li>" 
 						}
 	        }
 	        else {
