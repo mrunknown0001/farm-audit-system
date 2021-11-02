@@ -13,7 +13,7 @@ class ReviewerNotificationController extends Controller
     {
     	if($request->ajax()) {
     		// check new audit with the reviewer
-    		$review = Audit::orderBy('created_at', 'desc')->first();
+    		$review = Audit::where('done', 1)->orderBy('created_at', 'desc')->first();
 
     		if(!empty($review)) {
 	    		$check = ReviewerNotification::where('audit_id', $review->id)
@@ -26,7 +26,10 @@ class ReviewerNotificationController extends Controller
 	    			$not->user_id = Auth::user()->id;
 	    			$not->save();
 
-	    			return '1';
+	    			return response()->json([
+	    				'id' => 1,
+	    				'auditor' => $not->user->first_name . ' ' . $not->user->last_name
+	    			]);
 	    		}
 
 	    	}

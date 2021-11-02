@@ -133,17 +133,16 @@
 	   * showNotification
 	   * 
 	   */
-	  function showNotification()
+	  function showNotification(auditor)
 	  {
 	    const notification = new Notification("New Audit Notification", {
-	      body: "New Audit Notification.",
+	      body: "New Audit Notification from " + auditor,
 	      icon: "{{ asset('img/BGC.png') }}"
 	    });
 
-	    notification.addEventListener('click', () => {
-  			$("#reloadtable").click(function () { 
-					jotable.ajax.reload();
-				});
+	    notification.addEventListener('click', () => {	
+	    	datatable = $('#audits').DataTable();
+				datatable.ajax.reload();
 	    });
 	  }
 
@@ -151,9 +150,9 @@
 	   * triggerNotification
 	   *
 	   */
-	  function triggerNotification() { 
+	  function triggerNotification(auditor) { 
 	    if (Notification.permission === "granted") {
-	      showNotification();
+	      showNotification(auditor);
 	    } 
 	    else if (Notification.permission !== "denied") {
 	      Notification.requestPermission().then(permission => {
@@ -177,8 +176,8 @@
 	      type: "GET",
 	      url: '{{ route('reviewer.notification') }}',
 	      success: function(data) {
-	        if(data == 1) {
-	        	triggerNotification();
+	        if(data.id == 1) {
+	        	triggerNotification(data.auditor);
 	        }
 	      },
 	      dataType: "json"
