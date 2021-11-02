@@ -39,7 +39,7 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
-				<p><a href="{{ route('audit.review') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Audit</a></p>
+				<p><a href="{{ route('audit.review') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Audit Review</a></p>
 				@include('includes.all')
 			</div>
 		</div>

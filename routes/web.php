@@ -90,6 +90,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/audit-review/{id}', 'AuditReviewController@show')->name('audit.review.show');
 	Route::post('/audit-review/{id}', 'AuditReviewController@review')->name('audit.post.review');
 	Route::get('/audit/reviewed', 'AuditReviewController@reviewed')->name('audit.reviewed');
+	// Route::get('/audit/reviewedby/{id}', 'AuditReviewController@reviewedby')->name('audit.reviewedby');
+	Route::get('/auditor/review/{id}','AuditReviewController@auditorreview')->name('auditor.review');
 
 });
 

@@ -126,6 +126,19 @@ class AuditReviewController extends Controller
 
 
 
+    public function auditorreview($id)
+    {
+        $audit = Audit::whereId($id)->first();
+
+        if(!empty($audit)) {
+            return '<p>Reviewed by: <strong>'. $audit->reviewer->first_name . ' ' . $audit->reviewer->last_name . '</strong></p><p>Review Timestamp: <strong>' . $audit->review->created_at . '</strong></p>';
+        }
+        else {
+            return 'Data Not Available.';
+        }
+    }
+
+
 
 
 

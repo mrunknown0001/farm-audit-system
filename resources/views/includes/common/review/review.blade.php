@@ -106,10 +106,12 @@
 						<button id="reviewsubmitbutton" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
 					@endif
 				</form>
-				@if($audit->reviewed == 1)
-					<p>Reviewed by: <strong>{{ $audit->reviewer->first_name . ' ' . $audit->reviewer->last_name }}</strong></p>
-					<p>Review Timestamp: <strong>{{ $audit->review->created_at }}</strong></p>
-				@endif
+				<div id="reviewedby"> 
+					@if($audit->reviewed == 1)
+						<p>Reviewed by: <strong>{{ $audit->reviewer->first_name . ' ' . $audit->reviewer->last_name }}</strong></p>
+						<p>Review Timestamp: <strong>{{ $audit->review->created_at }}</strong></p>
+					@endif
+				</div>
 			</div>
 		</div>
 		<div class="overlay"></div>
@@ -195,6 +197,8 @@
 	        $('#reviewsubmitbutton').remove();
 	        // readonly summernote
 	        $('#summernote').summernote('disable');
+	        // load the reviewedby content
+	        $('#reviewedby').load('{{ route('auditor.review', ['id' => $audit->id]) }}');
 	      },
 	      error: function(data){
 	        console.log("error");
