@@ -129,6 +129,7 @@
 												<span id="camera" class="btn btn-primary"><i class="fa fa-camera fa-3x"></i></span>
 											</label>
 										</div>
+										<p><small>Multiple Image Upload. One at a time capture.</small></p>
 									</div>
 								</div>
 								<div class="row">
