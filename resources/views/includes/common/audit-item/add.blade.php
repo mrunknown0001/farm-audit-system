@@ -63,8 +63,20 @@
 			<div class="col-md-10 col-md-offset-1">
 				<form id="audititemform" action="{{ route('audit.item.post.add') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
+					<div class="form-group {{ $errors->first('audit_name') ? 'has-error' : ''  }}">
+						<label for="audit_name">Audit Name</label>
+						<select name="audit_name" id="audit_name" class="form-control" required>
+							<option value="">Select Audit Name</option>
+							@foreach($names as $key => $n)
+								<option value="{{ $n->id }}">{{ $n->category_name }}</option>
+							@endforeach
+						</select>
+						@if($errors->first('audit_name'))
+            	<span class="help-block"><strong>{{ $errors->first('audit_name') }}</strong></span>
+            @endif
+					</div>
 					<div class="form-group {{ $errors->first('audit_item_name') ? 'has-error' : ''  }}">
-						<label for="audit_item_name">Audit Item Name</label>
+						<label for="audit_item_name">Audit Item</label>
 						<input type="text" name="audit_item_name" id="audit_item_name" placeholder="Audit Item Name" class="form-control" required>
 						@if($errors->first('audit_item_name'))
             	<span class="help-block"><strong>{{ $errors->first('audit_item_name') }}</strong></span>
@@ -84,9 +96,10 @@
             	<span class="help-block"><strong>{{ $errors->first('time_range') }}</strong></span>
             @endif
 					</div>
-					<div class="form-group" id="items">
+					{{-- Removed for Singe Item Fucntion --}}
+					{{-- <div class="form-group" id="items">
 						<p><label>Checklist</label> <button id="addChecklist" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button></p>
-					</div>
+					</div> --}}
 					<div class="form-group">
 						<h3>Locations Applied</h3>
 						@if(count($locations) > 0)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\AuditItem;
+use App\AuditItemCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AccessController;
 use Auth;
@@ -33,7 +34,8 @@ class AuditItemController extends Controller
             if(count($items) > 0) {
                 foreach($items as $j) {
                     $data->push([
-                        'name' => strtoupper($j->item_name),
+                        'name' => strtoupper($j->auditname->category_name),
+                        'item' => strtoupper($j->item_name),
                         'action' => '<button id="edit" class="btn btn-warning btn-xs" data-id="' . $j->id . '"><i class="fa fa-edit"></i> Edit</button> <button id="remove" data-id="' . $j->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>'
                     ]);
                 }
@@ -54,14 +56,18 @@ class AuditItemController extends Controller
         if(!AccessController::checkAccess(Auth::user()->id, 'audit_item_module')) {
             return abort(403);
         }
-        
+            
+        $names = AuditItemCategory::where('active', 1)
+                                    ->where('is_deleted', 0)
+                                    ->get();
+
         $locations = DB::table('locations')
                                     ->where('active', 1)
                                     ->where('is_deleted', 0)
                                     ->orderByRaw('LENGTH(location_name)', 'ASC')
                                     ->orderBy('location_name', 'ASC')
                                     ->get();
-        return view('includes.common.audit-item.add', ['locations' => $locations]);
+        return view('includes.common.audit-item.add', ['locations' => $locations, 'names' => $names]);
     }
 
     /**
@@ -71,6 +77,7 @@ class AuditItemController extends Controller
     public function store(AuditItemRequest $request)
     {
         $ai = new AuditItem();
+        $ai->audit_item_category_id = $request->audit_name;
         $ai->item_name = $request->audit_item_name;
         $ai->description = $request->description;
         $ai->time_range = $request->time_range;
@@ -114,13 +121,17 @@ class AuditItemController extends Controller
     public function edit($id)
     {
         $item = AuditItem::where('id', $id)->where('active', 1)->where('is_deleted', 0)->first();
+
+        $names = AuditItemCategory::where('active', 1)
+                                    ->where('is_deleted', 0)
+                                    ->get();
         $locations = DB::table('locations')
                                     ->where('active', 1)
                                     ->where('is_deleted', 0)
                                     ->orderByRaw('LENGTH(location_name)', 'ASC')
                                     ->orderBy('location_name', 'ASC')
                                     ->get();
-        return view('includes.common.audit-item.edit', ['locations' => $locations, 'item' => $item]);
+        return view('includes.common.audit-item.edit', ['locations' => $locations, 'item' => $item, 'names' => $names]);
 
     }
 

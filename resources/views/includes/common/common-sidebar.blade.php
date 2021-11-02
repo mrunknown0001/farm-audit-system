@@ -20,6 +20,13 @@
           <i class="fa fa-people-carry"></i> <span>Assignments</span>
         </a>
       </li>
+    @endif    
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'audit_name_module')) 
+      <li class="{{ route('audit.name') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('audit.name') }}">
+          <i class="fa fa-list"></i> <span>Audit Name</span>
+        </a>
+      </li>
     @endif
     @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'audit_item_module')) 
       <li class="{{ route('audit.item') == url()->current() ? 'active' : '' }}">

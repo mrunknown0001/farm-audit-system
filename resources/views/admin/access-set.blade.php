@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@inject('accesscontroller', '\App\Http\Controllers\AccessController')
+
 @section('title')
 	Set User Access
 @endsection
@@ -57,12 +59,27 @@
 						</ul>
 					</div>
 					<div class="form-group">
+						<h4>Audit Name:</h4> {{-- AuditItemCategory --}}
+						<ul class="list-inline">
+							<li><input type="checkbox" {{ $accesscontroller->checkAccess($user->id, 'audit_name_module') ? 'checked' : '' }} value="audit_name_module" name="access[]" id="audit_name_module"> <label for="audit_name_module">Module</label></li>
+							<li><input type="checkbox" {{ $accesscontroller->checkAccess($user->id, 'audit_name_add') ? 'checked' : '' }} value="audit_name_add" name="access[]" id="audit_name_add"> <label for="audit_name_add">Add</label></li>
+							<li><input type="checkbox" {{ $accesscontroller->checkAccess($user->id, 'audit_name_edit') ? 'checked' : '' }} value="audit_name_edit" name="access[]" id="audit_name_edit"> <label for="audit_name_edit"> Edit</label></li>
+							<li><input type="checkbox" {{ $accesscontroller->checkAccess($user->id, 'audit_name_delete') ? 'checked' : '' }} value="audit_name_delete" name="access[]" id="audit_name_delete"> <label for="audit_name_delete">Delete</label></li>
+						</ul>
+					</div>
+					<div class="form-group">
 						<h4>Audit Item:</h4>
 						<ul class="list-inline">
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_module') ? 'checked' : '' }} value="audit_item_module" name="access[]" id="audit_item_module"> <label for="audit_item_module">Module</label></li>
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_add') ? 'checked' : '' }} value="audit_item_add" name="access[]" id="audit_item_add"> <label for="audit_item_add">Add</label></li>
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_edit') ? 'checked' : '' }} value="audit_item_edit" name="access[]" id="audit_item_edit"> <label for="audit_item_edit"> Edit</label></li>
 							<li><input type="checkbox" {{ \App\Http\Controllers\AccessController::checkAccess($user->id, 'audit_item_delete') ? 'checked' : '' }} value="audit_item_delete" name="access[]" id="audit_item_delete"> <label for="audit_item_delete">Delete</label></li>
+						</ul>
+					</div>
+					<div class="form-group">
+						<h4>Reports</h4>
+						<ul class="list-inline">
+							<li><input type="checkbox" {{ $accesscontroller->checkAccess($user->id, 'reports') ? 'checked' : '' }} value="reports" name="access[]" id="reports"> <label for="reports">Module</label></li>
 						</ul>
 					</div>
 					<div class="form-group">

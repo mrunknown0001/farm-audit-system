@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class AuditItem extends Model
 {
+	public function auditname()
+	{
+		return $this->belongsTo('App\AuditItemCategory', 'audit_item_category_id');
+	}
+
     public function checklists()
     {
     	return $this->hasMany('App\AuditItemChecklist', 'audit_item_id');

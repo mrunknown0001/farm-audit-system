@@ -66,6 +66,18 @@
 				<form id="audititemform" action="{{ route('audit.item.update', ['id' => $item->id]) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
 					<input type="hidden" name="id" value="{{ $item->id }}">
+					<div class="form-group {{ $errors->first('audit_name') ? 'has-error' : ''  }}">
+						<label for="audit_name">Audit Name</label>
+						<select name="audit_name" id="audit_name" class="form-control" required>
+							<option value="">Select Audit Name</option>
+							@foreach($names as $key => $n)
+								<option value="{{ $n->id }}" {{ $item->audit_item_category_id == $n->id ? 'selected' : '' }}>{{ $n->category_name }}</option>
+							@endforeach
+						</select>
+						@if($errors->first('audit_name'))
+            	<span class="help-block"><strong>{{ $errors->first('audit_name') }}</strong></span>
+            @endif
+					</div>
 					<div class="form-group {{ $errors->first('audit_item_name') ? 'has-error' : ''  }}">
 						<label for="audit_item_name">Audit Item Name</label>
 						<input type="text" name="audit_item_name" id="audit_item_name" value="{{ $item->item_name }}" placeholder="Audit Item Name" class="form-control" required>
@@ -87,14 +99,14 @@
             	<span class="help-block"><strong>{{ $errors->first('time_range') }}</strong></span>
             @endif
 					</div>
-					<div class="form-group" id="items">
+					{{-- <div class="form-group" id="items">
 						<p><label>Checklist</label> <button id="addChecklist" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button></p>
 						@if(count($item->checklists) > 0)
 							@foreach($item->checklists as $key => $c)
 								<div id="itemrow{{ $c->id }}" class="itemrowclass row form-group"><div class="col-md-11"><input class="form-control" value="{{ $c->checklist }}" name="checklist[]" placeholder="Audit Item Checklist" required/></div><div class="col-md-1"><button type="button" class="btn btn-danger" onclick="remove('{{ $c->id }}')"><i class="fa fa-times-circle"></i></button></div></div>
 							@endforeach
 						@endif
-					</div>
+					</div> --}}
 					<div class="form-group">
 						<h3>Locations Applied</h3>
 						@if(count($locations) > 0)

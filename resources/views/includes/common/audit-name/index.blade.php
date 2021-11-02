@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	Audit Item
+	Audit Name
 @endsection
 
 @section('style')
@@ -30,7 +30,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Audit Item <a href="{{ route('audit.item.add') }}"><i class="fa fa-plus"></i></a></h1>
+		<h1>Audit Name <a href="{{ route('audit.name.add') }}"><i class="fa fa-plus"></i></a></h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -47,8 +47,7 @@
 	      <table id="items" class="table cell-border compact stripe hover display nowrap" width="99%">
 		      <thead>
 	          <tr>
-              <th scope="col">Audit Name</th>
-              <th scope="col">Audit Item</th>
+	            <th scope="col">Audit Name</th>
 	            <th scope="col">Action</th>
 	          </tr>
 	        </thead>
@@ -69,12 +68,11 @@
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
-		          { className: "dt-center", targets: [ 1,2 ] }
+		          { className: "dt-center", targets: [ 1 ] }
 		        ],
-		        ajax: "{{ route('audit.item') }}",
+		        ajax: "{{ route('audit.name') }}",
 		        columns: [
-                {data: 'name', name: 'name'},
-                {data: 'item', name: 'item'},
+		            {data: 'name', name: 'name'},
 		            {data: 'action', name: 'action', orderable: false, searchable: false},
 		        ]
 	      });
@@ -85,7 +83,7 @@
         // var text = $(this).data('text');
         var id = $(this).data('id');
         Swal.fire({
-          title: 'Edit Audit Item?',
+          title: 'Edit Audit Name?',
           text: '',
           type: 'question',
           showCancelButton: true,
@@ -94,7 +92,7 @@
           confirmButtonText: 'Edit',
         }).then((result) => {
           if (result.value) {
-          	window.location.href = "/audit-item/edit/" + id;
+          	window.location.href = "/audit-name/edit/" + id;
           }
           else {
             Swal.fire({
@@ -115,7 +113,7 @@
         // var text = $(this).data('text');
         var id = $(this).data('id');
         Swal.fire({
-          title: 'Remove Audit Item?',
+          title: 'Remove Audit Name?',
           text: '',
           type: 'question',
           showCancelButton: true,
@@ -125,11 +123,11 @@
         }).then((result) => {
           if (result.value) {
             $.ajax({
-              url: "/audit-item/remove/" + id,
+              url: "/audit-name/remove/" + id,
               type: "GET",
               success: function() {
                 Swal.fire({
-                  title: 'Audit Item Removed!',
+                  title: 'Audit Name Removed!',
                   text: "",
                   type: 'success',
                   showCancelButton: false,

@@ -24,8 +24,10 @@ class AuditItemRequest extends FormRequest
     public function rules()
     {
         return [
+            'audit_name' => 'required',
             'audit_item_name' => 'required',
             'time_range' => 'required',
+            'locations' => 'required',
         ];
     }
 
@@ -33,8 +35,10 @@ class AuditItemRequest extends FormRequest
     public function messages()
     {
         return [
+            'audit_name.required' => 'Audit Name is Required',
             'audit_item_name.required' => 'Audit Item Name is Required',
-            'time_range' => 'Time Range is Required'
+            'time_range' => 'Time Range is Required',
+            'locations.required' => 'Location is Required',
         ];
     }
 }

@@ -68,6 +68,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/audit-item/edit/{id}', 'AuditItemController@update')->name('audit.item.update');
 	Route::get('/audit-item/remove/{id}', 'AuditItemController@remove')->name('audit.item.remove');
 
+	# Audit Name Management || audit_item_category
+	Route::get('/audit-names', 'AuditItemCategoryController@index')->name('audit.name');	
+	Route::get('/audit-name/add', 'AuditItemCategoryController@create')->name('audit.name.add');
+	Route::post('/audit-name/add', 'AuditItemCategoryController@store')->name('audit.name.post.add');
+	Route::get('/audit-name/edit/{id}', 'AuditItemCategoryController@edit')->name('audit.name.edit');
+	Route::post('/audit-name/edit/{id}', 'AuditItemCategoryController@update')->name('audit.name.update');
+	Route::get('/audit-name/remove/{id}', 'AuditItemCategoryController@remove')->name('audit.name.remove');
+
 	# Auditables
 	Route::get('/auditables', 'AuditableController@index')->name('auditables');
 	Route::get('/auditable/{cat}/{id}/view-qr', 'AuditableController@viewQr')->name('auditable.view.qr');

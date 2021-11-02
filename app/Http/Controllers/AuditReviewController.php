@@ -54,6 +54,10 @@ class AuditReviewController extends Controller
     {
         if($request->ajax()) {
             // validation
+            $verified = 0;
+            if($request->verified != null) {
+                $verified = $request->verified;
+            }
             $audit = Audit::findorfail($id);
             if($audit->reviewed == 1) {
                 return response('This is already reviewed.', 500)
@@ -61,16 +65,18 @@ class AuditReviewController extends Controller
             }
             $audit->reviewed = 1;
             $audit->date_reviewed = date('Y-m-d h:i:s', strtotime(now()));
-            $audit->verified = $request->verified;
+            $audit->verified = $verified;
             $audit->field3 = Auth::user()->id;
             $audit->save();
 
             $review = new AuditReview();
             $review->audit_id = $audit->id;
             $review->user_id = Auth::user()->id;
-            $review->verified = $request->verified;
+            $review->verified = $verified;
             $review->review = $request->editordata;
             $review->save();
+
+
         }
     }
 
@@ -144,15 +150,15 @@ class AuditReviewController extends Controller
 
     private function reviewaction($id, $lat, $lon, $images)
     {
-        if(count($images) > 0) {
-            $img = $images->first();
-            return '<button id="view" data-id="' . $id . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></button> <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a> <a href="/uploads/images/' . $img->filename . '" target="_blank" class="btn btn-danger btn-xs"><i class="fa fa-image"></i></a>';
-        }
-        else {
-            return '<button id="view" data-id="' . $id . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></button> <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a>';
-        }
+        # Old menu
+        // if(count($images) > 0) {
+        //     $img = $images->first();
+        //     return '<button id="view" data-id="' . $id . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></button> <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a> <a href="/uploads/images/' . $img->filename . '" target="_blank" class="btn btn-danger btn-xs"><i class="fa fa-image"></i></a>';
+        // }
+        // else {
+        //     return '<button id="view" data-id="' . $id . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></button> <a href="https://www.google.com/search?q=' . $lat  . '%2C+' . $lon . '" target="_blank" class="btn btn-primary btn-xs"><i class="fa fa-map-marked-alt"></i></a>';
+        // }
         
-
-        //https://www.google.com/search?q=15.336105%2C+120.5953213
+        return '<button id="view" data-id="' . $id . '" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></button>';
     }
 }
