@@ -159,7 +159,7 @@
 	      if(permission === "granted") {
 	        showNotification();
 	      } else {
-	        alert('Permission Denied');
+	        alert('Notification Permission Denied');
 	      }
 	      });
 	    }

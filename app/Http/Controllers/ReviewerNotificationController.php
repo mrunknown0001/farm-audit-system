@@ -34,7 +34,7 @@ class ReviewerNotificationController extends Controller
 
 	    	}
 
-    		return '0';
+    		return null;
 
     	}
     }
