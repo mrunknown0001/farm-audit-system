@@ -2,27 +2,27 @@
 <script src="{{ asset('js/chart.js') }}"></script>
 <script>
     var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       datasets: [
         {
-          label               : 'Electronics',
-          fillColor           : 'rgba(210, 214, 222, 1)',
-          strokeColor         : 'rgba(210, 214, 222, 1)',
-          pointColor          : 'rgba(210, 214, 222, 1)',
+          label               : 'Non-Compliance',
+          fillColor           : 'rgba(221, 75, 57, 1)',
+          strokeColor         : 'rgba(221, 75, 57, 1)',
+          pointColor          : 'rgba(221, 75, 57, 1)',
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40, 30]
+          data                : [65, 59, 80, 81, 56, 55, 40, 30, 50, 75, 60, 30]
         },
         {
-          label               : 'Digital Goods',
-          fillColor           : 'rgba(60,141,188,0.9)',
+          label               : 'Compliance',
+          fillColor           : 'rgba(57,229,75,1)',
           strokeColor         : 'rgba(60,141,188,0.8)',
           pointColor          : '#3b8bba',
           pointStrokeColor    : 'rgba(60,141,188,1)',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90, 40]
+          data                : [28, 48, 40, 19, 86, 27, 90, 40, 100, 90, 75, 80]
         }
       ]
     }

@@ -7,29 +7,43 @@
 				</div>
 			</div>
 		@endif
-		@if($accesscontroller->checkAccess(Auth::user()->id, 'reports'))
-			<div class="row">
-				@if($accesscontroller->checkAccess(Auth::user()->id, 'auditable_module'))
-					<div class="col-md-4">
-						<div class="small-box bg-red">
-							<div class="inner">
-								<h3>Auditables</h3>
-								<p>Auditable Locations</p>
-							</div>
-							<div class="icon">
-								<i class="fa fa-map-marker"></i>
-							</div>
-							<a href="" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+		<div class="row">
+			@if($accesscontroller->checkAccess(Auth::user()->id, 'auditable_module'))
+				<div class="col-md-4">
+					<div class="small-box bg-primary">
+						<div class="inner">
+							<h3>Auditables</h3>
+							<p>Auditable Locations</p>
 						</div>
+						<div class="icon">
+							<i class="fa fa-map-marker"></i>
+						</div>
+						<a href="{{ route('auditables') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 					</div>
-				@endif
-			</div>
+				</div>
+			@endif
+			@if($accesscontroller->checkAccess(Auth::user()->id, 'audit_reviewer'))
+				<div class="col-md-4">
+					<div class="small-box bg-primary">
+						<div class="inner">
+							<h3>Review</h3>
+							<p>Review Audit</p>
+						</div>
+						<div class="icon">
+							<i class="fa fa-list"></i>
+						</div>
+						<a href="{{ route('audit.review') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			@endif
+		</div>
+		@if($accesscontroller->checkAccess(Auth::user()->id, 'reports'))
 			<div class="row">
 				<div class="col-md-12">
           <!-- BAR CHART -->
           <div class="box box-danger">
             <div class="box-header with-border">
-              <h3 class="box-title">Bar Chart</h3>
+              <h3 class="box-title">Current Year Audit: {{ date('Y') }}</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
