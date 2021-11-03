@@ -182,6 +182,7 @@
 					  title: 'Error Occured',
 					  text: 'Please Reload and Try Again or Allow Location Permission',
 					});
+					$(this).trigger("reset");
 					return false;
 		    }
 		    var done = "#done-" + formid;
