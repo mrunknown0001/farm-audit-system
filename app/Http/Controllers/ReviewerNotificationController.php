@@ -28,7 +28,7 @@ class ReviewerNotificationController extends Controller
 
 	    			return response()->json([
 	    				'id' => 1,
-	    				'auditor' => $review->auditor->first_name . ' ' . $review->auditor->last_name
+	    				'auditor' => $review->auditor->first_name . ' ' . $review->auditor->last_name 
 	    			]);
 	    		}
 

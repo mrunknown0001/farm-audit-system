@@ -33,5 +33,10 @@
     <script src="{{ asset('js/sweetalert.js') }}" defer="defer"></script>
     @yield('script')
     @include('includes.timeout')
+    @if(Auth::check())
+      @if(\App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_reviewer'))
+        @include('includes.notification')
+      @endif
+    @endif
   </body>
 </html>
