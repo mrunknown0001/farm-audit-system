@@ -56,6 +56,13 @@
         </a>
       </li>
     @endif
+    @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'reports')) 
+      <li class="{{ route('reports') == url()->current() ? 'active' : ''}}">
+        <a href="{{ route('reports') }}">
+          <i class="fa fa-file"></i> <span>Reports</span>
+        </a>
+      </li>
+    @endif
       {{-- <li class="treeview ">
         <a href="javascript:void(0)">
           <i class="fa fa-users"></i> <span>Main Menu</span>

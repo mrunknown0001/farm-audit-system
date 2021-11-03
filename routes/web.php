@@ -101,7 +101,10 @@ Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/audit/reviewedby/{id}', 'AuditReviewController@reviewedby')->name('audit.reviewedby');
 	Route::get('/auditor/review/{id}','AuditReviewController@auditorreview')->name('auditor.review');
 
-	# Audit Reviewer Notification
+	# Rerpots
+	Route::get('/reports', 'ReportController@index')->name('reports');
+
+	# Audit Reviewer Notification | Make Global or over the site with reviwer access
 	Route::get('/reviwer/notification', 'ReviewerNotificationController@notif')->name('reviewer.notification');
 
 });

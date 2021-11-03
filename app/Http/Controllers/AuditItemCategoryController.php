@@ -77,47 +77,62 @@ class AuditItemCategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\AuditItemCategory  $auditItemCategory
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AuditItemCategory $auditItemCategory)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\AuditItemCategory  $auditItemCategory
-     * @return \Illuminate\Http\Response
      */
-    public function edit(AuditItemCategory $auditItemCategory)
+    public function edit($id)
     {
-        //
+        $cat = AuditItemCategory::whereId($id)->where('active', 1)->where('is_deleted', 0)->first();
+
+        if(empty($cat)) {
+            return abort(404);
+        }
+
+        return view('includes.common.audit-name.edit', ['name' => $cat]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\AuditItemCategory  $auditItemCategory
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AuditItemCategory $auditItemCategory)
+    public function update(Request $request, $id)
     {
-        //
+        if($request->ajax()) {
+            $request->validate([
+                'audit_name' => 'required'
+            ]);
+
+            $name = AuditItemCategory::whereId($id)->where('active', 1)->where('is_deleted', 0)->first();
+
+            if(empty($name)) {
+                return abort(404);
+            }
+            $name->category_name = $request->audit_name;
+            $name->description = $request->description;
+            if($name->save()) {
+                return response('Audit Name Updated', 200)
+                  ->header('Content-Type', 'text/plain');
+            }
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\AuditItemCategory  $auditItemCategory
-     * @return \Illuminate\Http\Response
      */
-    public function destroy(AuditItemCategory $auditItemCategory)
+    public function remove($id)
     {
-        //
+        $name = AuditItemCategory::whereId($id)->where('active', 1)->where('is_deleted', 0)->first();
+
+        if(empty($name)) {
+            return response('Audit Name Not Found!', 404)
+                  ->header('Content-Type', 'text/plain');
+        }
+
+        $name->is_deleted = 1;
+        $name->save();
+
+        return response('Audit Name Removed!', 200)
+                  ->header('Content-Type', 'text/plain');
     }
 }
