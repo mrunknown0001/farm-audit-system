@@ -31,11 +31,15 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('adminlte/js/adminlte.min.js') }}" defer="defer"></script>
     <script src="{{ asset('js/sweetalert.js') }}" defer="defer"></script>
+
     @yield('script')
     @include('includes.timeout')
     @if(Auth::check())
       @if(\App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'audit_reviewer'))
         @include('includes.notification')
+      @endif
+      @if(\App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'reports'))
+        @include('includes.chart-scripts')
       @endif
     @endif
   </body>
