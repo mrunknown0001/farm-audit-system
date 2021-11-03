@@ -22,12 +22,12 @@
 		</ol>
 	</section>
 	<section class="content">
-		@include('includes.common.dash-view')
 		<div class="row">
 			<div class="col-md-12">
 				@include('includes.all')
 			</div>
 		</div>
+		@include('includes.common.dash-view')
 		<div class="row">
 
 		</div>

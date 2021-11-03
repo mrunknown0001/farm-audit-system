@@ -51,7 +51,7 @@ class AuditableController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
     	}
-    	return view('includes.common.auditable.index', ['system' => $this->system()]);
+    	return view('includes.common.auditable.index');
     }
 
 
@@ -96,7 +96,7 @@ class AuditableController extends Controller
 
 
     	// Show
-    	return view('includes.common.auditable.view-qr', ['qrname' => $qrname, 'name' => $name, 'system' => $this->system()]);
+    	return view('includes.common.auditable.view-qr', ['qrname' => $qrname, 'name' => $name);
     }
 
 

@@ -67,9 +67,12 @@ class ConfigurationController extends Controller
      * @param  \App\Configuration  $configuration
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Configuration $configuration)
+    public function update(Request $request)
     {
-        //
+        $config = Configuration::find(1);
+        $config->system_name = $request->system_name;
+        $config->system_title_suffix = $request->system_title_suffix;
+        $config->save();
     }
 
     /**

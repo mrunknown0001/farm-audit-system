@@ -27,6 +27,7 @@
 				@include('includes.all')
 			</div>
 		</div>
+		@include('includes.common.dash-view')
 		<div class="row">
 
 		</div>

@@ -1,6 +1,8 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script> --}}
 <script src="{{ asset('js/chart.js') }}"></script>
 <script>
+		let data1 = [65, 59, 80, 81, 56, 55, 40, 30, 50, 75, 60, 30];
+
     var areaChartData = {
       labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       datasets: [
@@ -12,7 +14,7 @@
           pointStrokeColor    : '#c1c7d1',
           pointHighlightFill  : '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : [65, 59, 80, 81, 56, 55, 40, 30, 50, 75, 60, 30]
+          data                : data1
         },
         {
           label               : 'Compliance',

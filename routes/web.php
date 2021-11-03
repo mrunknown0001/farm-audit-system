@@ -103,6 +103,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Rerpots
 	Route::get('/reports', 'ReportController@index')->name('reports');
+	# 
+	Route::get('/report/all/non-compliant', 'ReportController@allNonCompliant')->name('report.all.non.compliant');
 
 	# Audit Reviewer Notification | Make Global or over the site with reviwer access
 	Route::get('/reviwer/notification', 'ReviewerNotificationController@notif')->name('reviewer.notification');
@@ -128,6 +130,7 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 	Route::post('/user/update/{id}', 'AdminController@postUpdateUser')->name('admin.post.update.user');
 	# System Config
 	Route::get('/system/config', 'ConfigurationController@index')->name('system.config');
+	Route::post('/system/config', 'ConfigurationController@update')->name('system.config.update');
 	# Access Assignment
 	Route::get('/access', 'AccessController@index')->name('access');
 	# Assign Access to Specific User

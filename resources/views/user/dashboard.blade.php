@@ -49,12 +49,12 @@
 		</ol>
 	</section>
 	<section class="content">
-		@include('includes.common.dash-view')
 		<div class="row">
 			<div class="col-md-12">
 				@include('includes.all')
 			</div>
 		</div>
+		@include('includes.common.dash-view')
 		<div class="row">
 			<div class="col-md-6">
 				{{-- <form action="{{ route('upload') }}" id="imageUploadForm" method="POST" enctype="multipart/form-data">

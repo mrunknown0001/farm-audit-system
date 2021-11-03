@@ -1,4 +1,5 @@
 		@inject('accesscontroller', '\App\Http\Controllers\AccessController')
+		@inject('datacontroller', '\App\Http\Controllers\DataController')
 
 		@if($accesscontroller->checkAccess(Auth::user()->id, 'audit_marshal'))
 			<div class="row">
@@ -26,7 +27,7 @@
 				<div class="col-md-4">
 					<div class="small-box bg-primary">
 						<div class="inner">
-							<h3>Review</h3>
+							<h3>{{ $datacontroller->getToReview() }}</h3>
 							<p>Review Audit</p>
 						</div>
 						<div class="icon">
@@ -43,7 +44,7 @@
           <!-- BAR CHART -->
           <div class="box box-danger">
             <div class="box-header with-border">
-              <h3 class="box-title">Current Year Audit: {{ date('Y') }}</h3>
+              <h3 class="box-title">All Location Current Year Audit: {{ date('Y') }}</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
