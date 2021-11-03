@@ -5,3 +5,19 @@
 				</div>
 			</div>
 		@endif
+		@if(\App\Http\Controllers\AccessController::checkAccess(Auth::user()->id, 'reports'))
+			<div class="row">
+				<div class="col-md-4">
+					<div class="small-box bg-red">
+						<div class="inner">
+							<h3>Auditables</h3>
+							<p>Auditable Locations</p>
+						</div>
+						<div class="icon">
+							<i class="fa fa-map-marker"></i>
+						</div>
+						<a href="" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+					</div>
+				</div>
+			</div>
+		@endif
