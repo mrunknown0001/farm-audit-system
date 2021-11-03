@@ -182,7 +182,6 @@
 					  title: 'Error Occured',
 					  text: 'Please Reload and Try Again or Allow Location Permission',
 					});
-					$(this).trigger("reset");
 					return false;
 		    }
 		    var done = "#done-" + formid;
@@ -391,6 +390,16 @@
 				  title: 'Error Occured',
 				  text: 'Please Reload and Try Again or Allow Location Permission',
 				});
+      	var noncomplianceremarks = '#noncomplianceremarks-' + formid;
+      	var noncompliancecamera = '#noncompliancecamera-' + formid;
+      	let upload = '#upload-' + formid;
+      	let remark = '#remarks-' + formid;
+      	$(noncompliancecamera).hide();
+      	$(noncomplianceremarks).hide();
+      	$(upload).removeAttr('required');
+      	$(remark).removeAttr('required');
+				$(form).trigger("reset");
+
 				return false;
 	    }
 			// Add Loading Animation here
