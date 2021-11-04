@@ -96,7 +96,7 @@ class AuditableController extends Controller
 
 
     	// Show
-    	return view('includes.common.auditable.view-qr', ['qrname' => $qrname, 'name' => $name);
+    	return view('includes.common.auditable.view-qr', ['qrname' => $qrname, 'name' => $name]);
     }
 
 
