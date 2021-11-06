@@ -49,4 +49,16 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Assignment');
     }
+
+
+    public function farm()
+    {
+        return $this->belongsTo('App\Farm', 'farm_id');
+    }
+
+
+    public function uf()
+    {
+        return $this->hasMany('App\UserFarm', 'user_id');
+    }
 }

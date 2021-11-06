@@ -45,7 +45,7 @@
     @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'audit_marshal')) 
       <li class="{{ route('audit.index') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('audit.index') }}">
-          <i class="fa fa-list"></i> <span>Audit</span>
+          <i class="fa fa-search"></i> <span>Audit</span>
         </a>
       </li>
     @endif

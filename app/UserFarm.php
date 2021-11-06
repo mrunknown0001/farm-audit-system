@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class UserFarm extends Model
 {
-    public function sub_locations()
+    public function user()
     {
-    	return $this->hasMany('App\SubLocation');
+    	return $this->belongsTo('App\User');
     }
 
 
@@ -16,5 +16,4 @@ class Location extends Model
     {
     	return $this->belongsTo('App\Farm');
     }
-
 }

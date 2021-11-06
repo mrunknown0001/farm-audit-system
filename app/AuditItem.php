@@ -21,4 +21,10 @@ class AuditItem extends Model
     {
     	return $this->hasMany('App\AuditItemLocation', 'audit_item_id');
     }
+
+
+    public function farm()
+    {
+        return $this->belongsTo('App\Farm');
+    }
 }

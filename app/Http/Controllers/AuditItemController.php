@@ -9,6 +9,7 @@ use App\Http\Controllers\AccessController;
 use Auth;
 use DB;
 use DataTables;
+use App\Farm;
 use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
 use App\Http\Controllers\UserLogController as Log;

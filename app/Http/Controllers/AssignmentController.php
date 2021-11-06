@@ -13,6 +13,7 @@ use App\SubLocation;
 use App\Http\Controllers\AccessController;
 use App\Http\Requests\AssignmentRequest;
 use App\Http\Controllers\UserLogController as Log;
+use App\Http\Controllers\GeneralController as GC;
 
 class AssignmentController extends Controller
 {
@@ -34,6 +35,8 @@ class AssignmentController extends Controller
                 foreach($assignments as $j) {
                     $data->push([
                         'name' => "<a href='" . route('update.user.assignment', ['id' => $j->id]) . "'>" . $j->first_name . ' ' . $j->last_name . "</a>",
+                        'farm' => GC::getFarms($j->id),
+                        'role' => GC::getUserType($j->role_id),
                         'action' => "<button id='update' class='btn btn-warning btn-xs' data-id='" . $j->id . "'><i class='fa fa-edit'></i> Update</button> <button id='remove' class='btn btn-danger btn-xs' data-id='" . $j->id . "'><i class='fa fa-trash'></i> Remove</button>"
                     ]);
                 }

@@ -142,6 +142,14 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 
 	# User Logs/ Audit Trail
 	Route::get('/user-logs', 'UserLogController@index')->name('user.logs');
+
+	# Farm Management
+	Route::get('/farms', 'FarmController@index')->name('admin.farms');
+	Route::get('/farm/add', 'FarmController@create')->name('farm.add');
+	Route::post('/farm/add', 'FarmController@store')->name('farm.post.add');
+	Route::get('/farm/edit/{id}', 'FarmController@edit')->name('farm.edit');
+	Route::post('/farm/edit/{id}', 'FarmController@update')->name('farm.update');
+
 });
 
 # VP Route Group

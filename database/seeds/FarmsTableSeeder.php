@@ -20,10 +20,18 @@ class FarmsTableSeeder extends Seeder
                 'name' => 'Poultrypure Farms Corporation',
                 'code' => 'PFC'
             ],
-        	[
-        		'name' => 'Brookdale Farms Corporation',
-        		'code' => 'BDL'
-        	]
+            [
+                'name' => 'Brookdale Farms Corporation',
+                'code' => 'BDL'
+            ],
+            [
+                'name' => 'RH Farms Corporation',
+                'code' => 'RH'
+            ],
+            [
+                'name' => 'Fonte Fresca',
+                'code' => 'FONTE'
+            ]
         ]);
     }
 }

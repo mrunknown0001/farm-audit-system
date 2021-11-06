@@ -34,7 +34,9 @@
 			      <thead>
 		          <tr>
 		            <th scope="col">Name</th>
-		            <th scope="col">Action</th>
+		            <th scope="col">Farm</th>
+		            <th scope="col">Role</th>
+		            <th scope="col">Access</th>
 		          </tr>
 		        </thead>
 		      </table>
@@ -59,6 +61,8 @@
 		        ajax: "{{ route('access') }}",
 		        columns: [
 		            {data: 'name', name: 'name'},
+		            {data: 'farm', name: 'farm'},
+		            {data: 'role', name: 'role'},
 		            {data: 'action', name: 'action', orderable: false, searchable: false},
 		        ]
 	      });

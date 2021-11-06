@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	Users
+	Farms
 @endsection
 
 @section('style')
@@ -20,7 +20,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Users <a href="{{ route('admin.add.user') }}"><i class="fa fa-plus"></i></a></h1>
+		<h1>Farms <a href="{{ route('farm.add') }}"><i class="fa fa-plus"></i></a></h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -34,13 +34,11 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-		      <table id="users" class="table cell-border compact stripe hover display nowrap" width="99%">
+		      <table id="farms" class="table cell-border compact stripe hover display nowrap" width="99%">
 			      <thead>
 		          <tr>
-		            <th scope="col">Name</th>
-		            <th scope="col">Farm</th>
-		            <th scope="col">Type</th>
-		            <th scope="col">Status</th>
+		            <th scope="col">Farm Name</th>
+		            <th scope="col">Farm Code</th>
 		            <th scope="col">Action</th>
 		          </tr>
 		        </thead>
@@ -58,30 +56,28 @@
 
 	<script>
 		$(document).ready(function () {
-			let jotable = $('#users').DataTable({
+			let jotable = $('#farms').DataTable({
 		        processing: true,
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
-		          { className: "dt-center", targets: [ 0, 1, 2, 3, 4 ] }
+		          { className: "dt-center", targets: [ 0, 1, 2 ] }
 		        ],
-		        ajax: "{{ route('admin.users') }}",
+		        ajax: "{{ route('admin.farms') }}",
 		        columns: [
 		            {data: 'name', name: 'name'},
-		            {data: 'farm', name: 'farm'},
-		            {data: 'type', name: 'type'},
-		            {data: 'active', name: 'active'},
+		            {data: 'code', name: 'code'},
 		            {data: 'action', name: 'action', orderable: false, searchable: false},
 		        ]
 	      });
 		});
 
-	    $(document).on('click', '#updateuser', function (e) {
+	    $(document).on('click', '#update', function (e) {
 	        e.preventDefault();
 	        var id = $(this).data('id');
 	        var text = $(this).data('text');
 	        Swal.fire({
-	          title: 'Update User?',
+	          title: 'Update Farm?',
 	          text: text,
 	          type: 'question',
 	          showCancelButton: true,
@@ -91,7 +87,7 @@
 	        }).then((result) => {
 	          if (result.value) {
 	            // view here
-	            window.location.replace("/a/user/update/" + id);
+	            window.location.replace("/a/farm/update/" + id);
 
 	          }
 	          else {

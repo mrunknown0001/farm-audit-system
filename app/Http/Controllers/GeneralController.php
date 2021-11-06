@@ -8,6 +8,7 @@ use App\User;
 use App\EmployeeLog;
 use DB;
 use Auth;
+use App\UserFarm;
 
 class GeneralController extends Controller
 {
@@ -53,6 +54,37 @@ class GeneralController extends Controller
     {
         $user = User::find($id);
         return strtoupper($user->last_name);
+    }
+
+
+    # User Farms Assigned
+    public static function getFarms($id)
+    {
+        $user = User::find($id);
+        if(count($user->uf) > 0) {
+            $str = '';
+            foreach ($user->uf as $key => $f) {
+                $str .= $f->farm->code . '|';
+            }
+
+            $str = rtrim($str, '|');
+            return $str;
+        }
+        else {
+            return 'No Farm Assigned';
+        }
+    }
+
+
+    # Check Farm Assigned
+    public static function getAssignedFarm($id, $farm_id)
+    {
+        $uf = UserFarm::where('user_id', $id)->where('farm_id', $farm_id)->first();
+
+        if(empty($uf)) {
+            return false;
+        }
+        return true;
     }
 
 }

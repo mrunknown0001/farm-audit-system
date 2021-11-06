@@ -5,7 +5,24 @@
 @endsection
 
 @section('style')
-
+	<style>
+	  .overlay{
+	      display: none;
+	      position: fixed;
+	      width: 100%;
+	      height: 100%;
+	      top: 0;
+	      left: 0;
+	      z-index: 999;
+	      background: rgba(255,255,255,0.8) url("/gif/apple.gif") center no-repeat;
+	  }
+	  body.loading{
+	      overflow: hidden;   
+	  }
+	  body.loading .overlay{
+	      display: block;
+	  }
+	</style>
 @endsection
 
 @section('header')
@@ -35,7 +52,7 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 				<h3>User Detail</h3>
-				<form action="{{ route('admin.post.add.user') }}" method="POST">
+				<form id="userForm" action="{{ route('admin.post.add.user') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
 					<div class="form-group">
 						<label for="first_name">First Name</label>
@@ -58,9 +75,30 @@
 							@endforeach
 						</select>
 					</div>
+					{{-- <div class="form-group">
+						<label for="farm">Farm</label>
+						<select class="form-control" id="farm" name="farm" required>
+							<option value="">Select Farm</option>
+							@foreach($farms as $key => $r)
+								<option value="{{ $r->id }}">{{ $r->name }}</option>
+							@endforeach
+						</select>
+					</div> --}}
 					<div class="form-group">
 						<label for="password">Password</label>
 						<input type="text" placeholder="Password" class="form-control" name="password" id="password" required>
+					</div>
+					<div class="form-group">
+						<h3>Farms</h3>
+						@if(count($farms) > 0)
+							<div class="row">
+								@foreach($farms as $key => $f)
+									<div class="col-md-12"><input type="checkbox" name="farms[]" id="farm{{ $f->id }}" value="{{ $f->id }}"> <label for="farm{{ $f->id }}">{{ $f->name }}</label></div>
+								@endforeach
+							</div>
+						@else
+							<p>No Farm Available</p>
+						@endif
 					</div>
 					<div class="form-group">
 						<button class="btn btn-primary">Save</button>
@@ -68,24 +106,57 @@
 				</form>
 			</div>
 		</div>
+		<div class="overlay"></div>
 	</section>
 </div>
 @endsection
 
 @section('script')
-
 	<script>
-		$('#role').change(function () {
-			if($('#role').val() == 4) {
-				$("#manager").attr("disabled", false);
-				$("#manager").attr("required", true);
-			}
-			else {
-				$("#manager").attr("disabled", true);
-				$("#manager").attr("required", false);
-				$('#manager').val('')
-			}
+		$(document).ready(function() {
+			$('#userForm').on('submit',(function(e) {
+		    e.preventDefault();
+		    var formData = new FormData(this);
+		    $.ajax({
+		      type:'POST',
+		      url: $(this).attr('action'),
+		      data:formData,
+		      cache:false,
+		      contentType: false,
+		      processData: false,
+		      beforSend: function() {
+				  	$("body").addClass("loading"); 
+		      },
+		      success:function(data){
+		        console.log("success");
+		        Swal.fire({
+		          title: 'User Added!',
+		          text: "",
+		          type: 'success',
+		          showCancelButton: false,
+		          confirmButtonColor: '#3085d6',
+		          cancelButtonColor: '#d33',
+		          confirmButtonText: 'Close'
+		        });
+		        $("#userForm").trigger("reset");
+		      },
+		      error: function(data){
+		        console.log(data);
+		        $("body").removeClass("loading");
+			      Swal.fire({
+						  type: 'error',
+						  title: 'Error Occured',
+						  text: 'Please Try Again.',
+						});
+						return false;
+		      },
+		      complete: function() {
+		      	// Clear Form
+		        $("body").removeClass("loading");
+		      }
+		    });
+		  }));
 		});
-
+		  
 	</script>
 @endsection

@@ -92,7 +92,7 @@
 						@foreach($locations as $key => $l)
 							<div>
 								<input type="checkbox" name="location[]" id="loc-{{ $l->id }}" value="{{ $l->id }}" {{ isset($user) ? $assignmentcontroller->checkAssignment($user->id, 'loc', $l->id) ? 'checked' : '' : '' }}>
-								<label for="loc-{{ $l->id }}">{{ $l->location_name }}</label>
+								<label for="loc-{{ $l->id }}">{{ $l->farm->code . '-' . $l->location_name }}</label>
 								@if($l->has_sublocation == 1)
 									<div class="row">
 										<div class="col-md-10 col-md-offset-1"  id="divloc-{{ $l->id }}">

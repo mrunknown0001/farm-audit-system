@@ -47,7 +47,8 @@
 	      <table id="locations" class="table cell-border compact stripe hover display nowrap" width="99%">
 		      <thead>
 	          <tr>
-	            <th scope="col">Location Name</th>
+              <th scope="col">Farm</th>
+              <th scope="col">Location Name</th>
 	            <th scope="col">Location Code</th>
 	            <th scope="col">Action</th>
 	          </tr>
@@ -69,11 +70,12 @@
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
-		          { className: "dt-center", targets: [ 0, 1, 2 ] }
+		          { className: "dt-center", targets: [ 0, 1, 2, 3 ] }
 		        ],
 		        ajax: "{{ route('locations') }}",
 		        columns: [
-		            {data: 'name', name: 'name'},
+                {data: 'farm', name: 'farm'},
+                {data: 'name', name: 'name'},
 		            {data: 'code', name: 'code'},
 		            {data: 'action', name: 'action', orderable: false, searchable: false},
 		        ]

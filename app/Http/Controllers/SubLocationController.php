@@ -7,6 +7,7 @@ use App\Location;
 use Illuminate\Http\Request;
 use Auth;
 use DataTables;
+use App\Farm;
 use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
 use App\Http\Controllers\UserLogController as Log;
@@ -38,7 +39,7 @@ class SubLocationController extends Controller
             if(count($sub) > 0) {
                 foreach($sub as $j) {
                     $data->push([
-                        'location' => $j->location->location_name,
+                        'location' => $j->location->farm->code . '-' . $j->location->location_name,
                         'name' => $j->sub_location_name,
                         'code' => $j->sub_location_code,
                         'action' => AC::subLocationAction($j->id, $j->sub_location_name)

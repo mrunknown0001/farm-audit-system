@@ -8,6 +8,7 @@ use App\User;
 use DataTables;
 use Auth;
 use App\Http\Controllers\UserLogController as Log;
+use App\Http\Controllers\GeneralController as GC;
 
 class AccessController extends Controller
 {
@@ -27,12 +28,16 @@ class AccessController extends Controller
                         if($j->access->access == ',') {
                             $data->push([
                                 'name' => $this->accesslink($j->first_name . ' ' . $j->last_name, $j->id),
+                                'farm' => GC::getFarms($j->id),
+                                'role' => GC::getUserType($j->role_id),
                                 'action' => 'Not Defined'
                             ]);
                         }
                         else {
                             $data->push([
                                 'name' => $this->accesslink($j->first_name . ' ' . $j->last_name, $j->id),
+                                'farm' => GC::getFarms($j->id),
+                                'role' => GC::getUserType($j->role_id),
                                 'action' => $this->accesslist($j->access->access)
                             ]);
                         }
@@ -40,6 +45,8 @@ class AccessController extends Controller
                     else {
                         $data->push([
                             'name' => $this->accesslink($j->first_name . ' ' . $j->last_name, $j->id),
+                            'farm' => GC::getFarms($j->id),
+                            'role' => GC::getUserType($j->role_id),
                             'action' => 'Not Defined'
                         ]);
                     }

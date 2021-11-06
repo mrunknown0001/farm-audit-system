@@ -68,7 +68,7 @@
 						<select name="location_name" id="location_name" class="form-control" required>
 							<option value="">Select Location Name</option>
 							@foreach($locations as $key => $l)
-								<option value="{{ $l->id }}" {{ $sublocation->location_id == $l->id ? 'selected' : '' }}>{{ $l->location_name }}</option>
+								<option value="{{ $l->id }}" {{ $sublocation->location_id == $l->id ? 'selected' : '' }}>{{ $l->farm->code . '-' . $l->location_name }}</option>
 							@endforeach
 						</select>
 						@if($errors->first('location_name'))

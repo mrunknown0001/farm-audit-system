@@ -23,6 +23,7 @@ class CreateSubLocationsTable extends Migration
             $table->boolean('active')->default(1);
             $table->boolean('is_deleted')->default(0);
             $table->timestamps();
+            // $table->bigInteger('farm_id')->nullable(); // update_with_farm
         });
     }
 

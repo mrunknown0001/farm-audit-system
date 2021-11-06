@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
 
         DB::table('configurations')->insert([
-        	'system_name' => 'Farm Audit System',
-            'system_short_name' => 'FAS',
-        	'system_description' => 'Farm Audit System on Brookside Group of Companies',
-        	'system_title_suffix' => ' - Farm Audit System'
+        	'system_name' => 'Online Audit System',
+            'system_short_name' => 'OAS',
+        	'system_description' => 'Online Audit System on Brookside Group of Companies',
+        	'system_title_suffix' => ' - Online Audit System'
         ]);
     }
 }

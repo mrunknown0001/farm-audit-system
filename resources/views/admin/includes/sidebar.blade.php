@@ -40,6 +40,11 @@
           <i class="fa fa-history"></i> <span>User Logs</span>
         </a>
       </li>
+      <li class="{{ route('admin.farms') == url()->current() ? 'active' : '' }}">
+        <a href="{{ route('admin.farms') }}">
+          <i class="fa fa-tractor"></i> <span>Farms</span>
+        </a>
+      </li>
       @include('includes.common.common-sidebar')
     </ul>
   </section>

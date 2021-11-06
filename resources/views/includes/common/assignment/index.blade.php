@@ -47,7 +47,9 @@
 	      <table id="assignments" class="table cell-border compact stripe hover display nowrap" width="99%">
 		      <thead>
 	          <tr>
-	            <th scope="col">Name</th>
+              <th scope="col">Name</th>
+              <th scope="col">Farm</th>
+              <th scope="col">Role</th>
 	            <th scope="col">Action</th>
 	          </tr>
 	        </thead>
@@ -68,11 +70,13 @@
         serverSide: true,
         scrollX: true,
         columnDefs: [
-	        { className: "dt-center", targets: [ 0, 1 ] }
+	        { className: "dt-center", targets: [ 0, 1, 2, 3 ] }
         ],
         ajax: "{{ route('assignments') }}",
         columns: [
           {data: 'name', name: 'name'},
+          {data: 'farm', name: 'farm'},
+          {data: 'role', name: 'role'},
           {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
       });

@@ -63,6 +63,15 @@
 			<div class="col-md-6 col-md-offset-3">
 				<form id="locationForm" action="{{ route('location.update', ['id' => $location->id]) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
+					<div class="form-group">
+						<label for="farm">Farm</label>
+						<select class="form-control" id="farm" name="farm" required>
+							<option value="">Select Farm</option>
+							@foreach($farms as $key => $r)
+								<option value="{{ $r->id }}" {{ $r->id == $location->farm->id ? 'selected' : '' }}>{{ $r->name }}</option>
+							@endforeach
+						</select>
+					</div>
 					<div id="LocationNameDiv" class="form-group {{ $errors->first('location_name') ? 'has-error' : ''  }}">
 						<label for="location_name">Location Name</label>
 						<input type="text" name="location_name" id="location_name" value="{{ $location->location_name }}" placeholder="Location Name" class="form-control" required>
