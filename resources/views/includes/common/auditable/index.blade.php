@@ -47,6 +47,7 @@
 		      <table id="auditables" class="table cell-border compact stripe hover display nowrap" width="99%">
 			      <thead>
 		          <tr>
+		            <th scope="col">Farm</th>
 		            <th scope="col">Name</th>
 		            <th scope="col">Action</th>
 		          </tr>
@@ -68,10 +69,11 @@
         serverSide: true,
         scrollX: true,
         columnDefs: [
-          { className: "dt-center", targets: [ 1 ] }
+          { className: "dt-center", targets: [ 0, 1, 2 ] }
         ],
         ajax: "{{ route('auditables') }}",
         columns: [
+            {data: 'farm', name: 'farm'},
             {data: 'name', name: 'name'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]

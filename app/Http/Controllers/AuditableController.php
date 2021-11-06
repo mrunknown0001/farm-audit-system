@@ -33,6 +33,7 @@ class AuditableController extends Controller
 	                	if(count($j->sub_locations) > 0) {
 		                    foreach($j->sub_locations as $s) {
 			                    $data->push([
+                                    'farm' => $j->farm->code,
 			                        'name' => $j->location_name . ' - ' . $s->sub_location_name,
 			                        'action' => "<a href='" . route('auditable.view.qr', ['cat' => 'sub', 'id' => $s->id]) . "' class='btn btn-success btn-xs'><i class='fa fa-qrcode'></i> View</a>" //<a href='" . route('auditable.download.qr', ['cat' => 'loc', 'id' => $j->id]) . "' class='btn btn-primary btn-xs'><i class='fa fa-file-download'></i> QR</a>"
 			                    ]);
@@ -41,6 +42,7 @@ class AuditableController extends Controller
 	                }
 	                else {
 	                    $data->push([
+                            'farm' => $j->farm->code,
 	                        'name' => $j->location_name,
 	                        'action' => "<a href='" . route('auditable.view.qr', ['cat' => 'loc', 'id' => $j->id]) . "' class='btn btn-success btn-xs'><i class='fa fa-qrcode'></i> View</a>"// <a href='" . route('auditable.download.qr', ['cat' => 'loc', 'id' => $j->id]) . "' class='btn btn-primary btn-xs'><i class='fa fa-file-download'></i> QR</a>"
 	                    ]);
@@ -66,14 +68,14 @@ class AuditableController extends Controller
     							->where('active', 1)
     							->where('is_deleted', 0)
     							->first();
-    		$name = $auditable->location->location_name . ' - ' . $auditable->sub_location_name;
+    		$name = $auditable->location->farm->code . ' - ' . $auditable->location->location_name . ' - ' . $auditable->sub_location_name;
     	}
     	elseif($cat == 'loc') {
     		$auditable = Location::where('id', $id)
     							->where('active', 1)
     							->where('is_deleted', 0)
     							->first();
-    		$name = $auditable->location_name;
+    		$name = $auditable->farm->code . ' - ' .$auditable->location_name;
     	}
     	else {
     		return abort(500);

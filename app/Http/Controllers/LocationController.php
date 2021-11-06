@@ -189,4 +189,33 @@ class LocationController extends Controller
                   ->header('Content-Type', 'text/plain');
         }
     }
+
+
+
+
+
+
+    /**
+     * getLoationFarm
+     */
+    public function getLoationFarm($id)
+    {
+        $locations = Location::where('farm_id', $id)->where('active', 1)->where('is_deleted',0)->get();
+
+        if(count($locations) < 1) {
+            return false;
+        }
+        else {
+            $data = [];
+
+            foreach($locations as $l) {
+                $data[] = [
+                    'id' => $l->id,
+                    'name' => $l->location_name,
+                ];
+            }
+
+            return response()->json($data, 200);
+        }
+    }
 }

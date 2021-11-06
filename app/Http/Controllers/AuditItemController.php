@@ -37,6 +37,7 @@ class AuditItemController extends Controller
                     $data->push([
                         'name' => strtoupper($j->auditname->category_name),
                         'item' => strtoupper($j->item_name),
+                        'farm' => $j->farm->code,
                         'action' => '<button id="edit" class="btn btn-warning btn-xs" data-id="' . $j->id . '"><i class="fa fa-edit"></i> Edit</button> <button id="remove" data-id="' . $j->id . '" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Remove</button>'
                     ]);
                 }
@@ -62,13 +63,15 @@ class AuditItemController extends Controller
                                     ->where('is_deleted', 0)
                                     ->get();
 
+        $farms = Farm::where('active', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
+
         $locations = DB::table('locations')
                                     ->where('active', 1)
                                     ->where('is_deleted', 0)
                                     ->orderByRaw('LENGTH(location_name)', 'ASC')
                                     ->orderBy('location_name', 'ASC')
                                     ->get();
-        return view('includes.common.audit-item.add', ['locations' => $locations, 'names' => $names]);
+        return view('includes.common.audit-item.add', ['locations' => $locations, 'names' => $names, 'farms' => $farms]);
     }
 
     /**
@@ -82,6 +85,7 @@ class AuditItemController extends Controller
         $ai->item_name = $request->audit_item_name;
         $ai->description = $request->description;
         $ai->time_range = $request->time_range;
+        $ai->farm_id = $request->farm;
         $ai->save();
         
         if(count($request->locations) > 0) {
@@ -129,10 +133,12 @@ class AuditItemController extends Controller
         $locations = DB::table('locations')
                                     ->where('active', 1)
                                     ->where('is_deleted', 0)
+                                    ->where('farm_id', $item->farm_id)
                                     ->orderByRaw('LENGTH(location_name)', 'ASC')
                                     ->orderBy('location_name', 'ASC')
                                     ->get();
-        return view('includes.common.audit-item.edit', ['locations' => $locations, 'item' => $item, 'names' => $names]);
+        $farms = Farm::where('active', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
+        return view('includes.common.audit-item.edit', ['locations' => $locations, 'item' => $item, 'names' => $names, 'farms' => $farms]);
 
     }
 

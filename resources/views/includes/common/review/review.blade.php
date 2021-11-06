@@ -64,7 +64,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-12">
-				<h2>Location: <strong>{{ $audit->field1 == 'loc' ? $audit->location->location_name : $audit->sub_location->location->location_name . ' - ' . $audit->sub_location->sub_location_name }}</strong></h2>
+				<h2>Location: <strong>{{ $audit->field1 == 'loc' ? $audit->location->farm->code . ' - ' . $audit->location->location_name : $audit->sub_location->location->farm->code . ' - ' . $audit->sub_location->location->location_name . ' - ' . $audit->sub_location->sub_location_name }}</strong></h2>
 				@if($audit->compliance == 1) 
 					<p><span class="label label-success">COMPLIANT <i class="fa fa-check"></i></span></p>
 				@else

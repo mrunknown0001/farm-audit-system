@@ -63,6 +63,18 @@
 			<div class="col-md-10 col-md-offset-1">
 				<form id="audititemform" action="{{ route('audit.item.post.add') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
+					<div class="form-group {{ $errors->first('farm') ? 'has-error' : ''  }}">
+						<label for="farm">Farm</label>
+						<select name="farm" id="farm" class="form-control" required>
+							<option value="">Select Farm</option>
+							@foreach($farms as $key => $n)
+								<option value="{{ $n->id }}">{{ $n->name }}</option>
+							@endforeach
+						</select>
+						@if($errors->first('farm'))
+            	<span class="help-block"><strong>{{ $errors->first('farm') }}</strong></span>
+            @endif
+					</div>
 					<div class="form-group {{ $errors->first('audit_name') ? 'has-error' : ''  }}">
 						<label for="audit_name">Audit Name</label>
 						<select name="audit_name" id="audit_name" class="form-control" required>
@@ -102,7 +114,7 @@
 					</div> --}}
 					<div class="form-group">
 						<h3>Locations Applied</h3>
-						@if(count($locations) > 0)
+						{{-- @if(count($locations) > 0)
 							<div class="row"> 
 								@foreach($locations as $key => $l)
 									<div class="col-md-3"><input type="checkbox" name="locations[]" id="location{{ $l->id }}" value="{{ $l->id }}"> <label for="location{{ $l->id }}">{{ $l->location_name }}</label></div>
@@ -110,7 +122,8 @@
 							</div>
 						@else
 							<p>No Location Found!</p>
-						@endif
+						@endif --}}
+						<div class="row" id="locationsdiv"></div>
 					</div>
 					<div class="form-group">
 						<button class="btn btn-success">Submit</button>
@@ -162,6 +175,7 @@
 	        // Clear Form
 	        $("#audititemform").trigger("reset");
 	        $(".itemrowclass").remove();
+	        $("#locationsdiv").children("div").remove();
 	      },
 	      error: function(data){
 	        console.log(data.responseJSON);
@@ -174,6 +188,31 @@
 	      }
 	    });
 	  }));
+
+
+	  $('#farm').change(function() {
+	  	// locationsdiv
+	  	var id = $(this).val();
+	  	$.ajax({
+				type:'get',
+	      url: '/location/farm/' + id,
+	      success: function(data) {
+	      	// console.log(data);
+	      	if(data == '') {
+	      		$('#locationsdiv').append('<p id="locationappend" class="text-center">No Location Found!</p>')
+	      	}
+	      	else {
+	      		$('#locationappend').remove();
+		      	$.each(data, function(k, v) {
+					  	$('#locationsdiv').append('<div class="col-md-3"><input type="checkbox" name="locations[]" id="location' + data[k]['id'] +'" value="' + data[k]['id'] +'"> <label for="location' + data[k]['id'] +'">' + data[k]['name'] +'</label></div>');
+					  });
+		      }
+	      },
+	      error: function(data) {
+	      	console.log(data)
+	      }		
+	  	})
+	  });
 
 
 

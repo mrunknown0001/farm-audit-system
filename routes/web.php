@@ -67,6 +67,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/audit-item/edit/{id}', 'AuditItemController@edit')->name('audit.item.edit');
 	Route::post('/audit-item/edit/{id}', 'AuditItemController@update')->name('audit.item.update');
 	Route::get('/audit-item/remove/{id}', 'AuditItemController@remove')->name('audit.item.remove');
+	# Get Locations on Audit Item Based on Farm ID
+	Route::get('/location/farm/{id}', 'LocationController@getLoationFarm')->name('farm.get.locations');
 
 	# Audit Name Management || audit_item_category
 	Route::get('/audit-names', 'AuditItemCategoryController@index')->name('audit.name');	

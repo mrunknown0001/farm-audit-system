@@ -47,6 +47,7 @@
 	      <table id="items" class="table cell-border compact stripe hover display nowrap" width="99%">
 		      <thead>
 	          <tr>
+              <th scope="col">Farm</th>
               <th scope="col">Audit Name</th>
               <th scope="col">Audit Item</th>
 	            <th scope="col">Action</th>
@@ -69,10 +70,11 @@
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
-		          { className: "dt-center", targets: [ 1,2 ] }
+		          { className: "dt-center", targets: [ 0, 1,2, 3 ] }
 		        ],
 		        ajax: "{{ route('audit.item') }}",
 		        columns: [
+                {data: 'farm', name: 'farm'},
                 {data: 'name', name: 'name'},
                 {data: 'item', name: 'item'},
 		            {data: 'action', name: 'action', orderable: false, searchable: false},

@@ -66,6 +66,18 @@
 				<form id="audititemform" action="{{ route('audit.item.update', ['id' => $item->id]) }}" method="POST" enctype="multipart/form-data" autocomplete="off">
 					@csrf
 					<input type="hidden" name="id" value="{{ $item->id }}">
+					<div class="form-group {{ $errors->first('farm') ? 'has-error' : ''  }}">
+						<label for="farm">Farm</label>
+						<select name="farm" id="farm" class="form-control" required readonly>
+							<option value="">Select Farm</option>
+							@foreach($farms as $key => $n)
+								<option value="{{ $n->id }}" {{ $item->farm_id == $n->id ? 'selected' : '' }}>{{ $n->name }}</option>
+							@endforeach
+						</select>
+						@if($errors->first('farm'))
+            	<span class="help-block"><strong>{{ $errors->first('farm') }}</strong></span>
+            @endif
+					</div>
 					<div class="form-group {{ $errors->first('audit_name') ? 'has-error' : ''  }}">
 						<label for="audit_name">Audit Name</label>
 						<select name="audit_name" id="audit_name" class="form-control" required>
