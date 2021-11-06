@@ -9,6 +9,6 @@ class ManagerController extends Controller
     // Dashboard
     public function dashboard()
     {
-    	return view('manager.dashboard', ['system' => $this->system()]);
+    	return view('manager.dashboard', ['report' => 'report']);
     }
 }

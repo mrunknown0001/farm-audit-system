@@ -9,6 +9,6 @@ class SupervisorController extends Controller
     // Dashboard
     public function dashboard()
     {
-    	return view('supervisor.dashboard', ['system' => $this->system()]);
+    	return view('supervisor.dashboard', ['report' => 'report']);
     }
 }

@@ -9,6 +9,6 @@ class VpController extends Controller
     // Dashboard
     public function dashboard()
     {
-    	return view('vp.dashboard', ['system' => $this->system()]);
+    	return view('vp.dashboard', ['report' => 'report']);
     }
 }

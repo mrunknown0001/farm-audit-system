@@ -1,33 +1,94 @@
+@inject('accesscontroller', '\App\Http\Controllers\AccessController')
+
+@if(isset($report) && $accesscontroller->checkAccess(Auth::user()->id, 'reports'))
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script> --}}
 <script src="{{ asset('js/chart.js') }}"></script>
 <script>
-		let data1 = [65, 59, 80, 81, 56, 55, 40, 30, 50, 75, 60, 30];
 
-    var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      datasets: [
-        {
-          label               : 'Non-Compliance',
-          fillColor           : 'rgba(221, 75, 57, 1)',
-          strokeColor         : 'rgba(221, 75, 57, 1)',
-          pointColor          : 'rgba(221, 75, 57, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : data1
-        },
-        {
-          label               : 'Compliance',
-          fillColor           : 'rgba(57,229,75,1)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : [28, 48, 40, 19, 86, 27, 90, 40, 100, 90, 75, 80]
+  // load farm
+  $(document).ready(function () {
+    $.ajax({
+      url: "{{ route('report.get.farms') }}",
+      dataType: "json",
+      async: false,
+      success: function(data) {
+        $.each(data, function(k, v) {
+          $('#report_farm').append('<option value="'+ data[k]['id'] +'">'+ data[k]['code'] +'</option>');
+        });
+      }
+    });
+
+    $('#report_farm').change(function () {
+      var id = $(this).val();
+      $.ajax({
+        url: "/farm/location/get/" + id,
+        dataType: "json",
+        async: false,
+        success: function(data) {
+          // console.log(data);
+          $('#report_location option').remove();
+          $('#report_location').append('<option value="">Select Location</option>');
+          $.each(data, function(k, v) {
+            $('#report_location').append('<option value="'+ data[k]['id'] +'" data-id="'+ data[k]['has_sublocation'] +'">'+ data[k]['location_name'] +'</option>');
+          });
         }
-      ]
-    }
+      });      
+    });
+
+    $('#report_location').change(function() {
+      var has_sublocation = $(this).find(':selected').data('id');
+      if(has_sublocation == 1) {
+        $('#report_sub_location').show();
+      }
+      else {
+        alert('load data in chart')
+      }
+    });
+  });
+
+  // after selecting farm-load location-lock farm field
+
+  // after selecting locaton-load data if no sublocation - if it has sublocation, load sublocation-lock location
+  
+  // optional load 
+
+  var jsonData1 = $.ajax({
+      url: "{{ route('report.all.non.compliant') }}",
+      dataType: "json",
+      async: false
+      }).responseJSON;
+
+  var jsonData2 = $.ajax({
+      url: "{{ route('report.all.compliant') }}",
+      dataType: "json",
+      async: false
+      }).responseJSON;
+
+  var areaChartData = {
+    labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    datasets: [
+      {
+        label               : 'Non-Compliance',
+        fillColor           : 'rgba(221, 75, 57, 1)',
+        strokeColor         : 'rgba(221, 75, 57, 1)',
+        pointColor          : 'rgba(221, 75, 57, 1)',
+        pointStrokeColor    : '#c1c7d1',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgba(220,220,220,1)',
+        data                : jsonData1
+      },
+      {
+        label               : 'Compliance',
+        fillColor           : 'rgba(57,229,75,1)',
+        strokeColor         : 'rgba(60,141,188,0.8)',
+        pointColor          : '#3b8bba',
+        pointStrokeColor    : 'rgba(60,141,188,1)',
+        pointHighlightFill  : '#fff',
+        pointHighlightStroke: 'rgba(60,141,188,1)',
+        data                : jsonData2
+      }
+    ]
+  }
 
 	//-------------
   //- BAR CHART -
@@ -69,3 +130,5 @@
   barChartOptions.datasetFill = false
   barChart.Bar(barChartData, barChartOptions)
 </script>
+
+@endif

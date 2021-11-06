@@ -9,6 +9,6 @@ class OfficerController extends Controller
     // Dashboard
     public function dashboard()
     {
-    	return view('officer.dashboard', ['system' => $this->system()]);
+    	return view('officer.dashboard', ['report' => 'report']);
     }
 }

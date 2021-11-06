@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function profile()
     {
-        return View::make('includes.common.profile', ['system' => $this->system()]);
+        return View::make('includes.common.profile');
     }
 
     /**
@@ -31,7 +31,7 @@ class UserController extends Controller
      */
     public function changePassword()
     {
-        return view('includes.common.change-password', ['system' => $this->system()]);
+        return view('includes.common.change-password');
     }
 
 
@@ -60,7 +60,7 @@ class UserController extends Controller
      */
     public function dashboard()
     {
-    	return View::make('user.dashboard', ['system' => $this->system()]);
+    	return View::make('user.dashboard', ['report' => 'report']);
     }
 
 
