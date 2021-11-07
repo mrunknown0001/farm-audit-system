@@ -44,7 +44,7 @@
           <!-- BAR CHART -->
           <div class="box box-danger">
             <div class="box-header with-border">
-              <h3 class="box-title">Location <span id="location"></span></h3>
+              <h3 class="box-title">Location: <strong><span id="report_location_name"></span></strong></h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -64,8 +64,8 @@
 		            		<option value="">Select Location</option>
 		            	</select>  		
 	            	</div>
-	            	<div class="col-md-3" style="display: none;">
-		            	<select name="report_sub_location" id="report_sub_location" class="form-control">
+	            	<div class="col-md-3">
+		            	<select name="report_sub_location" id="report_sub_location" class="form-control" style="display: none;">
 		            		<option value="">Select Sub Location</option>
 		            	</select> 
 	            	</div>

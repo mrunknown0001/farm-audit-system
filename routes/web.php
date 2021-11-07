@@ -112,6 +112,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/farms/get', 'ReportController@getFarms')->name('report.get.farms');
 	# Get Location using farm_id
 	Route::get('/farm/location/get/{id}', 'ReportController@getFarmLocation')->name('report.get.farm.location');
+	# get sub loation using location id
+	Route::get('/farm/sublocation/get/{id}', 'ReportController@getFarmSubLocation')->name('report.get.farm.sub.location');
 
 
 	# Audit Reviewer Notification | Make Global or over the site with reviwer access
