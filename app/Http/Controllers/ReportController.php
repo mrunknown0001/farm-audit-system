@@ -8,6 +8,7 @@ use DataTables;
 use App\Audit;
 use App\Farm;
 use App\Location;
+use App\SubLocation;
 use App\Http\Requests\LocationRequest;
 use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
@@ -56,5 +57,13 @@ class ReportController extends Controller
         $locations = Location::where('farm_id', $id)->where('active', 1)->where('is_deleted', 0)->orderBy('location_name', 'asc')->get(['id', 'location_name', 'has_sublocation']);
 
         return response()->json($locations);
+    }
+
+    
+    public function getFarmSubLocation($id)
+    {
+        $sub_locations = SubLocation::where('location_id', $id)->where('active', 1)->where('is_deleted', 0)->orderBy('sub_location_name', 'asc')->get(['id', 'sub_location_name']);
+
+        return response()->json($sub_locations);
     }
 }

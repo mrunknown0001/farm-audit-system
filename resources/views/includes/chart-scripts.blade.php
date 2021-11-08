@@ -109,17 +109,32 @@
 
     $('#report_location').change(function() {
       var has_sublocation = $(this).find(':selected').data('id');
+      var id = $(this).val();
       if(has_sublocation == 1) {
         $('#report_sub_location').show();
         barChart.Bar(barChartData, barChartOptions);
         $('#report_location_name').text('')
         // load sublocation
-
+        // /farm/sublocation/get/{id}
+        $.ajax({
+          url: "/farm/sublocation/get/" + id,
+          dataType: "json",
+          async: false,
+          success: function(data) {
+            // console.log(data);
+            $('#report_sub_location option').remove();
+            $('#report_sub_location').append('<option value="">Select Sub Location</option>');
+            $.each(data, function(k, v) {
+              $('#report_sub_location').append('<option value="'+ data[k]['id'] +'">'+ data[k]['sub_location_name'] +'</option>');
+            });
+          }
+        }); 
         return false;
       }
       else {
         $('#report_sub_location').hide();
         // alert('load data in chart')
+
         var jsonData1 = $.ajax({
             url: "{{ route('report.all.non.compliant') }}",
             dataType: "json",
@@ -160,7 +175,54 @@
         // Add Location Name to title of Chart
         $('#report_location_name').text('Dynamic Location Name')
         return false;
+
       }
+    });
+
+
+    $('#report_sub_location').change(function () {
+      var id = $(this).val();
+      
+        var jsonData1 = $.ajax({
+            url: "{{ route('report.all.non.compliant') }}",
+            dataType: "json",
+            async: false
+            }).responseJSON;
+
+         var jsonData2 = $.ajax({
+            url: "{{ route('report.all.compliant') }}",
+            dataType: "json",
+            async: false
+            }).responseJSON;
+        var newData = {
+          labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          datasets: [
+            {
+              label               : 'Non-Compliance',
+              fillColor           : 'rgba(221, 75, 57, 1)',
+              strokeColor         : 'rgba(221, 75, 57, 1)',
+              pointColor          : 'rgba(221, 75, 57, 1)',
+              pointStrokeColor    : '#c1c7d1',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(220,220,220,1)',
+              data                : jsonData1
+            },
+            {
+              label               : 'Compliance',
+              fillColor           : 'rgba(57,229,75,1)',
+              strokeColor         : 'rgba(60,141,188,0.8)',
+              pointColor          : '#3b8bba',
+              pointStrokeColor    : 'rgba(60,141,188,1)',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(60,141,188,1)',
+              data                : jsonData2
+            }
+          ]
+        }
+        barChart.Bar(newData, barChartOptions);
+        // Add Location Name to title of Chart
+        $('#report_location_name').text('Dynamic Sub Location Name')
+        return false;
     });
   });
 </script>
