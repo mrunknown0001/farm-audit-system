@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use DB;
 use DataTables;
 use App\Audit;
 use App\Farm;
@@ -54,7 +55,21 @@ class ReportController extends Controller
 
     public function getFarmLocation($id)
     {
-        $locations = Location::where('farm_id', $id)->where('active', 1)->where('is_deleted', 0)->orderBy('location_name', 'asc')->get(['id', 'location_name', 'has_sublocation']);
+        // $locations = Location::where('farm_id', $id)->where('active', 1)->where('is_deleted', 0)->orderBy('location_name', 'asc')->get(['id', 'location_name', 'has_sublocation']);
+
+        $locations = DB::table('locations')
+                        ->where('farm_id', $id)
+                        ->where('active', 1)
+                        ->where('is_deleted', 0)
+                        ->orderByRaw('LENGTH(location_name)', 'ASC')
+                        ->orderBy('location_name', 'ASC')
+                        ->select(['id', 'location_name', 'has_sublocation'])
+                        ->get();
+
+        if(count($locations) < 1) {
+            $data = [0,0,0,0,0,0,0,0,0,0,0,0];
+            return response()->json($data);
+        }
 
         return response()->json($locations);
     }
