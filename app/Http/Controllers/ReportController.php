@@ -28,23 +28,6 @@ class ReportController extends Controller
     }
 
 
-
-    public function allNonCompliant()
-    {
-    	$data = [65, 59, 80, 81, 56, 55, 40, 30, 50, 75, 60, 30];
-
-    	return response()->json($data);
-    }
-
-
-    public function allCompliant()
-    {
-        $data = [28, 48, 40, 19, 86, 27, 90, 40, 100, 90, 75, 80];
-
-        return response()->json($data);
-    }
-
-
     public function getFarms()
     {
         $farms = Farm::where('active', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get(['id', 'code']);
@@ -55,8 +38,6 @@ class ReportController extends Controller
 
     public function getFarmLocation($id)
     {
-        // $locations = Location::where('farm_id', $id)->where('active', 1)->where('is_deleted', 0)->orderBy('location_name', 'asc')->get(['id', 'location_name', 'has_sublocation']);
-
         $locations = DB::table('locations')
                         ->where('farm_id', $id)
                         ->where('active', 1)
@@ -66,19 +47,45 @@ class ReportController extends Controller
                         ->select(['id', 'location_name', 'has_sublocation'])
                         ->get();
 
-        if(count($locations) < 1) {
-            $data = [0,0,0,0,0,0,0,0,0,0,0,0];
-            return response()->json($data);
-        }
-
         return response()->json($locations);
     }
 
     
     public function getFarmSubLocation($id)
     {
-        $sub_locations = SubLocation::where('location_id', $id)->where('active', 1)->where('is_deleted', 0)->orderBy('sub_location_name', 'asc')->get(['id', 'sub_location_name']);
+        $sub_locations = SubLocation::where('location_id', $id)
+                        ->where('active', 1)
+                        ->where('is_deleted', 0)
+                        ->orderByRaw('LENGTH(sub_location_name)', 'ASC')
+                        ->orderBy('sub_location_name', 'ASC')
+                        ->select(['id', 'sub_location_name'])
+                        ->get();
 
         return response()->json($sub_locations);
+    }
+
+
+
+    // ID of location with no sub location
+    public function dailyLocCompliance($id)
+    {
+        $month = date('F');
+        $data = [
+                  [$month, 'Non-Compliant', 'Compliant'],
+                  ['1', 1000, 400],
+                  ['2', 1170, 460],
+                  ['3', 660, 1120],
+                  ['4', 1030, 540],
+                  ['5', 1000, 400],
+                  ['6', 1170, 460],
+                  ['7', 660, 1120],
+                  ['8', 1030, 540],
+                  ['9', 1000, 400],
+                  ['10', 1170, 460],
+                  ['11', 660, 1120],
+                  ['12', 1030, 540]
+                ];
+
+        return response()->json($data);
     }
 }

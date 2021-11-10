@@ -44,7 +44,7 @@
           <!-- BAR CHART -->
           <div class="box box-danger">
             <div class="box-header with-border">
-              <h3 class="box-title">Location: <strong><span id="report_location_name"></span></strong></h3>
+              <h3 class="box-title">Monthly Audit Data - Location: <strong><span id="report_location_name"></span></strong></h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -53,7 +53,7 @@
               </div>
             </div>
             <div class="box-body">
-            	<div class="row">
+            	<div class="row form-group">
             		<div class="col-md-3">
             			<select name="report_farm" id="report_farm" class="form-control">
 		            		<option value="">Select Farm</option>
@@ -71,7 +71,8 @@
 	            	</div>
 	            </div>
               <div class="chart">
-                <canvas id="barChart" style="height:230px"></canvas>
+                {{-- <canvas id="barChart" style="height:230px"></canvas> --}}
+                <div id="barChart" style="height: 500px; width: auto;"></div>
               </div>
             </div>
             <!-- /.box-body -->

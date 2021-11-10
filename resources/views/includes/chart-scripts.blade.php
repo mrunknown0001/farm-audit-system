@@ -1,83 +1,29 @@
 @inject('accesscontroller', '\App\Http\Controllers\AccessController')
 
 @if(isset($report) && $accesscontroller->checkAccess(Auth::user()->id, 'reports'))
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.1.1/Chart.min.js"></script> --}}
-<script src="{{ asset('js/chart.js') }}"></script>
+{{-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> --}}
+<script src="{{ asset('js/google.chart.loader.js') }}"></script>
 <script>
-  let init1 = [0,0,0,0,0,0,0,0,0,0,0,0];
-  let init2 = [0,0,0,0,0,0,0,0,0,0,0,0];
+  google.charts.load('current', {'packages':['bar']});
 
-  function barchart(data1, data2) {
+  function drawBarChart(ctitle, csubtitle, cdata) {
+    var data = google.visualization.arrayToDataTable(cdata);
 
-    var areaChartData = {
-      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-      datasets: [
-        {
-          label               : 'Non-Compliance',
-          fillColor           : 'rgba(221, 75, 57, 1)',
-          strokeColor         : 'rgba(221, 75, 57, 1)',
-          pointColor          : 'rgba(221, 75, 57, 1)',
-          pointStrokeColor    : '#c1c7d1',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(220,220,220,1)',
-          data                : data1
-        },
-        {
-          label               : 'Compliance',
-          fillColor           : 'rgba(57,229,75,1)',
-          strokeColor         : 'rgba(60,141,188,0.8)',
-          pointColor          : '#3b8bba',
-          pointStrokeColor    : 'rgba(60,141,188,1)',
-          pointHighlightFill  : '#fff',
-          pointHighlightStroke: 'rgba(60,141,188,1)',
-          data                : data2
-        }
-      ]
-    }
+    var options = {
+      chart: {
+        title: ctitle,
+        subtitle: csubtitle,
+      },
+      animation: {startup: true, duration: 5000, easing: 'linear',}
+    };
+    var chart = new google.charts.Bar(document.getElementById('barChart'));
 
-  	//-------------
-    //- BAR CHART -
-    //-------------
-    var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
-    var barChart                         = new Chart(barChartCanvas)
-    var barChartData                     = areaChartData
-    barChartData.datasets[1].fillColor   = '#00a65a'
-    barChartData.datasets[1].strokeColor = '#00a65a'
-    barChartData.datasets[1].pointColor  = '#00a65a'
-    var barChartOptions                  = {
-      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-      scaleBeginAtZero        : true,
-      //Boolean - Whether grid lines are shown across the chart
-      scaleShowGridLines      : true,
-      //String - Colour of the grid lines
-      scaleGridLineColor      : 'rgba(0,0,0,.05)',
-      //Number - Width of the grid lines
-      scaleGridLineWidth      : 1,
-      //Boolean - Whether to show horizontal lines (except X axis)
-      scaleShowHorizontalLines: true,
-      //Boolean - Whether to show vertical lines (except Y axis)
-      scaleShowVerticalLines  : true,
-      //Boolean - If there is a stroke on each bar
-      barShowStroke           : true,
-      //Number - Pixel width of the bar stroke
-      barStrokeWidth          : 2,
-      //Number - Spacing between each of the X value sets
-      barValueSpacing         : 5,
-      //Number - Spacing between data sets within X values
-      barDatasetSpacing       : 1,
-      //String - A legend template
-      legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-      //Boolean - whether to make the chart responsive
-      responsive              : true,
-      maintainAspectRatio     : true
-    }
-
-    barChartOptions.datasetFill = false
-    return barChart.Bar(barChartData, barChartOptions);
-
+    chart.draw(data, google.charts.Bar.convertOptions(options));
   }
 
+
   $(document).ready(function () {
+
     // load farm
     $.ajax({
       url: "{{ route('report.get.farms') }}",
@@ -92,8 +38,7 @@
 
     $('#report_farm').change(function () {
       $('#report_sub_location').hide();
-      // barChart.Bar(barChartData, barChartOptions);
-      barchart(init1, init2);
+      
       $('#report_location_name').text('')
       var id = $(this).val();
       $.ajax({
@@ -116,13 +61,12 @@
       var id = $(this).val();
       if(id == '') {
         $('#report_location_name').text('');
-        barchart(init1, init2);
         return ;
       }
       else if (id != '') {
         if(has_sublocation == 1) {
           $('#report_sub_location').show();
-          barchart(init1, init2);
+        
           $('#report_location_name').text('')
           // load sublocation
           // /farm/sublocation/get/{id}
@@ -146,20 +90,29 @@
           // alert('load data in chart')
           var location_name = $("#report_location option:selected").text();
           var farm_name = $("#report_farm option:selected").text();
-          var jsonData1 = $.ajax({
-              url: "{{ route('report.all.non.compliant') }}",
-              dataType: "json",
-              async: false
-              }).responseJSON;
-
-           var jsonData2 = $.ajax({
-              url: "{{ route('report.all.compliant') }}",
-              dataType: "json",
-              async: false
-              }).responseJSON;
-
-           barchart(jsonData1, jsonData2);
-
+          // load data for location with id
+          $.ajax({
+            url: "/daily/loc/compliance/" + id,
+            dataType: "json",
+            async: false,
+            success: function(data) {
+              // console.log(data);
+              google.charts.setOnLoadCallback(function() {
+                var param1 = farm_name + ' - ' + location_name
+                var param2 = '';
+                // var cdata = [
+                //   ['Location', 'Non-Compliant', 'Compliant'],
+                //   ['2014', 1000, 400],
+                //   ['2015', 1170, 460],
+                //   ['2016', 660, 1120],
+                //   ['2017', 1030, 540]
+                // ];
+                cdata = data;
+                drawBarChart(param1, param2, cdata);
+              });
+            }
+          }); 
+          
           $('#report_location_name').text(farm_name + ' - ' + location_name)
           return ;
 
@@ -176,23 +129,23 @@
       var sub_loc_name = $("#report_sub_location option:selected").text();
       
       if(id == '') {
-        barchart(init1, init2);
         return ;
       }
       else if(id != '') {
-        var jsonData1 = $.ajax({
-            url: "{{ route('report.all.non.compliant') }}",
-            dataType: "json",
-            async: false
-            }).responseJSON;
+        // load data
+        google.charts.setOnLoadCallback(function() {
+          var param1 = farm_name + ' - ' + location_name + ' - ' + sub_loc_name;
+          var param2 = '';
+          var cdata = [
+            ['Location', 'Non-Compliant', 'Compliant'],
+            ['2014', 1000, 400],
+            ['2015', 1170, 460],
+            ['2016', 660, 1120],
+            ['2017', 1030, 540]
+          ];
+          drawBarChart(param1, param2, cdata);
+        });
 
-        var jsonData2 = $.ajax({
-            url: "{{ route('report.all.compliant') }}",
-            dataType: "json",
-            async: false
-            }).responseJSON;
-
-        barchart(jsonData1, jsonData2);
         $('#report_location_name').text(farm_name + ' - ' + location_name + ' - ' + sub_loc_name);
         return false;
       }

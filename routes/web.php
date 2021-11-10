@@ -105,15 +105,16 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Rerpots
 	Route::get('/reports', 'ReportController@index')->name('reports');
-	# Compliant|NonComplaint 
-	Route::get('/report/all/non-compliant', 'ReportController@allNonCompliant')->name('report.all.non.compliant');
-	Route::get('/report/all/compliant', 'ReportController@allCompliant')->name('report.all.compliant');
+
 	# Get Farm use for reports
 	Route::get('/farms/get', 'ReportController@getFarms')->name('report.get.farms');
 	# Get Location using farm_id
 	Route::get('/farm/location/get/{id}', 'ReportController@getFarmLocation')->name('report.get.farm.location');
 	# get sub loation using location id
 	Route::get('/farm/sublocation/get/{id}', 'ReportController@getFarmSubLocation')->name('report.get.farm.sub.location');
+	# get daily compliance and non compliance on location
+	Route::get('/daily/loc/compliance/{id}', 'ReportController@dailyLocCompliance')->name('report.daily.loc.compliance');
+	Route::get('/daily/sub/compliance/{id}', 'ReportController@dailySubCompliance')->name('report.daily.sub.compliance');
 
 
 	# Audit Reviewer Notification | Make Global or over the site with reviwer access
