@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-	Reports
+	Supervisor and Caretaker Reports
 @endsection
 
 @section('style')
@@ -29,7 +29,7 @@
 @section('content')
 	<div class="content-wrapper">
 	<section class="content-header">
-		<h1>Reports</h1>
+		<h1>Supervisor and Caretaker Reports</h1>
 		<ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
@@ -38,17 +38,12 @@
 	<section class="content">
 		<div class="row">
 			<div class="col-md-12">
+				<p><a href="{{ route('reports') }}" class="btn btn-primary btn-xs"><i class="fa fa-arrow-left"></i> Back to Reports</a></p>
 				@include('includes.all')
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-6">
-        <ul>
-          <li><a href="{{ route('report.marshal') }}">Audit Marshal</a></li>
-          <li><a href="{{ route('report.location.compliance') }}">Location Compliance</a></li>
-          <li><a href="{{ route('report.assigned.personnel') }}">Supervisor and Caretaker</a></li>
-        </ul>
-			</div>
+
 		</div>
 	</section>
 </div>

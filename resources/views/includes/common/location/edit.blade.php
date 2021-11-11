@@ -5,24 +5,7 @@
 @endsection
 
 @section('style')
-	<style>
-	  .overlay{
-	      display: none;
-	      position: fixed;
-	      width: 100%;
-	      height: 100%;
-	      top: 0;
-	      left: 0;
-	      z-index: 999;
-	      background: rgba(255,255,255,0.8) url("/gif/apple.gif") center no-repeat;
-	  }
-	  body.loading{
-	      overflow: hidden;   
-	  }
-	  body.loading .overlay{
-	      display: block;
-	  }
-	</style>
+
 @endsection
 
 @section('sidebar')

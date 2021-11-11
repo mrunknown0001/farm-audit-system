@@ -8,37 +8,7 @@
 @endsection
 
 @section('style')
-	<style type="text/css">
-		ul {
-			list-style-type: none;
-		}
-		.image-upload > input
-		{
-			display: none;
-		}
 
-		.image-upload i
-		{
-		  cursor: pointer;
-		}
-
-	  .overlay{
-	      display: none;
-	      position: fixed;
-	      width: 100%;
-	      height: 100%;
-	      top: 0;
-	      left: 0;
-	      z-index: 999;
-	      background: rgba(255,255,255,0.8) url("/gif/loading-buffering.gif") center no-repeat;
-	  }
-	  body.loading{
-	      overflow: hidden;   
-	  }
-	  body.loading .overlay{
-	      display: block;
-	  }
-	</style>
 @endsection
 
 @section('sidebar')
@@ -127,6 +97,17 @@
 											<input type="file" class="uploadcam" data-id="{{ $l->id }}" id="upload-{{ $l->id }}" name="upload" accept="image/*" capture style="display: none">
 											<label for="upload-{{ $l->id }}">
 												<span id="camera" class="btn btn-primary"><i class="fa fa-camera fa-3x"></i></span>
+											</label>
+										</div>
+										<p><small>Multiple Image Upload. One at a time capture.</small></p>
+									</div>
+								</div>
+								<div class="row" id="noncompliancecamera2-{{ $l->id }}" style="display: none;">
+									<div class="col-md-6 form-group text-center">
+										<div class="image-upload">
+											<input type="file" class="uploadcam2" data-id="{{ $l->id }}" id="upload2-{{ $l->id }}" name="upload2" accept="image/*" capture style="display: none">
+											<label for="upload2-{{ $l->id }}">
+												<span id="camera2" class="btn btn-primary"><i class="fa fa-camera fa-3x"></i></span>
 											</label>
 										</div>
 										<p><small>Multiple Image Upload. One at a time capture.</small></p>

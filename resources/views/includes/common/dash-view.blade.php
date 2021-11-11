@@ -80,4 +80,5 @@
           <!-- /.box -->
 				</div>
 			</div>
+			<div class="overlay"></div>
 		@endif

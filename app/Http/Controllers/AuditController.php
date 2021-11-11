@@ -159,8 +159,8 @@ class AuditController extends Controller
 
                     $img = Image::make(public_path('uploads/images/'. $filename));  
                     // $img = Image::make($request->file('upload')->getRealPath());
-                    $timestamp = date('F j, Y H:i:s', strtotime(now()));
-                    $img->text($timestamp, 50, 120, function($font) {  
+                    // $timestamp = date('F j, Y H:i:s', strtotime(now()));
+                    $img->text($ts, 50, 120, function($font) {  
                         $font->file(public_path('fonts/RobotoMonoBold.ttf'));  
                         $font->size(80);
                         $font->color('#ffa500');

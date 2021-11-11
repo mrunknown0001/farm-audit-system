@@ -93,6 +93,7 @@
           var location_name = $("#report_location option:selected").text();
           var farm_name = $("#report_farm option:selected").text();
           // load data for location with id
+          $("body").addClass("loading"); 
           $.ajax({
             url: "/daily/loc/compliance/" + id,
             dataType: "json",
@@ -108,10 +109,12 @@
             }
           }); 
           
-          $('#report_location_name').text(farm_name + ' - ' + location_name)
+          $('#report_location_name').text(farm_name + ' - ' + location_name);
+          $("body").removeClass("loading");
           return ;
 
         }
+
       }
     });
 
@@ -123,10 +126,12 @@
       var farm_name = $("#report_farm option:selected").text();
       var sub_loc_name = $("#report_sub_location option:selected").text();
       
+      
       if(id == '') {
         return ;
       }
       else if(id != '') {
+        $("body").addClass("loading"); 
         // load data
         $.ajax({
           url: "/daily/sub/compliance/" + id,
@@ -142,10 +147,11 @@
             });
           }
         }); 
-
+        $("body").removeClass("loading");
         $('#report_location_name').text(farm_name + ' - ' + location_name + ' - ' + sub_loc_name);
         return false;
       }
+      
     });
   });
 </script>

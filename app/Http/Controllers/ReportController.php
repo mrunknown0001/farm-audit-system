@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use DB;
+use Excel;
 use DataTables;
 use App\Audit;
 use App\Farm;
@@ -16,13 +17,16 @@ use App\Http\Controllers\ActionController as AC;
 use App\Http\Controllers\UserLogController as Log;
 use App\Http\Controllers\AccessController;
 
+use App\Exports\MarshalAudit;
+
 
 class ReportController extends Controller
 {
     public function index()
     {
         if(!AccessController::checkAccess(Auth::user()->id, 'reports')) {
-            return abort(403);
+            return response('Unauthorized Access!', 403)
+                      ->header('Content-Type', 'text/plain');
         }
     	return view('includes.common.reports.index');
     }
@@ -129,5 +133,51 @@ class ReportController extends Controller
         
 
         return response()->json($data);
+    }
+
+
+
+    public function marshal()
+    {
+        if(!AccessController::checkAccess(Auth::user()->id, 'reports')) {
+            return response('Unauthorized Access!', 403)
+                      ->header('Content-Type', 'text/plain');
+        }
+
+        return view('includes.common.reports.marshal');
+    }
+
+
+
+    public function locationCompliance()
+    {
+        if(!AccessController::checkAccess(Auth::user()->id, 'reports')) {
+            return response('Unauthorized Access!', 403)
+                      ->header('Content-Type', 'text/plain');
+        }
+
+        return view('includes.common.reports.loc-comp');
+    }
+
+
+
+    public function assignedPersonnel()
+    {
+        if(!AccessController::checkAccess(Auth::user()->id, 'reports')) {
+            return response('Unauthorized Access!', 403)
+                      ->header('Content-Type', 'text/plain');
+        }
+
+        return view('includes.common.reports.supervisor-caretaker');
+    }
+
+
+
+    public function sampleExport()
+    {
+        $data = [1, 2, 3, 4, 5, 6];
+        $export = new MarshalAudit($data);
+        $filename = date('F j, Y', strtotime(now())) . '.xlsx';
+        return Excel::download($export, $filename);
     }
 }
