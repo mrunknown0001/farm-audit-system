@@ -72,4 +72,10 @@ class TestController extends Controller
 
        return redirect()->back()->with('success', 'Uploaded');
     }
+
+
+    public function days()
+    {
+      return date('t');
+    }
 }

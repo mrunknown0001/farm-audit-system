@@ -49,22 +49,22 @@
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                {{-- <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button> --}}
               </div>
             </div>
             <div class="box-body">
-            	<div class="row form-group">
-            		<div class="col-md-3">
+            	<div class="row">
+            		<div class="col-md-3 form-group">
             			<select name="report_farm" id="report_farm" class="form-control">
 		            		<option value="">Select Farm</option>
 		            	</select>
             		</div>
-	            	<div class="col-md-3">
+	            	<div class="col-md-3 form-group">
 		            	<select name="report_location" id="report_location" class="form-control">
 		            		<option value="">Select Location</option>
 		            	</select>  		
 	            	</div>
-	            	<div class="col-md-3">
+	            	<div class="col-md-3 form-group">
 		            	<select name="report_sub_location" id="report_sub_location" class="form-control" style="display: none;">
 		            		<option value="">Select Sub Location</option>
 		            	</select> 

@@ -69,22 +69,64 @@ class ReportController extends Controller
     // ID of location with no sub location
     public function dailyLocCompliance($id)
     {
-        $month = date('F');
-        $data = [
-                  [$month, 'Non-Compliant', 'Compliant'],
-                  ['1', 1000, 400],
-                  ['2', 1170, 460],
-                  ['3', 660, 1120],
-                  ['4', 1030, 540],
-                  ['5', 1000, 400],
-                  ['6', 1170, 460],
-                  ['7', 660, 1120],
-                  ['8', 1030, 540],
-                  ['9', 1000, 400],
-                  ['10', 1170, 460],
-                  ['11', 660, 1120],
-                  ['12', 1030, 540]
-                ];
+        $year = date('Y');
+        $month = date('F') . ' ' . $year; // Current Month
+        $month_num = date('m');
+        $numb_of_days = date('t'); // Currenet Month Number of Days
+        $data = [];
+        // get audit of the current month per day
+        $data[] = [$month, 'Compliant', 'Non-Compliant'];
+        for($i = 1; $i <= $numb_of_days; $i++) {
+            $date = $year . '-' . $month_num . '-' . $i;
+            $audit_compliance_count = Audit::where('field1', 'loc')
+                        ->where('compliance', 1)
+                        ->where('location_id', $id)
+                        ->where('done', 1)
+                        ->whereDate('created_at', date('Y-m-d', strtotime($date)))
+                        ->count();
+            $audit_non_compliance_count = Audit::where('field1', 'loc')
+                        ->where('compliance', 0)
+                        ->where('done', 1)
+                        ->where('location_id', $id)
+                        ->whereDate('created_at', date('Y-m-d', strtotime($date)))
+                        ->count();
+
+            $data[] = [$i, $audit_compliance_count, $audit_non_compliance_count];
+        }
+        
+
+        return response()->json($data);
+    }
+
+
+    // ID of sub location
+    public function dailySubCompliance($id)
+    {
+        $year = date('Y');
+        $month = date('F') . ' ' . $year; // Current Month
+        $month_num = date('m');
+        $numb_of_days = date('t'); // Currenet Month Number of Days
+        $data = [];
+        // get audit of the current month per day
+        $data[] = [$month, 'Compliant', 'Non-Compliant'];
+        for($i = 1; $i <= $numb_of_days; $i++) {
+            $date = $year . '-' . $month_num . '-' . $i;
+            $audit_compliance_count = Audit::where('field1', 'sub')
+                        ->where('compliance', 1)
+                        ->where('done', 1)
+                        ->where('sub_location_id', $id)
+                        ->whereDate('created_at', date('Y-m-d', strtotime($date)))
+                        ->count();
+            $audit_non_compliance_count = Audit::where('field1', 'sub')
+                        ->where('compliance', 0)
+                        ->where('done', 1)
+                        ->where('sub_location_id', $id)
+                        ->whereDate('created_at', date('Y-m-d', strtotime($date)))
+                        ->count();
+
+            $data[] = [$i, $audit_compliance_count, $audit_non_compliance_count];
+        }
+        
 
         return response()->json($data);
     }

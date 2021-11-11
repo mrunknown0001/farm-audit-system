@@ -10,12 +10,14 @@
     var data = google.visualization.arrayToDataTable(cdata);
 
     var options = {
-      chart: {
-        title: ctitle,
-        subtitle: csubtitle,
-      },
-      animation: {startup: true, duration: 5000, easing: 'linear',}
+      title: ctitle,
+      subtitle: csubtitle,
+      animation: {
+        duration: 1000,
+        easing: 'in'
+      }
     };
+
     var chart = new google.charts.Bar(document.getElementById('barChart'));
 
     chart.draw(data, google.charts.Bar.convertOptions(options));
@@ -100,13 +102,6 @@
               google.charts.setOnLoadCallback(function() {
                 var param1 = farm_name + ' - ' + location_name
                 var param2 = '';
-                // var cdata = [
-                //   ['Location', 'Non-Compliant', 'Compliant'],
-                //   ['2014', 1000, 400],
-                //   ['2015', 1170, 460],
-                //   ['2016', 660, 1120],
-                //   ['2017', 1030, 540]
-                // ];
                 cdata = data;
                 drawBarChart(param1, param2, cdata);
               });
@@ -133,18 +128,20 @@
       }
       else if(id != '') {
         // load data
-        google.charts.setOnLoadCallback(function() {
-          var param1 = farm_name + ' - ' + location_name + ' - ' + sub_loc_name;
-          var param2 = '';
-          var cdata = [
-            ['Location', 'Non-Compliant', 'Compliant'],
-            ['2014', 1000, 400],
-            ['2015', 1170, 460],
-            ['2016', 660, 1120],
-            ['2017', 1030, 540]
-          ];
-          drawBarChart(param1, param2, cdata);
-        });
+        $.ajax({
+          url: "/daily/sub/compliance/" + id,
+          dataType: "json",
+          async: false,
+          success: function(data) {
+            // console.log(data);
+            google.charts.setOnLoadCallback(function() {
+              var param1 = farm_name + ' - ' + location_name + ' - ' + sub_loc_name;
+              var param2 = '';
+              cdata = data;
+              drawBarChart(param1, param2, cdata);
+            });
+          }
+        }); 
 
         $('#report_location_name').text(farm_name + ' - ' + location_name + ' - ' + sub_loc_name);
         return false;
