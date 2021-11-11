@@ -44,8 +44,9 @@
 		<div class="row">
 			<div class="col-md-6">
         <ul>
-          <li><a href="">Marshal Audit</a></li>
-          <li><a href="">Location Non-Compliance</a></li>
+          <li><a href="{{ route('report.marshal') }}">Audit Marshal</a></li>
+          <li><a href="{{ route('report.location.compliance') }}">Location Non-Compliance</a></li>
+          <li><a href="{{ route('report.assigned.personnel') }}">Supervisor and Caretaker</a></li>
         </ul>
 			</div>
 		</div>

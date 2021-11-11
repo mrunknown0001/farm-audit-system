@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // 
 // Route::get('timecheck/{time}', 'AuditItemController@timecheck');
 
-Route::Get('/days', 'TestController@days');
+// Route::Get('/days', 'TestController@days');
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -107,6 +107,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 	# Rerpots
 	Route::get('/reports', 'ReportController@index')->name('reports');
+	# Audit Marshal Reports
+	Route::get('/report/audit-marshal', 'ReportController@marshal')->name('report.marshal');
+	# Location Compliance|non compliance Reports
+	Route::get('/report/location-compliance', 'ReportController@locationCompliance')->name('report.location.compliance');
+	# Supervisor | Caretaker Report
+	Route::get('/report/assigned-personnel', 'ReportController@assignedPersonnel')->name('report.assigned.personnel');
 
 	# Get Farm use for reports
 	Route::get('/farms/get', 'ReportController@getFarms')->name('report.get.farms');
