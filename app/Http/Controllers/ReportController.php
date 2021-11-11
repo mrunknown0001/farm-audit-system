@@ -35,9 +35,19 @@ class ReportController extends Controller
 
     public function getFarms()
     {
-        $farms = Farm::where('active', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get(['id', 'code']);
+        // $farms = Farm::where('active', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get(['id', 'code']);
+        $farms = UserFarm::where('user_id', Auth::user()->id)->get();
+        $data = [];
+        if(count($farms) > 0) {
+            foreach($farms as $f) {
+                $data[] = [
+                    'id' => $f->farm->id,
+                    'code' => $f->farm->code,
+                ];
+            }
+        }
 
-        return response()->json($farms);
+        return response()->json($data);
     }
 
 
@@ -159,6 +169,14 @@ class ReportController extends Controller
             'to' => 'required|date|after_or_equal:from'
         ]);
 
+        $user_farm = UserFarm::where('farm_id', $request->farm)
+                            ->where('user_id', Auth::user()->id)
+                            ->first();
+
+        if(empty($user_farm)) {
+            return abort(403);
+        }
+
         $from = date('Y-m-d', strtotime($request->from));
         $to = date('Y-m-d', strtotime($request->to));
 
@@ -169,16 +187,24 @@ class ReportController extends Controller
                     ->groupBy('user_id')
                     ->get(['user_id']);
 
+        $data = [];
         $auditor = '';
+        $total_audit = 0;
         $total_compliance = 0;
-        $total_non_compliance = 0;
         $total_verified_compliance = 0;
+        $total_non_compliance = 0;
         $total_verified_non_compliance = 0;
 
 
         // loop auditors
         if(count($auditors)) {
             foreach($auditors as $au) {
+                $auditor = $au->auditor->first_name . ' '  . $au->auditor->last_name;
+                $total_audit = 0;
+                $total_compliance = 0;
+                $total_non_compliance = 0;
+                $total_verified_compliance = 0;
+                $total_verified_non_compliance = 0;
                 $audits = Audit::where('user_id', $au->user_id)
                     ->where('done', 1)
                     ->whereDate('created_at', '>=', $from)
@@ -189,22 +215,56 @@ class ReportController extends Controller
                     foreach($audits as $a) {
                         if($a->sub_location) {
                             if($a->sub_location->location->farm_id == $request->farm) {
-                                
-                            }                    
+                                $total_audit++;
+                                if($a->compliance == 1) {
+                                    $total_compliance++;
+                                    if($a->verified == 1) {
+                                        $total_verified_compliance++;
+                                    }
+                                }   
+                                else {
+                                    $total_non_compliance++;
+                                    if($a->verified == 1) {
+                                        $total_verified_non_compliance++;
+                                    }
+                                }
+                            }                  
                         }
                         else if($a->location) {
                             if($a->location->farm_id == $request->farm) {
-                                                     
+                                $total_audit++;
+                                if($a->compliance == 1) {
+                                    $total_compliance++;
+                                    if($a->verified == 1) {
+                                        $total_verified_compliance++;
+                                    }
+                                }   
+                                else {
+                                    $total_non_compliance++;
+                                    if($a->verified == 1) {
+                                        $total_verified_non_compliance++;
+                                    }
+                                }                   
                             }
                         }
                     }
                 }
+
+                $data[] = [
+                    'auditor' => $auditor,
+                    'total_audit' => (string)$total_audit,
+                    'total_compliance' => (string)$total_compliance,
+                    'total_verified_compliance' => (string)$total_verified_compliance,
+                    'total_non_compliance' => (string)$total_non_compliance,
+                    'total_verified_non_compliance' => (string)$total_verified_non_compliance,
+                ];
             }
         }
 
-
-
-        return $data;
+        $title = $user_farm->farm->code . ' Marshal Audit Export ' . ' - ' . date('F j, Y', strtotime($from)) . ' to ' . date('F j, Y', strtotime($to));
+        $export = new MarshalAudit($data, $title);
+        $filename = $user_farm->farm->code . ' Marshal Audit Export ' . ' - ' . $from . ' to ' . $to . '.xlsx';
+        return Excel::download($export, $filename);
     }
 
 

@@ -4,21 +4,28 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithCustomStartCell;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use App\Http\Controllers\GeneralController as GC;
 
-class MarshalAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSize
+class MarshalAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSize, WithCustomStartCell, WithColumnWidths
 {
 	protected $data;
+    protected $title;
 
 	// Constructor
-    public function __construct($data)
+	// parameter is the data passed to this export
+    public function __construct($data, $title)
     {
-    	// $logs = EmployeeLog::all();
-     	$this->data = $data;
+        $this->data = $data;
+        $this->title = $title;
     }	
 
     // Array
@@ -28,12 +35,12 @@ class MarshalAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSiz
 
     	foreach($this->data as $a) {
     		array_push($d, [
-    			$a,
-    			$a,
-    			$a,
-    			$a,
-    			$a,
-    			$a,
+    			$a['auditor'],
+    			$a['total_audit'],
+    			$a['total_compliance'],
+    			$a['total_verified_compliance'],
+    			$a['total_non_compliance'],
+    			$a['total_verified_non_compliance'],
     		]);
 
     	}
@@ -45,12 +52,20 @@ class MarshalAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSiz
     public function headings(): array
     {
         return [
-            'Marshal Name',
-            'Total Audit',
-            'Total Compliance',
-            'Total Verified Compliance',
-            'Total Non Compliance',
-            'Total Verified Non Compliance',
+            [
+                $this->title,
+            ],
+            [
+
+            ],
+            [
+                'Marshal Name',
+                'Total Audit',
+                'Total Compliance',
+                'Total Verified Compliance',
+                'Total Non Compliance',
+                'Total Verified Non Compliance',
+            ]
         ];
     }
 
@@ -58,8 +73,24 @@ class MarshalAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSiz
     public function styles(Worksheet $sheet)
     {
         return [
-            1    => ['font' => ['bold' => true]],
+            1    => ['font' => ['bold' => true, 'size' => 14]],
+            3    => ['font' => ['bold' => true]],
         ];
     }
+
+
+    // row position
+    public function startCell(): string
+    {
+        return 'A1';
+    }
+
+    public function columnWidths(): array
+    {
+        return [
+            'A' => 40,         
+        ];
+    }
+
 }
 
