@@ -19,6 +19,7 @@ use App\Http\Controllers\UserLogController as Log;
 use App\Http\Controllers\AccessController;
 
 use App\Exports\MarshalAudit;
+use App\Exports\LocationAudit;
 
 
 class ReportController extends Controller
@@ -301,6 +302,7 @@ class ReportController extends Controller
         if(empty($user_farm)) {
             return abort(404);
         }
+        $data = [];
 
         $location = Location::findorfail($request->location);
 
@@ -325,6 +327,18 @@ class ReportController extends Controller
         $total_audit = $audits->count();
         $compliance_count = $audits->where('compliance', 1)->count();
         $non_compliance_count = $audits->where('compliance', 0)->count();
+
+        $data[] = [
+            'audit_location' => $audit_location,
+            'total_audit' => (string)$total_audit,
+            'total_compliance' => (string)$compliance_count,
+            'total_non_compliance' => (string)$non_compliance_count
+        ];
+
+        $title = $audit_location . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
+        $export = new LocationAudit($data, $title);
+        $filename = $audit_location . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
+        return Excel::download($export, $filename);
     }
 
 

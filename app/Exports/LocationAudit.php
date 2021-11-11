@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use App\Http\Controllers\GeneralController as GC;
 
-class LocationAudit implements  implements FromArray, WithHeadings, WithStyles, ShouldAutoSize, WithCustomStartCell, WithColumnWidths
+class LocationAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSize, WithCustomStartCell, WithColumnWidths
 {
 	protected $data;
     protected $title;
@@ -35,12 +35,10 @@ class LocationAudit implements  implements FromArray, WithHeadings, WithStyles, 
 
     	foreach($this->data as $a) {
     		array_push($d, [
-    			$a['auditor'],
+    			$a['audit_location'],
     			$a['total_audit'],
     			$a['total_compliance'],
-    			$a['total_verified_compliance'],
     			$a['total_non_compliance'],
-    			$a['total_verified_non_compliance'],
     		]);
 
     	}
@@ -59,12 +57,10 @@ class LocationAudit implements  implements FromArray, WithHeadings, WithStyles, 
 
             ],
             [
-                'Marshal Name',
+                'Audit Location',
                 'Total Audit',
                 'Total Compliance',
-                'Total Verified Compliance',
                 'Total Non Compliance',
-                'Total Verified Non Compliance',
             ]
         ];
     }
@@ -73,8 +69,9 @@ class LocationAudit implements  implements FromArray, WithHeadings, WithStyles, 
     public function styles(Worksheet $sheet)
     {
         return [
-            1    => ['font' => ['bold' => true, 'size' => 14]],
-            3    => ['font' => ['bold' => true]],
+            1    => ['font' => ['bold' => true, 'size' => 18]],
+            3    => ['font' => ['bold' => true, 'size' => 14]],
+            4    => ['font' => ['bold' => false, 'size' => 14]],
         ];
     }
 
