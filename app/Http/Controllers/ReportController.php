@@ -250,14 +250,17 @@ class ReportController extends Controller
                     }
                 }
 
-                $data[] = [
-                    'auditor' => $auditor,
-                    'total_audit' => (string)$total_audit,
-                    'total_compliance' => (string)$total_compliance,
-                    'total_verified_compliance' => (string)$total_verified_compliance,
-                    'total_non_compliance' => (string)$total_non_compliance,
-                    'total_verified_non_compliance' => (string)$total_verified_non_compliance,
-                ];
+                if($total_audit > 0) {
+                    $data[] = [
+                        'auditor' => $auditor,
+                        'total_audit' => (string)$total_audit,
+                        'total_compliance' => (string)$total_compliance,
+                        'total_verified_compliance' => (string)$total_verified_compliance,
+                        'total_non_compliance' => (string)$total_non_compliance,
+                        'total_verified_non_compliance' => (string)$total_verified_non_compliance,
+                    ];                    
+                }
+
             }
         }
 
@@ -275,8 +278,53 @@ class ReportController extends Controller
             return response('Unauthorized Access!', 403)
                       ->header('Content-Type', 'text/plain');
         }
+        $farms = UserFarm::where('user_id', Auth::user()->id)->get();
+        return view('includes.common.reports.loc-comp', compact('farms'));
+    }
 
-        return view('includes.common.reports.loc-comp');
+
+
+    public function postLocationCompliance(Request $request)
+    {
+        $request->validate([
+            'farm' => 'required',
+            'location' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from'
+        ]);
+
+        // get farm chekc if user has access
+        $user_farm = UserFarm::where('farm_id', $request->farm)
+                            ->where('user_id', Auth::user()->id)
+                            ->first();
+
+        if(empty($user_farm)) {
+            return abort(404);
+        }
+
+        $location = Location::findorfail($request->location);
+
+        if($location->has_sublocation == 1) {
+            $request->validate(['sub_location' => 'required']);
+            $sub_loc = SubLocation::findorfail($request->sub_location);
+            $audit_location = $sub_loc->location->farm->code . ' - ' . $location->location_name . ' - ' . $sub_loc->sub_location_name;
+            $audits = Audit::where('sub_location_id', $sub_loc->id)
+                        ->whereDate('created_at', '>=', $request->from)
+                        ->whereDate('created_at', '<=', $request->to)
+                        ->get();
+        }
+        else {
+            $audit_location = $location->farm->code . ' - ' . $location->location_name;
+            $audits = Audit::where('location_id', $location->id)
+                        ->whereDate('created_at', '>=', $request->from)
+                        ->whereDate('created_at', '<=', $request->to)
+                        ->get();
+        }
+
+        
+        $total_audit = $audits->count();
+        $compliance_count = $audits->where('compliance', 1)->count();
+        $non_compliance_count = $audits->where('compliance', 0)->count();
     }
 
 

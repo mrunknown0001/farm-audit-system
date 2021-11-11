@@ -115,6 +115,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/report/audit-marshal', 'ReportController@postExportMarshal')->name('report.post.export.marshal');
 	# Location Compliance|non compliance Reports
 	Route::get('/report/location-compliance', 'ReportController@locationCompliance')->name('report.location.compliance');
+	Route::post('/report/location-compliance', 'ReportController@postLocationCompliance')->name('report.post.location.compliance');
 	# Supervisor | Caretaker Report
 	Route::get('/report/assigned-personnel', 'ReportController@assignedPersonnel')->name('report.assigned.personnel');
 

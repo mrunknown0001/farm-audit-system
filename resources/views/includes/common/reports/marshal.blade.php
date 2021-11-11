@@ -46,7 +46,7 @@
 			<div class="col-md-6 col-md-offset-3">
 				<form action="{{ route('report.post.export.marshal') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
 					@csrf
-					<div class="form-group">
+					<div class="form-group {{ $errors->first('farm') ? 'has-error' : ''  }}">
 						<label for="farm">Select Farm</label>
 						<select name="farm" id="farm" class="form-control" required>
 							<option value="">Select Farm</option>
@@ -54,17 +54,24 @@
 								<option value="{{ $f->farm->id }}">{{ $f->farm->code }}</option>
 							@endforeach
 						</select>
+						@if($errors->first('farm'))
+	            	<span class="help-block"><strong>{{ $errors->first('farm') }}</strong></span>
+	            @endif
 					</div>
-					<div class="form-group">
-						<div class="row">
-							<div class="col-md-6">
-								<label for="from">From Date</label>
-								<input type="date" name="from" id="from" class="form-control" required>
-							</div>
-							<div class="col-md-6">
-								<label for="to">To Date</label>
-								<input type="date" name="to" id="to" class="form-control" required>
-							</div>
+					<div class="row">
+						<div class="col-md-6 form-group {{ $errors->first('from') ? 'has-error' : ''  }}">
+							<label for="from">From Date</label>
+							<input type="date" name="from" id="from" class="form-control" required>
+							@if($errors->first('from'))
+	            	<span class="help-block"><strong>{{ $errors->first('from') }}</strong></span>
+	            @endif
+						</div>
+						<div class="col-md-6 form-group {{ $errors->first('to') ? 'has-error' : ''  }}">
+							<label for="to">To Date</label>
+							<input type="date" name="to" id="to" class="form-control" required>
+							@if($errors->first('to'))
+	            	<span class="help-block"><strong>{{ $errors->first('to') }}</strong></span>
+	            @endif
 						</div>
 					</div>
 					<div class="form-group">
