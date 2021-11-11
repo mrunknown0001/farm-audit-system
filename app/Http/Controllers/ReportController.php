@@ -9,6 +9,7 @@ use Excel;
 use DataTables;
 use App\Audit;
 use App\Farm;
+use App\UserFarm;
 use App\Location;
 use App\SubLocation;
 use App\Http\Requests\LocationRequest;
@@ -144,7 +145,66 @@ class ReportController extends Controller
                       ->header('Content-Type', 'text/plain');
         }
 
-        return view('includes.common.reports.marshal');
+        $farms = UserFarm::where('user_id', Auth::user()->id)->get();
+
+        return view('includes.common.reports.marshal', compact('farms'));
+    }
+
+
+    public function postExportMarshal(Request $request)
+    {
+        $request->validate([
+            'farm' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from'
+        ]);
+
+        $from = date('Y-m-d', strtotime($request->from));
+        $to = date('Y-m-d', strtotime($request->to));
+
+        // get users/auditors
+        $auditors = Audit::where('done', 1)
+                    ->whereDate('created_at', '>=', $from)
+                    ->whereDate('created_at', '<=', $to)
+                    ->groupBy('user_id')
+                    ->get(['user_id']);
+
+        $auditor = '';
+        $total_compliance = 0;
+        $total_non_compliance = 0;
+        $total_verified_compliance = 0;
+        $total_verified_non_compliance = 0;
+
+
+        // loop auditors
+        if(count($auditors)) {
+            foreach($auditors as $au) {
+                $audits = Audit::where('user_id', $au->user_id)
+                    ->where('done', 1)
+                    ->whereDate('created_at', '>=', $from)
+                    ->whereDate('created_at', '<=', $to)
+                    ->get();
+
+                if(count($audits) > 0) {
+                    foreach($audits as $a) {
+                        if($a->sub_location) {
+                            if($a->sub_location->location->farm_id == $request->farm) {
+                                
+                            }                    
+                        }
+                        else if($a->location) {
+                            if($a->location->farm_id == $request->farm) {
+                                                     
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        return $data;
     }
 
 

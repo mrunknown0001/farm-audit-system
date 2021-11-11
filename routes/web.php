@@ -112,7 +112,7 @@ Route::group(['middleware' => 'auth'], function () {
 	# Sample Export
 	Route::get('/sample-export', 'ReportController@sampleExport');
 	# First Audit Marshal Report Export
-	// Route::get('/report/')
+	Route::post('/report/audit-marshal', 'ReportController@postExportMarshal')->name('report.post.export.marshal');
 	# Location Compliance|non compliance Reports
 	Route::get('/report/location-compliance', 'ReportController@locationCompliance')->name('report.location.compliance');
 	# Supervisor | Caretaker Report
