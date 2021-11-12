@@ -20,6 +20,8 @@ use App\Http\Controllers\AccessController;
 
 use App\Exports\MarshalAudit;
 use App\Exports\LocationAudit;
+use App\Exports\SupervisorAudit;
+use App\Exports\CaretakerAudit;
 
 
 class ReportController extends Controller
@@ -351,6 +353,21 @@ class ReportController extends Controller
         }
         $farms = UserFarm::where('user_id', Auth::user()->id)->get();
         return view('includes.common.reports.supervisor-caretaker', compact('farms'));
+    }
+
+
+
+    public function postAssignedPersonnel(Request $request)
+    {
+        $request->validate([
+            'farm' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from'
+        ]);
+
+        // all supervisors and care takers
+
+        // get all 
     }
 
 

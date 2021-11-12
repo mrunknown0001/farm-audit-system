@@ -118,6 +118,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/report/location-compliance', 'ReportController@postLocationCompliance')->name('report.post.location.compliance');
 	# Supervisor | Caretaker Report
 	Route::get('/report/assigned-personnel', 'ReportController@assignedPersonnel')->name('report.assigned.personnel');
+	Route::post('/report/assigned-personnel', 'ReportController@postAssignedPersonnel')->name('report.post.assigned.personnel');
 
 	# Get Farm use for reports
 	Route::get('/farms/get', 'ReportController@getFarms')->name('report.get.farms');
