@@ -367,7 +367,15 @@ class ReportController extends Controller
 
         // all supervisors and care takers
 
-        // get all 
+        // get all assignemnts per user (supervisor/caretaker)
+
+        // get total audits
+
+        // get total compliance
+
+        // get total noncompliance
+
+        // use export for supervisor and caretaker
     }
 
 

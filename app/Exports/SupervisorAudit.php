@@ -36,6 +36,7 @@ class SupervisorAudit implements FromArray, WithHeadings, WithStyles, ShouldAuto
     	foreach($this->data as $a) {
     		array_push($d, [
     			$a['supervisor'],
+    			$a['assignments'],
     			$a['total_audit'],
     			$a['total_compliance'],
     			$a['total_non_compliance'],
@@ -58,6 +59,7 @@ class SupervisorAudit implements FromArray, WithHeadings, WithStyles, ShouldAuto
             ],
             [
                 'Supervisor',
+                'assignments',
                 'Total Audit',
                 'Total Compliance',
                 'Total Non Compliance',

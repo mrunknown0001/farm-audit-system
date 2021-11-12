@@ -36,6 +36,7 @@ class CaretakerAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoS
     	foreach($this->data as $a) {
     		array_push($d, [
     			$a['caretaker'],
+    			$a['assignments'],
     			$a['total_audit'],
     			$a['total_compliance'],
     			$a['total_non_compliance'],
@@ -58,6 +59,7 @@ class CaretakerAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoS
             ],
             [
                 'Caretacker',
+                'assignments',
                 'Total Audit',
                 'Total Compliance',
                 'Total Non Compliance',
