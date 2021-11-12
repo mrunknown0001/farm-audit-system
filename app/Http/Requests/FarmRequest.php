@@ -31,7 +31,7 @@ class FarmRequest extends FormRequest
     {
         return [
             'farm_name' => 'required',
-            'farm_code' => 'required|unique:users'
+            'farm_code' => 'required|unique:farms,code'
         ];
     }
 

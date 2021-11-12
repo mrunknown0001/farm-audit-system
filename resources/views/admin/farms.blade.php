@@ -77,7 +77,7 @@
 	        var id = $(this).data('id');
 	        var text = $(this).data('text');
 	        Swal.fire({
-	          title: 'Update Farm?',
+	          title: 'Edit Farm?',
 	          text: text,
 	          type: 'question',
 	          showCancelButton: true,
@@ -87,7 +87,7 @@
 	        }).then((result) => {
 	          if (result.value) {
 	            // view here
-	            window.location.replace("/a/farm/update/" + id);
+	            window.location.replace("/a/farm/edit/" + id);
 
 	          }
 	          else {

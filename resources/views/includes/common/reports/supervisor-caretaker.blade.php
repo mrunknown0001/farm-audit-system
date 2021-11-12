@@ -43,8 +43,28 @@
 			</div>
 		</div>
 		<div class="row">
-
+			<div class="col-md-6 col-md-offset-3">
+				<form action="" method="POST" autocomplete="off" enctype="multipart/form-data">
+					@csrf
+					<div class="form-group {{ $errors->first('farm') ? 'has-error' : ''  }}">
+						<label for="farm">Select Farm</label>
+						<select name="farm" id="farm" class="form-control" required>
+							<option value="">Select Farm</option>
+							@foreach($farms as $key => $f)
+								<option value="{{ $f->farm->id }}">{{ $f->farm->code }}</option>
+							@endforeach
+						</select>
+						@if($errors->first('farm'))
+	            	<span class="help-block"><strong>{{ $errors->first('farm') }}</strong></span>
+	            @endif
+					</div>
+					<div class="form-group">
+						<button class="btn btn-danger"><i class="fa fa-file-export"></i> Export</button>
+					</div>
+				</form>
+			</div>
 		</div>
+		<div class="overlay"></div>
 	</section>
 </div>
 @endsection

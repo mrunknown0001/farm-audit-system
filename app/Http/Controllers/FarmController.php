@@ -21,7 +21,7 @@ class FarmController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()) {
-            $farms = Farm::where('active', 1)->where('is_deleted', 0)->orderBy('name', 'asc')->get();
+            $farms = Farm::orderBy('name', 'asc')->get();
  
             $data = collect();
             if(count($farms) > 0) {
@@ -46,7 +46,7 @@ class FarmController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.farm-add');
     }
 
     /**
@@ -55,7 +55,16 @@ class FarmController extends Controller
      */
     public function store(FarmRequest $request)
     {
-        //
+        if($request->ajax()) {
+            $farm = new Farm();
+            $farm->name = $request->farm_name;
+            $farm->code = $request->farm_code;
+            $farm->description = $request->description;
+            $farm->save();
+
+            return response('Farm Created', 200)
+                    ->header('Content-Type', 'text/plain');
+        }
     }
 
 
@@ -65,7 +74,8 @@ class FarmController extends Controller
      */
     public function edit($id)
     {
-        //
+        $farm = Farm::findorfail($id);
+        return view('admin.farm-edit', compact('farm'));
     }
 
     /**
@@ -74,7 +84,28 @@ class FarmController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->ajax()) {
+            $farm = Farm::findorfail($id);
+
+            $request->validate([
+                'farm_name' => 'required',
+                'farm_code' => 'required',
+            ]);
+
+            $code_check = Farm::where('code', $request->code)->first();
+            if(!empty($code_check) && $farm->code != $code_check->code) {
+                return response('Farm Code Exists!', 500)
+                            ->header('Content-Type', 'text/plain');
+            }
+
+            $farm->name = $request->farm_name;
+            $farm->code = $request->farm_code;
+            $farm->description = $request->description;
+            $farm->active = $request->active ? $request->active : 0;
+            $farm->save();
+            return response('Farm Updated', 200)
+                    ->header('Content-Type', 'text/plain');
+        }
     }
 
     /**

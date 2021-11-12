@@ -349,8 +349,8 @@ class ReportController extends Controller
             return response('Unauthorized Access!', 403)
                       ->header('Content-Type', 'text/plain');
         }
-
-        return view('includes.common.reports.supervisor-caretaker');
+        $farms = UserFarm::where('user_id', Auth::user()->id)->get();
+        return view('includes.common.reports.supervisor-caretaker', compact('farms'));
     }
 
 
