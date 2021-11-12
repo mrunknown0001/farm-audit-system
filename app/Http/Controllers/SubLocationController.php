@@ -80,11 +80,13 @@ class SubLocationController extends Controller
             return abort(403);
         }
         $sub = new SubLocation();
+        $location = Location::findorfail($request->location_name);
 
         $sub->location_id = $request->location_name; // Location ID
         $sub->sub_location_name = $request->sub_location_name;
         $sub->sub_location_code = $request->sub_location_code;
         $sub->description = $request->description;
+        $sub->farm_id = $location->farm_id;
         if($sub->save()) {
             $log = Log::log('create', 'sub_locations', '', $sub, '', '');
             return 'saved';
@@ -143,6 +145,7 @@ class SubLocationController extends Controller
                     ]);
                 }
             }
+            $location = Location::findorfail($request->location_name);
 
             $sub->location_id = $request->location_name; // Location ID
             $sub->sub_location_name = $request->sub_location_name;
@@ -150,6 +153,7 @@ class SubLocationController extends Controller
             $sub->description = $request->description;
             $sub->active = $request->active == 'on' ? 1 : 0;
             $sub->is_deleted = $request->is_deleted == 'on' ? 1 : 0;
+            $sub->farm_id = $location->farm_id;
             if($sub->save()) {
                 $log = Log::log('update', 'sub_locations', '', $sub, $old_val, '');
                 return 'saved';
