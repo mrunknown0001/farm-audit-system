@@ -94,7 +94,7 @@
 								<div class="row" id="noncompliancecamera-{{ $l->id }}" style="display: none;">
 									<div class="col-md-6 form-group text-center">
 										<div class="image-upload">
-											{{-- <input type="file" class="uploadcam" data-id="{{ $l->id }}" id="upload-{{ $l->id }}" name="upload" accept="image/*" capture="camera" style="display: none"> --}}
+											{{-- <input type="file" class="uploadcam" data-id="{{ $l->id }}" id="upload-{{ $l->id }}" name="upload" accept="image/*" capture style="display: none"> --}}
 											<input type="file" class="uploadcam" data-id="{{ $l->id }}" id="upload-{{ $l->id }}" name="upload" accept="image/*;capture=camera" style="display: none">
 											<label for="upload-{{ $l->id }}">
 												<span id="camera" class="btn btn-primary"><i class="fa fa-camera fa-3x"></i></span>
