@@ -99,10 +99,12 @@ class AssignmentController extends Controller
             if(!empty($request->sub_location)) {
                 $data1 = [];
                 foreach($request->sub_location as $s) {
+                    $sub = SubLocation::findorfail($s);
                     $data1[] = [
                         'user_id' => $request->user,
                         'cat' => 'sub',
-                        'sub_location_id' => $s
+                        'sub_location_id' => $s,
+                        'farm_id' => $sub->farm_id,
                     ];
                 }
                 DB::table('assignments')->insert($data1);
@@ -110,10 +112,12 @@ class AssignmentController extends Controller
             if(!empty($request->location)) {
                 $data2 = [];
                 foreach($request->location as $l) {
+                    $loc = Location::findorfail($l);
                     $data2[] = [
                         'user_id' => $request->user,
                         'cat' => 'loc',
-                        'location_id' => $l
+                        'location_id' => $l,
+                        'farm_id' => $loc->farm_id
                     ];
 
                     $loc = Location::findorfail($l);

@@ -12,6 +12,7 @@ use App\Farm;
 use App\UserFarm;
 use App\Location;
 use App\SubLocation;
+use App\Assignment;
 use App\Http\Requests\LocationRequest;
 use App\Http\Controllers\GeneralController as GC;
 use App\Http\Controllers\ActionController as AC;
@@ -365,9 +366,15 @@ class ReportController extends Controller
             'to' => 'required|date|after_or_equal:from'
         ]);
 
-        // all supervisors and care takers
+        // all supervisors and care takers 
+        $assignemnts = Assignment::where('farm_id', $request->farm)->groupBy('user_id')->get();
+
+        if(count($assignemnts) < 1) {
+            return redirect()->back()->with('error', 'No Assigned Personnel on the Selected Farm!');
+        }
 
         // get all assignemnts per user (supervisor/caretaker)
+        
 
         // get total audits
 
