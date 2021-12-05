@@ -38,7 +38,7 @@
     @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2 || $accesscontroller->checkAccess(Auth::user()->id, 'auditable_module')) 
       <li class="{{ route('auditables') == url()->current() ? 'active' : '' }}">
         <a href="{{ route('auditables') }}">
-          <i class="fa fa-list"></i> <span>Auditable</span>
+          <i class="fa fa-list"></i> <span>Auditable Entity</span>
         </a>
       </li>
     @endif

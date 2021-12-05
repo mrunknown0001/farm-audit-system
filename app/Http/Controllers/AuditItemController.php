@@ -229,7 +229,7 @@ class AuditItemController extends Controller
      */
     public static function timecheck($timerange)
     {
-        // exployed using ,
+        // exploded using ,
         $range = explode(",", $timerange);
 
         // check if more that 1
