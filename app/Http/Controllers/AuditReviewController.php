@@ -20,7 +20,7 @@ class AuditReviewController extends Controller
             return abort(403);
         }
 
-        // if($request->ajax()) {
+        if($request->ajax()) {
             $audits = Audit::where('reviewed', 0)
                             ->where('verified', 0)
                             ->where('done', 1)
@@ -39,10 +39,9 @@ class AuditReviewController extends Controller
                 }
             }
             return DataTables::of($data)
-                    ->orderColumn('date_time', '-name $1')
                     ->rawColumns(['stat', 'action'])
                     ->make(true);
-        // }
+        }
         return view('includes.common.review.index');
     }
 
