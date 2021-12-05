@@ -39,7 +39,7 @@ class AuditReviewController extends Controller
                 }
             }
             return DataTables::of($data)
-                    ->orderColumn('date_time', '-date_time $1')
+                    ->orderColumn('date_time', '-name $1')
                     ->rawColumns(['stat', 'action'])
                     ->make(true);
         }
