@@ -23,6 +23,7 @@ class CreateAssignmentsTable extends Migration
             $table->bigInteger('sub_location_id')->unsigned()->nullable();
             $table->foreign('sub_location_id')->references('id')->on('sub_locations');
             $table->timestamps();
+            // Added farm_id with update migration
         });
     }
 

@@ -374,13 +374,27 @@ class ReportController extends Controller
         }
 
         // get all assignemnts per user (supervisor/caretaker)
-        
-
         // get total audits
 
         // get total compliance
 
         // get total noncompliance
+
+        $data = [];
+
+        foreach($assignemnts as $s) {
+            $total_audits = 0;
+            $total_compliance = 0;
+            $total_non_compliance = 0;
+
+            $user_assignments = Assignment::where('user_id', $s->user_id)
+                                    ->where('farm_id', $request->farm)
+                                    ->get();
+
+            foreach($user_assignments as $a) {
+                // if($a->cat == 'loc')
+            }
+        }
 
         // use export for supervisor and caretaker
     }
