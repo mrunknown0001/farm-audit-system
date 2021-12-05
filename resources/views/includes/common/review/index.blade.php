@@ -75,7 +75,7 @@
 		          { className: "dt-center", targets: [ 2, 3, 4 ] },
 		          { type: 'date', 'targets': [3] }
 		        ],
-	         	order: [[ 3, 'desc' ]],
+	         	order: [ 3, 'asc' ],
 		        ajax: "{{ route('audit.review') }}",
 		        columns: [
 		        		{data: 'stat', name: 'stat'},
