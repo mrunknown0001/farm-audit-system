@@ -164,6 +164,8 @@ Route::group(['prefix' => 'a', 'middleware' => 'admin'], function () {
 
 	# Database Backup
 	Route::get('/database-backup', 'AdminController@database')->name('database.backup');
+	# Database Backup Download
+	Route::get('/database-backup/download/{id}', 'AdminController@databaseDownload')->name('database.download');
 
 	# User Logs/ Audit Trail
 	Route::get('/user-logs', 'UserLogController@index')->name('user.logs');

@@ -155,7 +155,7 @@ class AdminController extends Controller
                     $data->push([
                         'filename' => $j->filename,
                         'datetime' => date('m d, Y H:i:s', strtotime($j->created_at)),
-                        'action' => "<a href='/public/bak/" . $j->filename . "'>Download</a>"
+                        'action' => route('database.download', ['id' => $j->id])
                     ]);
                 }
             }
@@ -164,6 +164,21 @@ class AdminController extends Controller
                     ->make(true);
         }
         return view('admin.backup');
+    }
+
+
+    /**
+     * Database Download
+     */
+    public function databaseDownload($id)
+    {
+        $file = DatabaseBackup::findorfail($id);
+        try {
+            return Response::download(public_path() . "/bak/" . $file->filename);
+        }
+        catch (Exception $e) {
+            return redirect()->back()->with('info', 'Message: ' . $e);
+        }
     }
 
 
