@@ -43,7 +43,7 @@ class DatabaseBackup extends Command
     {
     {
         // $filename = "backup-" . Carbon::now()->format('Y-m-d-h-i-s') . ".sql";
-        $filename = "Online Audit Backup-" . Carbon::now()->format('Y-m-d-h-i-s') . ".gz";
+        $filename = "Online-Audit-Backup-" . Carbon::now()->format('Y-m-d-h-i-s') . ".gz";
 
         $dbhost = Config::get('values.dbhost');
         $dbname = Config::get('values.dbname');
