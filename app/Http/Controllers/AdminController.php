@@ -155,7 +155,7 @@ class AdminController extends Controller
                     $data->push([
                         'filename' => $j->filename,
                         'datetime' => date('m d, Y H:i:s', strtotime($j->created_at)),
-                        'action' => route('database.download', ['id' => $j->id])
+                        'action' => "<a href='" . route('database.download', ['id' => $j->id]) . "'>Download</a>"
                     ]);
                 }
             }
