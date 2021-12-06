@@ -79,7 +79,7 @@
 				@if($audit->compliance == 0)
 					<p>Bakit hindi Compliant?</p>
 					<p><i>{{ $audit->non_compliance_remarks }}</i></p>
-					@if($audit->field2 != null)
+					@if($audit->field2 != null) {{-- Remarks Field in Audit Table --}}
 						<p>Additional Remarks</p>
 						<p><i>{{ $audit->field2 }}</i></p>
 					@endif

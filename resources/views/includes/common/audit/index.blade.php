@@ -34,12 +34,12 @@
 
 @section('content')
 	<div class="content-wrapper">
-	<section class="content-header">
+	<section class="content-header text-center">
 		<h1>Audit</h1>
-		<ol class="breadcrumb">
+		{{-- <ol class="breadcrumb">
 			<li><a href="javascript:void(0)"><i class="fa fa-dashboard"></i> Home</a></li>
 			<li class="active">@yield('title')</li>
-		</ol>
+		</ol> --}}
 	</section>
 	<section class="content">
 		<div class="row">
