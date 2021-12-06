@@ -15,6 +15,7 @@ use App\Role;
 use App\Farm;
 use App\Http\Requests\CreateUserRequest;
 use App\DatabaseBackup;
+use Response;
 
 class AdminController extends Controller
 {
