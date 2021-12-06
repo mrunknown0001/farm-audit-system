@@ -154,7 +154,7 @@ class AdminController extends Controller
                 foreach($db as $j) {
                     $data->push([
                         'filename' => $j->filename,
-                        'datetime' => $j->created_at,
+                        'datetime' => date('m d, Y H:i:s', strtotime($j->created_at)),
                         'action' => "<a href='" . $j->url . "'>Download</a>"
                     ]);
                 }
