@@ -14,6 +14,7 @@ use App\Http\Controllers\GeneralController as GC;
 use App\Role;
 use App\Farm;
 use App\Http\Requests\CreateUserRequest;
+use App\DatabaseBackup;
 
 class AdminController extends Controller
 {
@@ -143,8 +144,25 @@ class AdminController extends Controller
     }
 
 
-    public function database()
+    public function database(Request $request)
     {
+        if($request->ajax()) {
+            $db = DatabaseBackup::orderBy('created_at', 'desc')->get();
+ 
+            $data = collect();
+            if(count($db) > 0) {
+                foreach($db as $j) {
+                    $data->push([
+                        'filename' => $j->filename,
+                        'datetime' => $j->created_at,
+                        'action' => "<a href='" . $j->url . "'>Download</a>"
+                    ]);
+                }
+            }
+            return DataTables::of($data)
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
         return view('admin.backup');
     }
 
