@@ -54,14 +54,14 @@
 
 	<script>
 		$(document).ready(function () {
-			let jotable = $('#farms').DataTable({
+			let jotable = $('#backup').DataTable({
 		        processing: true,
 		        serverSide: true,
 		        scrollX: true,
 		        columnDefs: [
 		          { className: "dt-center", targets: [ 0, 1, 2 ] }
 		        ],
-		        ajax: "{{ route('admin.farms') }}",
+		        ajax: "{{ route('database.backup') }}",
 		        columns: [
 		            {data: 'filename', name: 'filename'},
 		            {data: 'datetime', name: 'datetime'},
