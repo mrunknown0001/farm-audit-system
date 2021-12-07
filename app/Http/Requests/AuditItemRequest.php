@@ -26,7 +26,10 @@ class AuditItemRequest extends FormRequest
         return [
             'audit_name' => 'required',
             'audit_item_name' => 'required',
-            'time_range' => 'required',
+            'from_hour' => 'required',
+            'from_minute' => 'required',
+            'to_hour' => 'required',
+            'to_minute' => 'required',
             'locations' => 'required',
         ];
     }

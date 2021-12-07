@@ -80,11 +80,13 @@ class AuditItemController extends Controller
      */
     public function store(AuditItemRequest $request)
     {
+        // Get Raw Time and Generate Time Range
+        
         $ai = new AuditItem();
         $ai->audit_item_category_id = $request->audit_name;
         $ai->item_name = $request->audit_item_name;
         $ai->description = $request->description;
-        $ai->time_range = $request->time_range;
+        // $ai->time_range = $request->time_range; // Modified
         $ai->farm_id = $request->farm;
         $ai->save();
         
@@ -238,9 +240,9 @@ class AuditItemController extends Controller
 
             // check current time from|to
             $time = explode("-", $r);
-            $time_now = date('h:i a', strtotime(now()));
-            $time0 = date('h:i a', strtotime($time[0]));
-            $time1 = date('h:i a', strtotime($time[1]));
+            $time_now = date('H:i', strtotime(now()));
+            $time0 = date('H:i', strtotime($time[0]));
+            $time1 = date('H:i', strtotime($time[1]));
             if($time_now >= $time0 && $time_now <= $time1) {
                 return true;
             }
