@@ -40,8 +40,15 @@ class AuditItemRequest extends FormRequest
         return [
             'audit_name.required' => 'Audit Name is Required',
             'audit_item_name.required' => 'Audit Item Name is Required',
-            'time_range' => 'Time Range is Required',
             'locations.required' => 'Location is Required',
+            'from_hour.require' => 'Start Hour is required',
+            'from_minute.required' => 'Start Minute is required',
+            'to_hour.required' => 'End Hour is required',
+            'to_minute.required' => 'End Minute is required',
+            // 'from_hour.numeric' => 'Start Hour must be a number',
+            // 'from_minute.numeric' => 'Start Minute must be a number',
+            // 'to_hour.numeric' => 'End Hour must be a number',
+            // 'to_minute.numeric' => 'End Minute must be a number'
         ];
     }
 }

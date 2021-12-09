@@ -81,12 +81,26 @@ class AuditItemController extends Controller
     public function store(AuditItemRequest $request)
     {
         // Get Raw Time and Generate Time Range
-        
+        // Get Time Range
+        $time_range_count = count($request->from_hour);
+        $time_ranges = '';
+        for($i = 0; $i < $time_range_count; $i++) {
+            // Validation Condition
+            $from_time = $request->from_hour[$i] . ':' . $request->from_minute[$i];
+            $to_time = $request->to_hour[$i] . ':' . $request->to_minute[$i];
+            if($from_time > $to_time) {
+                return response()->json(['responseJSON' => 'Invalid Time Range. Please check your time range. Time Range: ' . $from_time . '-' . $to_time], 500);
+            }
+            $time_ranges .= $from_time . '-' . $to_time . ',';
+        }
+
+
         $ai = new AuditItem();
         $ai->audit_item_category_id = $request->audit_name;
         $ai->item_name = $request->audit_item_name;
         $ai->description = $request->description;
         // $ai->time_range = $request->time_range; // Modified
+        $ai->time_range = $time_ranges;
         $ai->farm_id = $request->farm;
         $ai->save();
         
