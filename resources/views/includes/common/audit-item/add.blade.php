@@ -85,7 +85,7 @@
             @endif
 					</div>
 					<div class="form-group {{ $errors->first('time_range') ? 'has-error' : ''  }}">
-						<label for="time_range">Time Range <i>(Military Time Format)</i></label> <button id="addTimeRange" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+						<label for="time_range">Time Range <i>(24 Hour Time Format)</i></label> <button id="addTimeRange" type="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
 						{{-- <input type="text" name="time_range" id="time_range" placeholder="Example: 8am-9am, 5pm-6pm" class="form-control" required> --}}
 						<div id="time_range_div">
 							<div class="row form-group">
