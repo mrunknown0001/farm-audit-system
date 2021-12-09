@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 // 
 // Route::get('timecheck/{time}', 'AuditItemController@timecheck');
 
-// Route::Get('/days', 'TestController@days');
+// Route::get('/days', 'TestController@days');
+
+Route::get('/range/{id}', 'TestController@range');
 
 Route::get('/', function () {
     return redirect()->route('login');

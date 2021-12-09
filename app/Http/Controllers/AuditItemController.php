@@ -163,10 +163,22 @@ class AuditItemController extends Controller
      */
     public function update(AuditItemRequest $request, $id)
     {
+        $time_range_count = count($request->from_hour);
+        $time_ranges = '';
+        for($i = 0; $i < $time_range_count; $i++) {
+            // Validation Condition
+            $from_time = $request->from_hour[$i] . ':' . $request->from_minute[$i];
+            $to_time = $request->to_hour[$i] . ':' . $request->to_minute[$i];
+            if($from_time > $to_time) {
+                return response()->json(['responseJSON' => 'Invalid Time Range. Please check your time range. Time Range: ' . $from_time . '-' . $to_time], 500);
+            }
+            $time_ranges .= $from_time . '-' . $to_time . ',';
+        }
+        
         $ai = AuditItem::findorfail($request->id);
         $ai->item_name = $request->audit_item_name;
         $ai->description = $request->description;
-        $ai->time_range = $request->time_range;
+        $ai->time_range = $time_ranges;
         $ai->save();
         
         if(count($request->locations) > 0) {
@@ -263,5 +275,33 @@ class AuditItemController extends Controller
         }
 
         return false;
+    }
+
+
+    /**
+     * time rages convert to array
+     */
+    public function timerangetoarray($timerange)
+    {
+        $range = explode(",", $timerange);
+
+        $data = [];
+
+        foreach($range as $r) {
+            if($r != "") {
+                $time = explode("-", $r);
+                $from = explode(":", $time[0]);
+                $to = explode(":", $time[1]);
+
+                $data[] = [
+                    $from[0], // From Hour
+                    $from[1], // From Minute
+                    $to[0], // To Hour
+                    $to[1] // To Minute
+                ];
+            }
+        }
+
+        return $data;
     }
 }

@@ -27,12 +27,7 @@ class TestController extends Controller
           $font->color('#000000');  
 
           $font->align('left');  
-
-          // $font->valign('bottom');  
-
-          // $font->angle(90);  
-
-      });  
+       });  
 
        $img->save(public_path('uploads/test/2.jpg'));  
     }
@@ -77,5 +72,35 @@ class TestController extends Controller
     public function days()
     {
       return date('t');
+    }
+
+
+    public function range($id)
+    {
+      $item = \App\AuditItem::find($id);
+
+      $r1 = explode(",", $item->time_range);
+      $r1 = "09:00-10:00,11:00-12:00,";
+
+        $range = explode(",", $r1);
+
+        $data = [];
+
+        foreach($range as $r) {
+            if($r != "") {
+                $time = explode("-", $r);
+                $from = explode(":", $time[0]);
+                $to = explode(":", $time[1]);
+
+                $data[] = [
+                    $from[0], // From Hour
+                    $from[1], // From Minute
+                    $to[0], // To Hour
+                    $to[1] // To Minute
+                ];
+            }
+        }
+
+        return $data;
     }
 }
