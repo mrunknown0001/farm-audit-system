@@ -267,6 +267,9 @@ class AuditItemController extends Controller
             // check current time from|to
             $time = explode("-", $r);
             $time_now = date('H:i', strtotime(now()));
+            if($time[0] == null || $time[1] == null) {
+                return false;
+            }
             $time0 = date('H:i', strtotime($time[0]));
             $time1 = date('H:i', strtotime($time[1]));
             if($time_now >= $time0 && $time_now <= $time1) {
