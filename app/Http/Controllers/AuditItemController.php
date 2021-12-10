@@ -294,10 +294,10 @@ class AuditItemController extends Controller
                 $to = explode(":", $time[1]);
 
                 $data[] = [
-                    $from[0], // From Hour
-                    $from[1], // From Minute
-                    $to[0], // To Hour
-                    $to[1] // To Minute
+                    empty($from[0]) ? '00' : $from[0], // From Hour
+                    empty($from[1]) ? '00' : $from[1], // From Minute
+                    empty($to[0]) ? '00' : $to[0], // To Hour
+                    empty($to[1]) ? '00' : $to[1] // To Minute
                 ];
             }
         }
