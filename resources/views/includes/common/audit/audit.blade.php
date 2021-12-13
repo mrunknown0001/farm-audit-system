@@ -127,6 +127,7 @@
 								</div>
 							</form>
 							<div style="display: none;">{{ $ittirate += 1 }}</div>
+							<hr>
 						@endif
 					@endif
 				@endforeach
