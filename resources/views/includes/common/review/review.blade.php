@@ -63,56 +63,62 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
-				<h2>Location: <strong>{{ $audit->field1 == 'loc' ? $audit->location->farm->code . ' - ' . $audit->location->location_name : $audit->sub_location->location->farm->code . ' - ' . $audit->sub_location->location->location_name . ' - ' . $audit->sub_location->sub_location_name }}</strong></h2>
-				@if($audit->compliance == 1) 
-					<p><span class="label label-success">COMPLIANT <i class="fa fa-check"></i></span></p>
-				@else
-					<p><span class="label label-danger">NON-COMPLIANT <i class="fa fa-times"></i></span></p>
-				@endif
-				<p>Marshal: <strong>{{ $audit->auditor->first_name . ' ' . $audit->auditor->last_name }}</strong></p>
-				<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
-				<p><button class="btn btn-primary btn-xs" id="showmap"><i class="fa fa-map-marked-alt"></i> View Location</button></p>
-				<div id="mapholder" style="display: none;"></div>
-				<hr>
-				<p>Audit Item: <strong>{{ $audit->audit_item->item_name . ' (' . $audit->audit_item->time_range . ')' }}</strong></p>
-				@if($audit->compliance == 0)
-					<p>Bakit hindi Compliant?</p>
-					<p><i>{{ $audit->non_compliance_remarks }}</i></p>
-					@if($audit->field2 != null) {{-- Remarks Field in Audit Table --}}
-						<p>Additional Remarks</p>
-						<p><i>{{ $audit->field2 }}</i></p>
+			@if(isset($audit->audit_item))
+				<div class="col-md-12">
+					<h2>Location: <strong>{{ $audit->field1 == 'loc' ? $audit->location->farm->code . ' - ' . $audit->location->location_name : $audit->sub_location->location->farm->code . ' - ' . $audit->sub_location->location->location_name . ' - ' . $audit->sub_location->sub_location_name }}</strong></h2>
+					@if($audit->compliance == 1) 
+						<p><span class="label label-success">COMPLIANT <i class="fa fa-check"></i></span></p>
+					@else
+						<p><span class="label label-danger">NON-COMPLIANT <i class="fa fa-times"></i></span></p>
 					@endif
-					@if(count($audit->images) > 0)
-						<h4>Images Uploaded</h4>
-						<div class="image-set m-t-20">
-							@foreach($audit->images as $i)
-								<a data-magnify="gallery" data-src="" data-caption="{{ $i->filename }}" data-group="a" href="{{ asset('/uploads/images/' . $i->filename) }}">
-				          <img src="{{ asset('/uploads/images/' . $i->filename) }}" alt="" height="50px">
-				        </a>
-							@endforeach
+					<p>Marshal: <strong>{{ $audit->auditor->first_name . ' ' . $audit->auditor->last_name }}</strong></p>
+					<p>Timestamp: <strong>{{ $audit->created_at }}</strong></p>
+					<p><button class="btn btn-primary btn-xs" id="showmap"><i class="fa fa-map-marked-alt"></i> View Location</button></p>
+					<div id="mapholder" style="display: none;"></div>
+					<hr>
+					<p>Audit Item: <strong>{{ $audit->audit_item->item_name . ' (' . $audit->audit_item->time_range . ')' }}</strong></p>
+					@if($audit->compliance == 0)
+						<p>Bakit hindi Compliant?</p>
+						<p><i>{{ $audit->non_compliance_remarks }}</i></p>
+						@if($audit->field2 != null) {{-- Remarks Field in Audit Table --}}
+							<p>Additional Remarks</p>
+							<p><i>{{ $audit->field2 }}</i></p>
+						@endif
+						@if(count($audit->images) > 0)
+							<h4>Images Uploaded</h4>
+							<div class="image-set m-t-20">
+								@foreach($audit->images as $i)
+									<a data-magnify="gallery" data-src="" data-caption="{{ $i->filename }}" data-group="a" href="{{ asset('/uploads/images/' . $i->filename) }}">
+					          <img src="{{ asset('/uploads/images/' . $i->filename) }}" alt="" height="50px">
+					        </a>
+								@endforeach
+							</div>
+						@endif
+					@endif
+					<hr>
+					<form id="reviewform" accept="{{ route('audit.post.review', ['id' => $audit->id]) }}" method="POST" enctype="multipart/form-data">
+						@csrf
+						<div class="form-group">
+							<input type="checkbox" name="verified" id="verified" value="1" {{ $audit->verified == 1 ? 'checked' : '' }}> <label for="verified">Verify Correct</label>
 						</div>
-					@endif
-				@endif
-				<hr>
-				<form id="reviewform" accept="{{ route('audit.post.review', ['id' => $audit->id]) }}" method="POST" enctype="multipart/form-data">
-					@csrf
-					<div class="form-group">
-						<input type="checkbox" name="verified" id="verified" value="1" {{ $audit->verified == 1 ? 'checked' : '' }}> <label for="verified">Verify Correct</label>
+						<h4>Reviewer Remarks</h4>
+						<textarea id="summernote" name="editordata">{{ $audit->reviewed == 1 ? $audit->review->review : '' }}</textarea>
+						@if($audit->reviewed == 0)
+							<button id="reviewsubmitbutton" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+						@endif
+					</form>
+					<div id="reviewedby"> 
+						@if($audit->reviewed == 1)
+							<p>Reviewed by: <strong>{{ $audit->reviewer->first_name . ' ' . $audit->reviewer->last_name }}</strong></p>
+							<p>Review Timestamp: <strong>{{ $audit->review->created_at }}</strong></p>
+						@endif
 					</div>
-					<h4>Reviewer Remarks</h4>
-					<textarea id="summernote" name="editordata">{{ $audit->reviewed == 1 ? $audit->review->review : '' }}</textarea>
-					@if($audit->reviewed == 0)
-						<button id="reviewsubmitbutton" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-					@endif
-				</form>
-				<div id="reviewedby"> 
-					@if($audit->reviewed == 1)
-						<p>Reviewed by: <strong>{{ $audit->reviewer->first_name . ' ' . $audit->reviewer->last_name }}</strong></p>
-						<p>Review Timestamp: <strong>{{ $audit->review->created_at }}</strong></p>
-					@endif
 				</div>
-			</div>
+			@else
+				<div class="colmd">
+					<p class="text-center">No Data/Sample Data</p>
+				</div>
+			@endif
 		</div>
 		<div class="overlay"></div>
 	</section>
