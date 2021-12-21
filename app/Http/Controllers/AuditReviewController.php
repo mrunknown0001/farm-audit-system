@@ -32,7 +32,7 @@ class AuditReviewController extends Controller
                     $data->push([
                         'stat' => $j->read == 0 ? '<span class="label label-warning badge-pill">NEW</span>' : '<span class="label label-success badge-pill">SEEN</span>',
                         'location' => $j->field1 == 'loc' ? $j->location->farm->code . ' - ' . $j->location->location_name : $j->sub_location->location->farm->code . ' - ' . $j->sub_location->location->location_name . ' - ' . $j->sub_location->sub_location_name,
-                        'item' => $j->audit_item ? $j->audit_item->item_name : 'No Data',
+                        'item' => $j->audit_item ? $j->audit_item->item_name : 'No Data/Sample Data',
                         'date_time' => date('F j, Y H:i:s', strtotime($j->created_at)),
                         'action' => $this->reviewaction($j->id, $j->latitude, $j->longitude, $j->images)
                     ]);
