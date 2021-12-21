@@ -175,7 +175,7 @@ class AuditController extends Controller
                     'latitude' => $request->lat,
                     'longitude' => $request->lon,
                    ]);
-               }
+                }
            }
 
            $data = [

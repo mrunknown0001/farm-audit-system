@@ -148,7 +148,7 @@ class AuditReviewController extends Controller
 
 
 
-    private function reviewaction($id, $lat, $lon, $images)
+    private function reviewaction($id = null, $lat, $lon, $images)
     {
         # Old menu
         // if(count($images) > 0) {
