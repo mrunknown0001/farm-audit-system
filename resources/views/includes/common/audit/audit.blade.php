@@ -50,7 +50,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				@foreach($audit_locs as $key => $l)
-					@if(exists($l->audit_item))
+					@if(isset($l->audit_item))
 					@if($auditcontroller->auditCheck($cat, $dat->id, $l->audit_item->id, 1))
 						@if($audititemcontroller->timecheck($l->audit_item->time_range))
 							<form class="auditformclass" id="form-{{ $l->id }}" data-id={{ $l->id }} action="{{ route('audit.store') }}" method="POST" enctype="multipart/form-data">
