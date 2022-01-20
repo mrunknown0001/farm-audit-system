@@ -111,6 +111,8 @@
       $('#sub_location').removeAttr('required');
       $('#audit_item').hide();
       $('#audit_item').removeAttr('required');
+        // remove audit item
+      $('#audit_item option').remove();
       
       var id = $(this).val();
       $.ajax({
@@ -138,6 +140,8 @@
         $('#sub_location').removeAttr('required');
         $('#audit_item').hide();
         $('#audit_item').removeAttr('required');
+        // remove audit item
+        $('#audit_item option').remove();
         return ;
       }
       else if (id == 'all') {
@@ -145,11 +149,13 @@
         $('#sub_location').removeAttr('required');
         $('#audit_item').show();
         $('#audit_item').attr('required');
+        // show audi item
 
       }
       else if (id != '') {
         $('#audit_item').show();
         $('#audit_item').attr('required');
+        // show audi item
 
         if(has_sublocation == 1) {
           $('#sub_location').show();
