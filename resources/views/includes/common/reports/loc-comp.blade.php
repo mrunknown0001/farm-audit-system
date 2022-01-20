@@ -62,7 +62,6 @@
         		<label for="location">Select Location</label>
           	<select name="location" id="location" class="form-control">
               <option value="">Select Location</option>
-              <option value="all">All Locations on Farm</option>
           	</select>  		
         	</div>
         	<div class="form-group">
@@ -115,6 +114,7 @@
           // console.log(data);
           $('#location option').remove();
           $('#location').append('<option value="">Select Location</option>');
+          $('#location').append('<option value="all">All Locations</option>');
           $.each(data, function(k, v) {
             $('#location').append('<option value="'+ data[k]['id'] +'" data-id="'+ data[k]['has_sublocation'] +'">'+ data[k]['location_name'] +'</option>');
           });
