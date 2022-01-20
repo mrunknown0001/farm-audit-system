@@ -307,7 +307,7 @@ class ReportController extends Controller
         }
         $data = [];
 
-        if($location == 'all') {
+        if($request->location == 'all') {
             return 'create all location reports';
         }
         else {
