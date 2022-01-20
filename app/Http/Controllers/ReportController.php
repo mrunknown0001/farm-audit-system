@@ -307,41 +307,48 @@ class ReportController extends Controller
         }
         $data = [];
 
-        $location = Location::findorfail($request->location);
-
-        if($location->has_sublocation == 1) {
-            $request->validate(['sub_location' => 'required']);
-            $sub_loc = SubLocation::findorfail($request->sub_location);
-            $audit_location = $sub_loc->location->farm->code . ' - ' . $location->location_name . ' - ' . $sub_loc->sub_location_name;
-            $audits = Audit::where('sub_location_id', $sub_loc->id)
-                        ->whereDate('created_at', '>=', $request->from)
-                        ->whereDate('created_at', '<=', $request->to)
-                        ->get();
+        if($location == 'all') {
+            return 'create all location reports';
         }
         else {
-            $audit_location = $location->farm->code . ' - ' . $location->location_name;
-            $audits = Audit::where('location_id', $location->id)
-                        ->whereDate('created_at', '>=', $request->from)
-                        ->whereDate('created_at', '<=', $request->to)
-                        ->get();
+            // Old Style Report Exraction
+            $location = Location::findorfail($request->location);
+
+            if($location->has_sublocation == 1) {
+                $request->validate(['sub_location' => 'required']);
+                $sub_loc = SubLocation::findorfail($request->sub_location);
+                $audit_location = $sub_loc->location->farm->code . ' - ' . $location->location_name . ' - ' . $sub_loc->sub_location_name;
+                $audits = Audit::where('sub_location_id', $sub_loc->id)
+                            ->whereDate('created_at', '>=', $request->from)
+                            ->whereDate('created_at', '<=', $request->to)
+                            ->get();
+            }
+            else {
+                $audit_location = $location->farm->code . ' - ' . $location->location_name;
+                $audits = Audit::where('location_id', $location->id)
+                            ->whereDate('created_at', '>=', $request->from)
+                            ->whereDate('created_at', '<=', $request->to)
+                            ->get();
+            }
+
+            
+            $total_audit = $audits->count();
+            $compliance_count = $audits->where('compliance', 1)->count();
+            $non_compliance_count = $audits->where('compliance', 0)->count();
+
+            $data[] = [
+                'audit_location' => $audit_location,
+                'total_audit' => (string)$total_audit,
+                'total_compliance' => (string)$compliance_count,
+                'total_non_compliance' => (string)$non_compliance_count
+            ];
+
+            $title = $audit_location . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
+            $export = new LocationAudit($data, $title);
+            $filename = $audit_location . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
+            return Excel::download($export, $filename);
         }
-
-        
-        $total_audit = $audits->count();
-        $compliance_count = $audits->where('compliance', 1)->count();
-        $non_compliance_count = $audits->where('compliance', 0)->count();
-
-        $data[] = [
-            'audit_location' => $audit_location,
-            'total_audit' => (string)$total_audit,
-            'total_compliance' => (string)$compliance_count,
-            'total_non_compliance' => (string)$non_compliance_count
-        ];
-
-        $title = $audit_location . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
-        $export = new LocationAudit($data, $title);
-        $filename = $audit_location . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
-        return Excel::download($export, $filename);
+    
     }
 
 

@@ -61,7 +61,8 @@
         	<div class="form-group">
         		<label for="location">Select Location</label>
           	<select name="location" id="location" class="form-control">
-          		<option value="">Select Location</option>
+              <option value="">Select Location</option>
+              <option value="all">All Locations on Farm</option>
           	</select>  		
         	</div>
         	<div class="form-group">
@@ -128,6 +129,10 @@
 
         return ;
       }
+      else if (id == 'all') {
+        $('#sub_location').hide();
+        $('#sub_location').removeAttr('required');
+      }
       else if (id != '') {
         if(has_sublocation == 1) {
           $('#sub_location').show();
@@ -170,6 +175,7 @@
         }
 
       }
+
     });
 
     $('#report_sub_location').change(function () {
