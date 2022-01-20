@@ -146,8 +146,6 @@
         $('#audit_item').show();
         $('#audit_item').attr('required');
 
-        $('#sub_location').hide();
-        $('#sub_location').removeAttr('required');
       }
       else if (id != '') {
         $('#audit_item').show();
