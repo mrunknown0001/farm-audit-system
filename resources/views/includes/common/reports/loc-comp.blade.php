@@ -64,12 +64,17 @@
               <option value="">Select Location</option>
           	</select>  		
         	</div>
-        	<div class="form-group">
-        		{{-- <label for="sub_location">Select Sub Location</label> --}}
-          	<select name="sub_location" id="sub_location" class="form-control" style="display: none;">
-          		<option value="">Select Sub Location</option>
-          	</select>  		
-        	</div>
+          <div class="form-group">
+            {{-- <label for="sub_location">Select Sub Location</label> --}}
+            <select name="sub_location" id="sub_location" class="form-control" style="display: none;">
+              <option value="">Select Sub Location</option>
+            </select>     
+          </div>
+          <div class="form-group">
+            <select name="audit_item" id="audit_item" class="form-control" style="display: none;">
+              <option value="">Select Sub Location</option>
+            </select>     
+          </div>
 					<div class="row">
 						<div class="col-md-6 form-group {{ $errors->first('from') ? 'has-error' : ''  }}">
 							<label for="from">From Date</label>
@@ -104,6 +109,8 @@
     $('#farm').change(function () {
       $('#sub_location').hide();
       $('#sub_location').removeAttr('required');
+      $('#audit_item').hide();
+      $('#audit_item').removeAttr('required');
       
       var id = $(this).val();
       $.ajax({
@@ -125,15 +132,27 @@
     $('#location').change(function() {
       var has_sublocation = $(this).find(':selected').data('id');
       var id = $(this).val();
+      if(id != '') {
+          $('#sub_location').hide();
+          $('#sub_location').removeAttr('required');
+          $('#audit_item').hide();
+          $('#audit_item').removeAttr('required');
+      }
       if(id == '') {
 
         return ;
       }
       else if (id == 'all') {
+        $('#audit_item').show();
+        $('#audit_item').attr('required');
+
         $('#sub_location').hide();
         $('#sub_location').removeAttr('required');
       }
       else if (id != '') {
+        $('#audit_item').show();
+        $('#audit_item').attr('required');
+
         if(has_sublocation == 1) {
           $('#sub_location').show();
           $('#sub_location').attr('required', 'required');
