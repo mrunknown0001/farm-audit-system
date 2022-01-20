@@ -72,7 +72,7 @@
           </div>
           <div class="form-group">
             <select name="audit_item" id="audit_item" class="form-control" style="display: none;">
-              <option value="">Select Sub Location</option>
+              <option value="">Select Audit Item</option>
             </select>     
           </div>
 					<div class="row">
