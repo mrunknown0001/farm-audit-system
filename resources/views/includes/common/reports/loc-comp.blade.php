@@ -113,7 +113,8 @@
       $('#audit_item').removeAttr('required');
         // remove audit item
       $('#audit_item option').remove();
-      
+      $('#audit_item').append('<option value="">Select Audit Item</option>');
+
       var id = $(this).val();
       $.ajax({
         url: "/farm/location/get/" + id,
@@ -142,6 +143,7 @@
         $('#audit_item').removeAttr('required');
         // remove audit item
         $('#audit_item option').remove();
+        $('#audit_item').append('<option value="">Select Audit Item</option>');
         return ;
       }
       else if (id == 'all') {
