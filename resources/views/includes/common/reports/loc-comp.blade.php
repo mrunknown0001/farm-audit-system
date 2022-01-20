@@ -132,13 +132,6 @@
     $('#location').change(function() {
       var has_sublocation = $(this).find(':selected').data('id');
       var id = $(this).val();
-      if(id != '') {
-          $('#sub_location').hide();
-          $('#sub_location').removeAttr('required');
-          $('#audit_item').hide();
-          $('#audit_item').removeAttr('required');
-          return ;
-      }
 
       if(id == '') {
         $('#sub_location').hide();
@@ -148,6 +141,8 @@
         return ;
       }
       else if (id == 'all') {
+        $('#sub_location').hide();
+        $('#sub_location').removeAttr('required');
         $('#audit_item').show();
         $('#audit_item').attr('required');
 
