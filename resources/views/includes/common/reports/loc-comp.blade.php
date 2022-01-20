@@ -137,9 +137,14 @@
           $('#sub_location').removeAttr('required');
           $('#audit_item').hide();
           $('#audit_item').removeAttr('required');
+          return ;
       }
-      if(id == '') {
 
+      if(id == '') {
+        $('#sub_location').hide();
+        $('#sub_location').removeAttr('required');
+        $('#audit_item').hide();
+        $('#audit_item').removeAttr('required');
         return ;
       }
       else if (id == 'all') {
