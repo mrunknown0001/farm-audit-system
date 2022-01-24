@@ -359,9 +359,9 @@ class ReportController extends Controller
                     ];
                 }
 
-                $title = $farm->code . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
+                $title = "All Location " .  $farm->code . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
                 $export = new LocationAudit($data, $title);
-                $filename = $farm->code . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
+                $filename = "All Location " . $farm->code . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
                 return Excel::download($export, $filename);
             }
             else {
