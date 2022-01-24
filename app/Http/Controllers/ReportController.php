@@ -313,8 +313,8 @@ class ReportController extends Controller
             $farm = Farm::findorfail($request->farm);
             // per module 
             $locations = Location::where('farm_id', $request->farm)->get();
-            return $locations;
             if(count($locations) > 0) {
+                return "more loc";
                 foreach($locations as $location) {
                     if($location->has_sublocation == 1) {
                         $request->validate(['sub_location' => 'required']);
