@@ -323,6 +323,18 @@ class ReportController extends Controller
                                         ->whereDate('created_at', '>=', $request->from)
                                         ->whereDate('created_at', '<=', $request->to)
                                         ->get();
+
+                            $total_audit = $audits->count();
+                            $compliance_count = $audits->where('compliance', 1)->count();
+                            $non_compliance_count = $audits->where('compliance', 0)->count();
+
+                            $data[] = [
+                                'audit_location' => $audit_location,
+                                'total_audit' => (string)$total_audit,
+                                'total_compliance' => (string)$compliance_count,
+                                'total_non_compliance' => (string)$non_compliance_count
+                            ];
+
                         }
 
                     }
