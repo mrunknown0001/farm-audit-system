@@ -71,7 +71,6 @@ class LocationAudit implements FromArray, WithHeadings, WithStyles, ShouldAutoSi
         return [
             1    => ['font' => ['bold' => true, 'size' => 18]],
             3    => ['font' => ['bold' => true, 'size' => 14]],
-            4    => ['font' => ['bold' => false, 'size' => 14]],
         ];
     }
 
