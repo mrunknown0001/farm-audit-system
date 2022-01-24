@@ -310,6 +310,51 @@ class ReportController extends Controller
 
         if($request->location == 'all') {
             return 'create all location reports';
+            $farm = Farm::findorfail($request->farm);
+            // per module 
+            $locations = Location::where('farm_id', $request->farm)->get();
+
+            if(count($locations) > 0) {
+                foreach($locations as $location) {
+                    if($location->has_sublocation == 1) {
+                        $request->validate(['sub_location' => 'required']);
+                        $sub_loc = SubLocation::findorfail($request->sub_location);
+                        $audit_location = $sub_loc->location->farm->code . ' - ' . $location->location_name . ' - ' . $sub_loc->sub_location_name;
+                        $audits = Audit::where('sub_location_id', $sub_loc->id)
+                                    ->whereDate('created_at', '>=', $request->from)
+                                    ->whereDate('created_at', '<=', $request->to)
+                                    ->get();
+                    }
+                    else {
+                        $audit_location = $location->farm->code . ' - ' . $location->location_name;
+                        $audits = Audit::where('location_id', $location->id)
+                                    ->whereDate('created_at', '>=', $request->from)
+                                    ->whereDate('created_at', '<=', $request->to)
+                                    ->get();
+                    }
+
+                    
+                    $total_audit = $audits->count();
+                    $compliance_count = $audits->where('compliance', 1)->count();
+                    $non_compliance_count = $audits->where('compliance', 0)->count();
+
+                    $data[] = [
+                        'audit_location' => $audit_location,
+                        'total_audit' => (string)$total_audit,
+                        'total_compliance' => (string)$compliance_count,
+                        'total_non_compliance' => (string)$non_compliance_count
+                    ];
+                }
+
+            $title = $farm->code . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
+            $export = new LocationAudit($data, $title);
+            $filename = $farm->code . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
+            return Excel::download($export, $filename);
+            }
+            else {
+                // if farm has no location assigned
+                return redirect()->back()->with('error', 'No Location Found!');
+            }
         }
         else {
             // Old Style Report Exraction
