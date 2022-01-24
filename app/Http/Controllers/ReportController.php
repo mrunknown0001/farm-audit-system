@@ -309,7 +309,7 @@ class ReportController extends Controller
         $data = [];
 
         if($request->location == 'all') {
-            return 'create all location reports';
+            // return 'create all location reports';
             $farm = Farm::findorfail($request->farm);
             // per module 
             $locations = Location::where('farm_id', $request->farm)->get();
