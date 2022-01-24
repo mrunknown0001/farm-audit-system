@@ -309,21 +309,21 @@ class ReportController extends Controller
         $data = [];
 
         if($request->location == 'all') {
-            // return 'create all location reports';
+            // create all location reports';
             $farm = Farm::findorfail($request->farm);
             // per module 
             $locations = Location::where('farm_id', $request->farm)->get();
-            if(count($locations) > 0) {
-                return "more loc";
+
                 foreach($locations as $location) {
                     if($location->has_sublocation == 1) {
-                        $request->validate(['sub_location' => 'required']);
-                        $sub_loc = SubLocation::findorfail($request->sub_location);
-                        $audit_location = $sub_loc->location->farm->code . ' - ' . $location->location_name . ' - ' . $sub_loc->sub_location_name;
-                        $audits = Audit::where('sub_location_id', $sub_loc->id)
-                                    ->whereDate('created_at', '>=', $request->from)
-                                    ->whereDate('created_at', '<=', $request->to)
-                                    ->get();
+                        foreach($location->sub_locations as $sub_loc) {
+                            $audit_location = $sub_loc->location->farm->code . ' - ' . $location->location_name . ' - ' . $sub_loc->sub_location_name;
+                            $audits = Audit::where('sub_location_id', $sub_loc->id)
+                                        ->whereDate('created_at', '>=', $request->from)
+                                        ->whereDate('created_at', '<=', $request->to)
+                                        ->get();
+                        }
+
                     }
                     else {
                         $audit_location = $location->farm->code . ' - ' . $location->location_name;
