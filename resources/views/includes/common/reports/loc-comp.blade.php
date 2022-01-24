@@ -160,7 +160,6 @@
           success: function(data) {
             // console.log(data);
             $('#audit_item option').remove();
-            $('#audit_item').append('<option value="">Select Audit Item</option>');
             $('#audit_item').append('<option value="all">All Audit Item</option>');
             $.each(data, function(k, v) {
               $('#audit_item').append('<option value="'+ data[k]['id'] +'">'+ data[k]['item_name'] +'</option>');
@@ -179,7 +178,6 @@
           success: function(data) {
             // console.log(data);
             $('#audit_item option').remove();
-            $('#audit_item').append('<option value="">Select Audit Item</option>');
             $('#audit_item').append('<option value="all">All Audit Item</option>');
             $.each(data, function(k, v) {
               $('#audit_item').append('<option value="'+ data[k]['id'] +'">'+ data[k]['item_name'] +'</option>');
