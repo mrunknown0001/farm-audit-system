@@ -427,22 +427,26 @@ class ReportController extends Controller
      */
     public function getFarmAuditItems($id)
     {
-        // Check Farm if exists based on paramater id (farm id)
+        try {
+            // Check Farm if exists based on paramater id (farm id)
+            $farm = Farm::find($id);
 
-        // get all audit items based on farm id
-        
-        // return null or array of audit items
+            // get all audit items based on farm id
+            
+            // return null or array of audit items
 
+            $audit_items = AuditItem::where('farm_id', $id)
+                            ->where('active', 1)
+                            ->where('is_deleted', 0)
+                            ->orderBy('item_name', 'ASC')
+                            ->select(['id', 'item_name'])
+                            ->get();
 
+            return response()->json($audit_items);
+        }
+        catch(Throwable $e) {
+            return response()->json($e); 
+        }
 
-        $audit_items = AuditItem::where('farm_id', $id)
-                        ->where('active', 1)
-                        ->where('is_deleted', 0)
-                        ->orderByRaw('LENGTH(item_name)', 'ASC')
-                        ->orderBy('item_name', 'ASC')
-                        ->select(['id', 'item_name'])
-                        ->get();
-
-        return response()->json($audit_items);
     }
 }
