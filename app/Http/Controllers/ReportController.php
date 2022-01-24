@@ -314,6 +314,7 @@ class ReportController extends Controller
             // per module 
             $locations = Location::where('farm_id', $request->farm)->get();
 
+            if(count($locations) > 0) {
                 foreach($locations as $location) {
                     if($location->has_sublocation == 1) {
                         foreach($location->sub_locations as $sub_loc) {
