@@ -346,14 +346,16 @@ class ReportController extends Controller
                     ];
                 }
 
-            $title = $farm->code . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
-            $export = new LocationAudit($data, $title);
-            $filename = $farm->code . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
-            return Excel::download($export, $filename);
+                $title = $farm->code . ' - ' . date('F j, Y', strtotime($request->from)) . ' to ' . date('F j, Y', strtotime($request->to));
+                $export = new LocationAudit($data, $title);
+                $filename = $farm->code . ' - ' . $request->from . ' to ' . $request->to . '.xlsx';
+                return Excel::download($export, $filename);
             }
             else {
                 // if farm has no location assigned
-                return redirect()->back()->with('error', 'No Location Found!');
+                // return redirect()->back()->with('error', 'No Location Found!');
+                return "error no location";
+
             }
         }
         else {
