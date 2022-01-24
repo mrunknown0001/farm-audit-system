@@ -8,6 +8,7 @@ use DB;
 use Excel;
 use DataTables;
 use App\Audit;
+use App\AuditItem;
 use App\Farm;
 use App\UserFarm;
 use App\Location;
@@ -414,5 +415,34 @@ class ReportController extends Controller
         $export = new MarshalAudit($data);
         $filename = date('F j, Y', strtotime(now())) . '.xlsx';
         return Excel::download($export, $filename);
+    }
+
+
+    /**
+     * getFarmAuditItems
+     * This method use to get all Audit Items Available/Used on specified Farm
+     * based on id
+     * Returns NULL or Lists of Audit Items
+     * Parameter ID - ID of Farm
+     */
+    public function getFarmAuditItems($id)
+    {
+        // Check Farm if exists based on paramater id (farm id)
+
+        // get all audit items based on farm id
+        
+        // return null or array of audit items
+
+
+
+        $audit_items = AuditItem::where('farm_id', $id)
+                        ->where('active', 1)
+                        ->where('is_deleted', 0)
+                        ->orderByRaw('LENGTH(item_name)', 'ASC')
+                        ->orderBy('item_name', 'ASC')
+                        ->select(['id', 'item_name'])
+                        ->get();
+
+        return response()->json($audit_items);
     }
 }

@@ -105,7 +105,7 @@
 @section('script')
 	<script>
   $(document).ready(function () {
-
+    let farm_id = '';
     $('#farm').change(function () {
       $('#sub_location').hide();
       $('#sub_location').removeAttr('required');
@@ -116,6 +116,7 @@
       $('#audit_item').append('<option value="">Select Audit Item</option>');
 
       var id = $(this).val();
+      farm_id = id;
       $.ajax({
         url: "/farm/location/get/" + id,
         dataType: "json",
@@ -151,13 +152,38 @@
         $('#sub_location').removeAttr('required');
         $('#audit_item').show();
         $('#audit_item').attr('required');
-        // show audi item
-
+        // show audit item
+        $.ajax({
+          url: "/get/audit-item/farm/" + farm_id,
+          dataType: "json",
+          async: false,
+          success: function(data) {
+            // console.log(data);
+            $('#audit_item option').remove();
+            $('#audit_item').append('<option value="">Select Audit Item</option>');
+            $.each(data, function(k, v) {
+              $('#audit_item').append('<option value="'+ data[k]['id'] +'">'+ data[k]['item_name'] +'</option>');
+            });
+          }
+        }); 
       }
       else if (id != '') {
         $('#audit_item').show();
         $('#audit_item').attr('required');
-        // show audi item
+        // show audit item
+        $.ajax({
+          url: "/get/audit-item/farm/" + farm_id,
+          dataType: "json",
+          async: false,
+          success: function(data) {
+            // console.log(data);
+            $('#audit_item option').remove();
+            $('#audit_item').append('<option value="">Select Audit Item</option>');
+            $.each(data, function(k, v) {
+              $('#audit_item').append('<option value="'+ data[k]['id'] +'">'+ data[k]['item_name'] +'</option>');
+            });
+          }
+        }); 
 
         if(has_sublocation == 1) {
           $('#sub_location').show();

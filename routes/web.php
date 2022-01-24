@@ -118,6 +118,10 @@ Route::group(['middleware' => 'auth'], function () {
 	# Location Compliance|non compliance Reports
 	Route::get('/report/location-compliance', 'ReportController@locationCompliance')->name('report.location.compliance');
 	Route::post('/report/location-compliance', 'ReportController@postLocationCompliance')->name('report.post.location.compliance');
+	# Load all audit item under the selected farm
+	Route::get('/get/audit-item/farm/{id}', 'ReportController@getFarmAuditItems')->name('get.farm.audit.items');
+
+
 	# Supervisor | Caretaker Report
 	Route::get('/report/assigned-personnel', 'ReportController@assignedPersonnel')->name('report.assigned.personnel');
 	Route::post('/report/assigned-personnel', 'ReportController@postAssignedPersonnel')->name('report.post.assigned.personnel');
