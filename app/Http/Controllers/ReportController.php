@@ -313,7 +313,7 @@ class ReportController extends Controller
             $farm = Farm::findorfail($request->farm);
             // per module 
             $locations = Location::where('farm_id', $request->farm)->get();
-
+            return $locations;
             if(count($locations) > 0) {
                 foreach($locations as $location) {
                     if($location->has_sublocation == 1) {
@@ -353,8 +353,7 @@ class ReportController extends Controller
             }
             else {
                 // if farm has no location assigned
-                // return redirect()->back()->with('error', 'No Location Found!');
-                return "error no location";
+                return redirect()->back()->with('error', 'No Location Found!');
 
             }
         }
