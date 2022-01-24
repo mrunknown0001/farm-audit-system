@@ -444,7 +444,7 @@ class ReportController extends Controller
 
             return response()->json($audit_items);
         }
-        catch(Throwable $e) {
+        catch(\Throwable $e) {
             return response()->json($e); 
         }
 
