@@ -151,7 +151,7 @@
         $('#sub_location').hide();
         $('#sub_location').removeAttr('required');
         $('#audit_item').show();
-        $('#audit_item').attr('required');
+        $('#audit_item').attr('required', 'required');
         // show audit item
         $.ajax({
           url: "/get/audit-item/farm/" + farm_id,
@@ -170,7 +170,7 @@
       }
       else if (id != '') {
         $('#audit_item').show();
-        $('#audit_item').attr('required');
+        $('#audit_item').attr('required', 'required');
         // show audit item
         $.ajax({
           url: "/get/audit-item/farm/" + farm_id,
